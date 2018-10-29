@@ -1,4 +1,4 @@
-package testinthings;
+package Databasics;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class Main {
@@ -13,7 +13,7 @@ public class Main {
 		for (int i = 0; i < 5; i++) {
 			table.newEntry();
 		}
-		
+
 	}
 
 }

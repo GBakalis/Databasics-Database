@@ -1,4 +1,4 @@
-package testinthings;
+package Databasics;
 import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class Table{
 		attributeNumber = 0;
 		tables.add(this);
 	}
-	
+
 	public void newEntry() {
 		boolean correctEntry;
 		String[] entries;
@@ -31,7 +31,7 @@ public class Table{
 			String entry = input.nextLine();
 			correctEntry = true;
 			entries = entry.split(",");
-			try {	
+			try {
 				if (entries.length != attributeNumber) {
 					correctEntry = false;
 				} else {
@@ -48,7 +48,7 @@ public class Table{
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("Wrong entry on an Integer or Decimal column!");
-				correctEntry = false;	
+				correctEntry = false;
 			} catch (ParseException e) {
 				System.out.println("Invalid date format in a date column!");
 				correctEntry = false;
@@ -60,14 +60,14 @@ public class Table{
 					System.out.println("Please try again!");
 				}
 			}
-			
+
 		} while (correctEntry == false);
 		for (int i = 0; i < entries.length; i++) {
 			thisTable.get(i).add(entries[i]);
 		}
-		
+
 	}
-	
+
 	public ArrayList<ArrayList<String>> getthisTable() {
 		return thisTable;
 	}

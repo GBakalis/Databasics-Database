@@ -1,4 +1,4 @@
-package testinthings;
+package Databasics;
 
 public class NotCharacterException extends Exception {
 	public NotCharacterException() { }
