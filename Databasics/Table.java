@@ -35,7 +35,7 @@ public class Table{
 				if (entries.length != attributeNumber) {
 					correctEntry = false;
 				} else {
-					for (int i = 0; i <= attributeNumber; i++) {
+					for (int i = 0; i < attributeNumber; i++) {
 						if (attributeTypes.get(i) == "int") Integer.parseInt(entries[i]);
 						if (attributeTypes.get(i) == "double") Double.parseDouble(entries[i]);
 						if (attributeTypes.get(i) == "date") {
@@ -143,5 +143,4 @@ public class Table{
 			}
 		} while(choice < 1 || choice > 6);
 	}
-
 }
