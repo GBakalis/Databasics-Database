@@ -119,7 +119,7 @@ public class Table{
 					attributeTypes.add("string");
 					break;
 				case 2:
-					ArrayList<String> character = new ArrayList<String>();
+					thisTable.add(new ArrayList<String>());
 					attributeTypes.add("char");
 					break;
 				case 3:
