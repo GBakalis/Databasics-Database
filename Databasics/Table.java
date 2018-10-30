@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.Date;
 import java.text.ParseException;
+import java.util.InputMismatchException;
+
+//Break newEntry() and newAttribute() to smaller methods and merge
 
 public class Table{
 
@@ -34,14 +37,14 @@ public class Table{
 					correctEntry = false;
 				} else {
 					for (int i = 0; i < attributeNumber; i++) {
-						if (attributeTypes.get(i) == "int") Integer.parseInt(entries[i]);
-						if (attributeTypes.get(i) == "double") Double.parseDouble(entries[i]);
-						if (attributeTypes.get(i) == "date") {
+						if (thisTable.get(i).getType() == "int") Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
+						if (thisTable.get(i).getType() == "double") Double.parseDouble(entries[i]);
+						if (thisTable.get(i).getType() == "date") {
 							DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 							format.setLenient(false);
 							format.parse(entries[i]);
 						}
-						if ((attributeTypes.get(i) == "char") && (entries[i].length() != 1)) throw new NotCharacterException();
+						if ((thisTable.get(i).getType() == "char") && (entries[i].length() != 1)) throw new NotCharacterException();
 					}
 				}
 			} catch (NumberFormatException e) {
@@ -61,7 +64,7 @@ public class Table{
 
 		} while (correctEntry == false);
 		for (int i = 0; i < entries.length; i++) {
-			thisTable.get(i).add(entries[i]);
+			thisTable.get(i).setEntryField(entries[i]);
 		}
 
 	}
@@ -86,13 +89,49 @@ public class Table{
 		this.name = name;
 	}
 
-	public void newAttribute(){
+	public boolean checkInput (int choice, boolean correctEntry) {
+		try{
+			if(choice < 1 || choice >6)
+				throw new WrongEntryException();
+			else {
+				switch(choice) {
+					case 1:
+						thisTable.add(new Attribute(name, "string"));
+						break;
+					case 2:
+						thisTable.add(new Attribute(name, "char"));
+						break;
+					case 3:
+						thisTable.add(new Attribute(name, "int"));
+						break;
+					case 4:
+						thisTable.add(new Attribute(name, "double"));
+						break;
+					case 5:
+						thisTable.add(new Attribute(name, "date"));
+						break;
+					case 6:
+						thisTable.add(new Attribute(name, "obj"));
+						break;
+				}
+			}
+		} catch (WrongEntryException e) {
+			System.out.println(choice + " is not a valid input.");
+			correctEntry = false;
+		}
+		return correctEntry;
+	}
+
+	public void newAttribute() throws InputMismatchException {
+		boolean correctEntry;
 		attributeNumber++;
 		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the name of the new attribute");
 		String name = input.nextLine();
 		int choice;
 		do {
+			correctEntry = true;
+			choice = 0;
 			System.out.println("Your attribute can be of any of the following types:\n"
 					+ "1. Text\n"
 					+ "2. Single letter\n"
@@ -101,30 +140,15 @@ public class Table{
 					+ "5. Date\n"
 					+ "6. Other (e.g. Image)\n\n"
 					+ "Insert the number that corresponds to the type you want.");
-			choice = input.nextInt();
-
-			switch(choice) {
-				case 1:
-					thisTable.add(new Attribute(name, "string"));
-					break;
-				case 2:
-					thisTable.add(new Attribute(name, "char"));
-					break;
-				case 3:
-					thisTable.add(new Attribute(name, "int"));
-					break;
-				case 4:
-					thisTable.add(new Attribute(name, "double"));
-					break;
-				case 5:
-					thisTable.add(new Attribute(name, "date"));
-					break;
-				case 6:
-					thisTable.add(new Attribute(name, "obj"));
-					break;
-				default:
-					System.out.println("Invalid input " + choice);
+			try {
+				choice = input.nextInt();
+			} catch (InputMismatchException err) {
+				System.out.println("This was not a number!");
+				correctEntry = false;
 			}
-		} while(choice < 1 || choice > 6);
+
+			correctEntry = checkInput(choice, correctEntry);
+
+		} while(correctEntry == false);
 	}
 }

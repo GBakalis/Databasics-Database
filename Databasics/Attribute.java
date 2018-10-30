@@ -6,7 +6,7 @@ public class Attribute {
 	private String name;
 	private String type;
 	private ArrayList<String> array = new ArrayList<String>();
-	
+
 	public Attribute(String name, String type) {
 		this.name = name;
 		this.type = type;
@@ -31,5 +31,9 @@ public class Attribute {
 
 	public ArrayList<String> getArray() {
 		return array;
+	}
+
+	public void setEntryField(String entry) {
+		array.add(entry);
 	}
 }
