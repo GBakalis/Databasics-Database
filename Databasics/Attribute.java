@@ -2,6 +2,8 @@ package Databasics;
 
 import java.util.ArrayList;
 
+//This class is still so simple that documents itself really.
+
 public class Attribute {
 	private String name;
 	private String type;
