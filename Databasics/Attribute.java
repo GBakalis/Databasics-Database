@@ -1,15 +1,15 @@
 package Databasics;
+
 import java.util.ArrayList;
+
 public class Attribute {
 	private String name;
 	private String type;
-	private ArrayList<String> array;
-	private static int attributeNumber;
+	private ArrayList<String> array = new ArrayList<String>();
 	
 	public Attribute(String name, String type) {
 		this.name = name;
 		this.type = type;
-		attributeNumber++;
 	}
 
 	public String getName() {
@@ -24,6 +24,7 @@ public class Attribute {
 		return type;
 	}
 
+	//The user shouldn't have the ability to change a column's type before deleting the data
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -31,17 +32,4 @@ public class Attribute {
 	public ArrayList<String> getArray() {
 		return array;
 	}
-
-	public void setArray(ArrayList<String> array) {
-		this.array = array;
-	}
-
-	public static int getAttributeNumber() {
-		return attributeNumber;
-	}
-
-	public static void setAttributeNumber(int attributeNumber) {
-		Attribute.attributeNumber = attributeNumber;
-	}
-	
 }

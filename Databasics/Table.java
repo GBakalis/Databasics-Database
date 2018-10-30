@@ -11,10 +11,8 @@ public class Table{
 
 	private String name;
 	private int attributeNumber;
-	private ArrayList<String> attributeTypes = new ArrayList<String>();
-	private ArrayList<String> attributeName = new ArrayList<String>();
 	private static ArrayList<Table> tables = new ArrayList<Table>();
-	private ArrayList<ArrayList<String>> thisTable = new ArrayList<ArrayList<String>>();
+	private ArrayList<Attribute> thisTable = new ArrayList<Attribute>();
 
 	public Table(String name){
 		this.name = name;
@@ -68,16 +66,8 @@ public class Table{
 
 	}
 
-	public ArrayList<ArrayList<String>> getthisTable() {
+	public ArrayList<Attribute> getThisTable() {
 		return thisTable;
-	}
-
-	public String getAttributeName(int i) {
-		return attributeName.get(i);
-	}
-
-	public void setAttributeName(int i, String name) {
-		attributeName.set(i, name);
 	}
 
 	public int getAttributeNumber() {
@@ -98,9 +88,9 @@ public class Table{
 
 	public void newAttribute(){
 		attributeNumber++;
-		Scanner sc = new Scanner(System.in);
+		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the name of the new attribute");
-		String name = sc.nextLine();
+		String name = input.nextLine();
 		int choice;
 		do {
 			System.out.println("Your attribute can be of any of the following types:\n"
@@ -111,32 +101,26 @@ public class Table{
 					+ "5. Date\n"
 					+ "6. Other (e.g. Image)\n\n"
 					+ "Insert the number that corresponds to the type you want.");
-			choice = sc.nextInt();
+			choice = input.nextInt();
 
 			switch(choice) {
 				case 1:
-					thisTable.add(new ArrayList<String>());
-					attributeTypes.add("string");
+					thisTable.add(new Attribute(name, "string"));
 					break;
 				case 2:
-					thisTable.add(new ArrayList<String>());
-					attributeTypes.add("char");
+					thisTable.add(new Attribute(name, "char"));
 					break;
 				case 3:
-					thisTable.add(new ArrayList<String>());
-					attributeTypes.add("int");
+					thisTable.add(new Attribute(name, "int"));
 					break;
 				case 4:
-					thisTable.add(new ArrayList<String>());
-					attributeTypes.add("double");
+					thisTable.add(new Attribute(name, "double"));
 					break;
 				case 5:
-					thisTable.add(new ArrayList<String>());
-					attributeTypes.add("date");
+					thisTable.add(new Attribute(name, "date"));
 					break;
 				case 6:
-					thisTable.add(new ArrayList<String>());
-					attributeTypes.add("object");
+					thisTable.add(new Attribute(name, "obj"));
 					break;
 				default:
 					System.out.println("Invalid input " + choice);
