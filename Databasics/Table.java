@@ -72,7 +72,9 @@ public class Table{
 	 * This method implements a simple check on the entry that the user
 	 * has given on demand, in order to decide if it has the correct
 	 * number and types of input. It uses existing and custom exceptions
-	 * to guide the user into a correct entry, if needed.
+	 * to guide the user into a correct entry, if needed. If the user does
+	 * not want to insert an element to a column he should type <code>--</code>
+	 * instead
 	 *
 	 * @param entries      an array of <code>String</code> elements, which is the user's input
 	 * @param correctEntry a <code>boolean</code> initialized as <code>true</code>, prone
@@ -86,15 +88,26 @@ public class Table{
 			if (entries.length != attributeNumber) {
 				correctEntry = false;
 			} else {
+				for (String entry : entries){
+					System.out.print(entry);
+				}
+				System.out.println("|");
 				for (int i = 0; i < attributeNumber; i++) {
-					if (thisTable.get(i).getType() == "int") Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
-					if (thisTable.get(i).getType() == "double") Double.parseDouble(entries[i]);
-					if (thisTable.get(i).getType() == "date") {
+					if (thisTable.get(i).getType() == "int" && !entries[i].equals("--")) {
+						Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
+					}
+					if (thisTable.get(i).getType() == "double" && !entries[i].equals("--")) {
+						Double.parseDouble(entries[i]);
+					}
+					if (thisTable.get(i).getType() == "date" && !entries[i].equals("--")) {
 						DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						format.setLenient(false);
 						format.parse(entries[i]);
 					}
-					if ((thisTable.get(i).getType() == "char") && (entries[i].length() != 1)) throw new NotCharacterException();
+					if ((thisTable.get(i).getType() == (String) "char") && (
+							entries[i].length() != 1) && !entries[i].equals("--")) {
+						throw new NotCharacterException();
+					}
 				}
 			}
 		} catch (NumberFormatException e) {
