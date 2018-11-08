@@ -18,10 +18,11 @@ public class Main {
 		for (int i = 0; i < 2; i++) {
 			table.newEntry();
 		}
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 2; j++) {
-				System.out.println(table.getThisTable().get(i).getArray().get(j)); //Make methods per pair of gets
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 3; j++) {
+				System.out.printf("%-20s|", table.getThisTable().get(j).getArray().get(i)); //Make methods per pair of gets
 			}
+			System.out.println();
 		}
 
 	}
