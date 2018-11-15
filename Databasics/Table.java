@@ -89,9 +89,9 @@ public class Table{
 				correctEntry = false;
 			} else {
 				for (String entry : entries){
-					System.out.print(entry);
+					System.out.print(entry + "|");
 				}
-				System.out.println("|");
+				System.out.println();
 				for (int i = 0; i < attributeNumber; i++) {
 					if (thisTable.get(i).getType() == "int" && !entries[i].equals("--")) {
 						Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
