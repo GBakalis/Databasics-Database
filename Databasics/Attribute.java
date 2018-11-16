@@ -38,4 +38,5 @@ public class Attribute {
 	public void setEntryField(String entry) {
 		array.add(entry);
 	}
+
 }

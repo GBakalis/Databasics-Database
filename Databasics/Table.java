@@ -55,7 +55,7 @@ public class Table{
 	private String name;
 	private int attributeNumber;
 	private static ArrayList<Table> tables = new ArrayList<Table>();
-	private ArrayList<Attribute> thisTable = new ArrayList<Attribute>();
+	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
 	/**
 	 * A simple constructor that only expects a name to initialize a table
@@ -72,7 +72,9 @@ public class Table{
 	 * This method implements a simple check on the entry that the user
 	 * has given on demand, in order to decide if it has the correct
 	 * number and types of input. It uses existing and custom exceptions
-	 * to guide the user into a correct entry, if needed.
+	 * to guide the user into a correct entry, if needed. If the user does
+	 * not want to insert an element to a column he should type <code>--</code>
+	 * instead
 	 *
 	 * @param entries      an array of <code>String</code> elements, which is the user's input
 	 * @param correctEntry a <code>boolean</code> initialized as <code>true</code>, prone
@@ -86,15 +88,26 @@ public class Table{
 			if (entries.length != attributeNumber) {
 				correctEntry = false;
 			} else {
+				for (String entry : entries){
+					System.out.print(entry + "|");
+				}
+				System.out.println();
 				for (int i = 0; i < attributeNumber; i++) {
-					if (thisTable.get(i).getType() == "int") Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
-					if (thisTable.get(i).getType() == "double") Double.parseDouble(entries[i]);
-					if (thisTable.get(i).getType() == "date") {
+					if (attributes.get(i).getType() == "int" && !entries[i].equals("--")) {
+						Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
+					}
+					if (attributes.get(i).getType() == "double" && !entries[i].equals("--")) {
+						Double.parseDouble(entries[i]);
+					}
+					if (attributes.get(i).getType() == "date" && !entries[i].equals("--")) {
 						DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						format.setLenient(false);
 						format.parse(entries[i]);
 					}
-					if ((thisTable.get(i).getType() == "char") && (entries[i].length() != 1)) throw new NotCharacterException();
+					if ((attributes.get(i).getType() == (String) "char") && (
+							entries[i].length() != 1) && !entries[i].equals("--")) {
+						throw new NotCharacterException();
+					}
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -111,7 +124,6 @@ public class Table{
 				System.out.println("Please try again!");
 			}
 		}
-
 		return correctEntry;
 	}
 
@@ -136,12 +148,12 @@ public class Table{
 
 		} while (correctEntry == false);
 		for (int i = 0; i < entries.length; i++) {
-			thisTable.get(i).setEntryField(entries[i]);
+			attributes.get(i).setEntryField(entries[i]);
 		}
 	}
 
-	public ArrayList<Attribute> getThisTable() {
-		return thisTable;
+	public ArrayList<Attribute> getAttributes() {
+		return attributes;
 	}
 
 	public int getAttributeNumber() {
@@ -181,22 +193,22 @@ public class Table{
 			else {
 				switch(choice) {
 					case 1:
-						thisTable.add(new Attribute(name, "string"));
+						attributes.add(new Attribute(name, "string"));
 						break;
 					case 2:
-						thisTable.add(new Attribute(name, "char"));
+						attributes.add(new Attribute(name, "char"));
 						break;
 					case 3:
-						thisTable.add(new Attribute(name, "int"));
+						attributes.add(new Attribute(name, "int"));
 						break;
 					case 4:
-						thisTable.add(new Attribute(name, "double"));
+						attributes.add(new Attribute(name, "double"));
 						break;
 					case 5:
-						thisTable.add(new Attribute(name, "date"));
+						attributes.add(new Attribute(name, "date"));
 						break;
 					case 6:
-						thisTable.add(new Attribute(name, "obj"));
+						attributes.add(new Attribute(name, "obj"));
 						break;
 				}
 			}
@@ -244,5 +256,27 @@ public class Table{
 			correctEntry = checkInput(choice, correctEntry);
 
 		} while(correctEntry == false);
+	}
+
+	public static boolean exists(String name) {
+		for (Table table : tables) {
+			if (table.getName() == name) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean exists(String tableName, String attributeName) {
+		for (Table table : tables) {
+			if (table.getName() == tableName) {
+				for (Attribute attribute : attributes) {
+					if (attribute.getName() == attributeName) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 }
