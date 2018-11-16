@@ -97,7 +97,7 @@ public class Table{
 				System.out.println();
 				for (int i = 1; i < attributeNumber; i++) {
 					if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
-						Integer.parseInt(entries[i-1]); //changed all "attributeTypes.getType(i)" to that
+						Integer.parseInt(entries[i-1]);
 					}
 					if (attributes.get(i).getType() == "double" && !entries[i-1].equals("--")) {
 						Double.parseDouble(entries[i-1]);
@@ -138,6 +138,7 @@ public class Table{
 	 */
 
 	public void newEntry() {
+		attributes.get(0).setEntryField(String.valueOf(++linesNumber));
 		boolean correctEntry;
 		String[] entries;
 		do {
@@ -146,13 +147,14 @@ public class Table{
 			String entry = input.nextLine();
 			correctEntry = true;
 			entries = entry.split(",");
+			for (int i = 0; i < entries.length; i++) {
+				entries[i] = entries[i].trim();
+			}
 
 			correctEntry = checkType(entries, correctEntry);
 
 		} while (correctEntry == false);
 		for (int i = 1; i <= entries.length; i++) {
-			linesNumber++;
-			attributes.get(0).setEntryField(String.valueOf(linesNumber));
 			attributes.get(i).setEntryField(entries[i-1]);
 		}
 	}
@@ -177,6 +179,10 @@ public class Table{
 		this.name = name;
 	}
 
+	public int getLinesNumber() {
+		return linesNumber;
+	}
+
 	/**
 	 * This method implements a simple check on the entry that the user
 	 * has given on demand, in order to decide if it is an integer between
@@ -191,7 +197,7 @@ public class Table{
 	 *                     <code>false</code> if there's a wrong input.
 	 */
 
-	public boolean checkInput (int choice, boolean correctEntry) {
+	public boolean checkInput (int choice, String name, boolean correctEntry) {
 		try{
 			if(choice < 1 || choice > 6)
 				throw new WrongEntryException();
@@ -237,7 +243,7 @@ public class Table{
 		attributeNumber++;
 		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the name of the new attribute");
-		String name = input.nextLine();
+		String name = input.nextLine().trim();
 		int choice = 0;
 		do {
 			correctEntry = true;
@@ -258,7 +264,7 @@ public class Table{
 				continue;
 			}
 
-			correctEntry = checkInput(choice, correctEntry);
+			correctEntry = checkInput(choice, name, correctEntry);
 
 		} while(correctEntry == false);
 	}
@@ -272,11 +278,11 @@ public class Table{
 		return false;
 	}
 
-	public boolean exists(String tableName, String attributeName) {
+	public boolean exists(String tableName, String name) {
 		for (Table table : tables) {
 			if (table.getName() == tableName) {
 				for (Attribute attribute : attributes) {
-					if (attribute.getName() == attributeName) {
+					if (attribute.getName() == name) {
 						return true;
 					}
 				}
@@ -284,4 +290,39 @@ public class Table{
 		}
 		return false;
 	}
+
+	public static int maxLength(Attribute att) {
+		int max = att.getName().length();
+		for (int i = 0; i < att.getArray().size(); i++) {
+			if (att.getArray().get(i).length() > max) {
+				max = att.getArray().get(i).length();
+			}
+		}
+		return max;
+	}
+
+	public static void view(String... tableNames) {
+		ArrayList<Integer> columnLength = new ArrayList<Integer>();
+		for (String name : tableNames) {
+			for (int i = 0; i < tables.size(); i++) {
+				if (name.equals(tables.get(i).getName())) {
+					System.out.println(name + "\n");
+					for (int k = 0; k < tables.get(i).getAttributes().size(); k++) {
+						columnLength.add(maxLength(tables.get(i).getAttributes().get(k)));
+						System.out.printf("%-" + columnLength.get(k) + "s|",
+								tables.get(i).getAttributes().get(k).getName());
+					}
+					System.out.println();
+					for (int j = 0; j < tables.get(i).getLinesNumber(); j++) {
+						for (int k = 0; k < tables.get(i).getAttributes().size(); k++) {
+							System.out.printf("%-" + columnLength.get(k) + "s|",
+								tables.get(i).getAttributes().get(k).getArray().get(j));
+						}
+						System.out.println();
+					}
+				}
+			}
+		}
+	}
+
 }
