@@ -279,4 +279,33 @@ public class Table{
 		}
 		return false;
 	}
+
+	public String dataChange() {
+		Scanner input = new Scanner(System.in);
+		String tblName;
+		String attrName;
+		do {
+			System.out.println("Give the name of the table where the field you want to change is at");
+			tblName = input.nextLine();
+		} while (exists(tblName) == false);
+		do {
+			System.out.println("Give the name of the attribute you want to change");
+			attrName = input.nextLine();
+		} while (exists(tblName, attrName) == false);
+		System.out.println("Give the line number of the element you want to change");
+		int num = input.nextInt();
+		System.out.println("Give the new value of the element");
+		String newValue = input.nextLine();
+		for (int i=0; i<tables.size(); i++) {
+			if (tblName.equals(getTables(i).getName()) == true) {
+				for (int j=0; j<attributes.size(); j++) {
+					if (attrName.equals(attributes.get(j).getName()) == true) {
+						attributes.get(j).changeField(num, newValue);
+						return "Succesful change";
+					}
+				}
+			}
+		}
+		return "Unsuccesful change";
+	}
 }
