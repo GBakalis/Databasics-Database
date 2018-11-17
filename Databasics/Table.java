@@ -56,7 +56,7 @@ public class Table{
 	private int attributeNumber;
 	private static ArrayList<Table> tables = new ArrayList<Table>();
 	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-	private int numOfEntries;
+	private int lines;
 
 	/**
 	 * A simple constructor that only expects a name to initialize a table
@@ -151,7 +151,7 @@ public class Table{
 		for (int i = 0; i < entries.length; i++) {
 			attributes.get(i).setEntryField(entries[i]);
 		}
-		numOfEntries++;
+		lines++;
 	}
 
 	public ArrayList<Attribute> getAttributes() {
@@ -291,7 +291,7 @@ public class Table{
 			System.err.println(e);
 			return positions; //If the search fails, an empty ArrayList is returned
 		}
-		for (int i = 0; i < numOfEntries; i++) {
+		for (int i = 0; i < lines; i++) {
 			boolean matchingRow = true;
 			for (int j : columnIndeces) {
 				if (elements.get(j) != attributes.get(j).getArray().get(i)) {
