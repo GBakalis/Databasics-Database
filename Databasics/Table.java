@@ -303,26 +303,87 @@ public class Table{
 
 	public static void view(String... tableNames) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
-		for (String name : tableNames) {
-			for (int i = 0; i < tables.size(); i++) {
-				if (name.equals(tables.get(i).getName())) {
-					System.out.println(name + "\n");
+		ArrayList<Integer> tablePositions = position(tableNames);
+		for (int pos : tablePositions) {
+			System.out.println(tables.get(pos).getName() + "\n");
+			for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
+				columnLength.add(maxLength(tables.get(pos).getAttributes().get(i)));
+				System.out.printf("%-" + columnLength.get(i) + "s|",
+					tables.get(pos).getAttributes().get(i).getName());
+			}
+			System.out.println();
+			for (int j = 0; j < tables.get(pos).getLinesNumber(); j++) {
+				for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
+					System.out.printf("%-" + columnLength.get(i) + "s|",
+						tables.get(pos).getAttributes().get(i).getArray().get(j));
+				}
+				System.out.println();
+			}
+		}
+	}
+
+	public static void view(String table, String... attributeNames) {
+		ArrayList<Integer> columnLength = new ArrayList<Integer>();
+		int tablePosition = position(table);
+		ArrayList<integer> attPositions = position(table, attributeNames);
+		for (int i = 0; i < tables.size(); i++) {
+			if (table.equals(tables.get(i).getName())) {
+			System.out.println(table + "\n");
+				for (String att : attributeNames) {
 					for (int k = 0; k < tables.get(i).getAttributes().size(); k++) {
-						columnLength.add(maxLength(tables.get(i).getAttributes().get(k)));
-						System.out.printf("%-" + columnLength.get(k) + "s|",
-								tables.get(i).getAttributes().get(k).getName());
+						if (att.equals(tables.get(i).getAttributes().get(k).getName())) {
+							columnLength.add(maxLength(tables.get(i).getAttributes().get(k)));
+							System.out.printf("%-" + columnLength.get(k) + "s|",
+									tables.get(i).getAttributes().get(k).getName());
+						}
 					}
-					System.out.println();
-					for (int j = 0; j < tables.get(i).getLinesNumber(); j++) {
+				System.out.println();
+				for (int j = 0; j < tables.get(i).getLinesNumber(); j++) {
+					for (String att : attributeNames) {
 						for (int k = 0; k < tables.get(i).getAttributes().size(); k++) {
 							System.out.printf("%-" + columnLength.get(k) + "s|",
 								tables.get(i).getAttributes().get(k).getArray().get(j));
 						}
-						System.out.println();
-					}
+					System.out.println();
 				}
 			}
 		}
+	}
+
+	public ArrayList<Integer> position(String tableName, String... atts) {
+		table = tables.get(position(tableName));
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		for (String att : atts) {
+			for (int i = 0; i < table.getAttributes().size(); i++) {
+				if (att.equals(table.getAttributes.get(i).getName()) {
+					positions.add(i);
+				}
+			}
+		}
+		return positions;
+	}
+
+	public int position(String tableName) {
+		int position;
+		for (int i = 0; i < tables.size(); i++) {
+			if (tableName.equals(tables.get(i).getName())) {
+				position = i;
+				continue;
+			}
+		}
+		return position;
+	}
+
+	public ArrayList<Integer> position(String... tableNames) {
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		for (String table : tableNames) {
+			for (int i = 0; i < tables.size(); i++) {
+				if (table.equals(tables.get(i).getName())) {
+					positions.add(i);
+				}
+			}
+		}
+		return positions;
 	}
 
 }
