@@ -56,6 +56,7 @@ public class Table{
 	private int attributeNumber;
 	private static ArrayList<Table> tables = new ArrayList<Table>();
 	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+	private int numOfEntries;
 
 	/**
 	 * A simple constructor that only expects a name to initialize a table
@@ -150,6 +151,7 @@ public class Table{
 		for (int i = 0; i < entries.length; i++) {
 			attributes.get(i).setEntryField(entries[i]);
 		}
+		numOfEntries++;
 	}
 
 	public ArrayList<Attribute> getAttributes() {
@@ -278,5 +280,46 @@ public class Table{
 			}
 		}
 		return false;
+	}
+
+	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		int [] columnIndeces = new int[attributeNames.size()]; //Table containing the position of each attribute name given in the table
+		try {
+			columnIndeces = matchSearchAttributes(attributeNames);
+		} catch (NotMatchingAttributeException e) {
+			System.err.println(e);
+			return positions; //If the search fails, an empty ArrayList is returned
+		}
+		for (int i = 0; i < numOfEntries; i++) {
+			boolean matchingRow = true;
+			for (int j : columnIndeces) {
+				if (elements.get(j) != attributes.get(j).getArray().get(i)) {
+					matchingRow = false; //At least one element of the row does not match with one of the given elements
+					break;
+				}
+			}
+			positions.add(i);
+		}
+		return positions;
+	}
+	/* Method checking if the attribute names given for search exist in the table */
+	public int [] matchSearchAttributes(ArrayList<String> attributeNames)
+			throws NotMatchingAttributeException {
+		int [] columnIndeces = new int[attributeNames.size()];
+		for (int i = 0; i < attributeNames.size(); i++) {
+			boolean correctAttribute = false;
+			for (int j = 0; j < attributeNumber; j++) {
+				if (attributeNames.get(i) == attributes.get(j).getName()) {
+					correctAttribute = true;
+					columnIndeces[i] = j; //The name of the attribute given for search was found in column j
+					break;
+				}
+			}
+			if (correctAttribute = false) {
+				throw new NotMatchingAttributeException(attributeNames.get(i)+" is not an attribute name!");
+			}
+		}
+		return columnIndeces;
 	}
 }
