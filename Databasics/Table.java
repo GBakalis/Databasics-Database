@@ -55,7 +55,7 @@ public class Table{
 	private String name;
 	private int attributeNumber;
 	private static ArrayList<Table> tables = new ArrayList<Table>();
-	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+	private ArrayList<Attribute> thisTable = new ArrayList<Attribute>();
 
 	/**
 	 * A simple constructor that only expects a name to initialize a table
@@ -65,6 +65,7 @@ public class Table{
 	public Table(String name){
 		this.name = name;
 		attributeNumber = 0;
+		linesNumber = 0;
 		tables.add(this);
 	}
 
@@ -72,9 +73,7 @@ public class Table{
 	 * This method implements a simple check on the entry that the user
 	 * has given on demand, in order to decide if it has the correct
 	 * number and types of input. It uses existing and custom exceptions
-	 * to guide the user into a correct entry, if needed. If the user does
-	 * not want to insert an element to a column he should type <code>--</code>
-	 * instead
+	 * to guide the user into a correct entry, if needed.
 	 *
 	 * @param entries      an array of <code>String</code> elements, which is the user's input
 	 * @param correctEntry a <code>boolean</code> initialized as <code>true</code>, prone
@@ -88,26 +87,15 @@ public class Table{
 			if (entries.length != attributeNumber) {
 				correctEntry = false;
 			} else {
-				for (String entry : entries){
-					System.out.print(entry + "|");
-				}
-				System.out.println();
 				for (int i = 0; i < attributeNumber; i++) {
-					if (attributes.get(i).getType() == "int" && !entries[i].equals("--")) {
-						Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
-					}
-					if (attributes.get(i).getType() == "double" && !entries[i].equals("--")) {
-						Double.parseDouble(entries[i]);
-					}
-					if (attributes.get(i).getType() == "date" && !entries[i].equals("--")) {
+					if (thisTable.get(i).getType() == "int") Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
+					if (thisTable.get(i).getType() == "double") Double.parseDouble(entries[i]);
+					if (thisTable.get(i).getType() == "date") {
 						DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						format.setLenient(false);
 						format.parse(entries[i]);
 					}
-					if ((attributes.get(i).getType() == (String) "char") && (
-							entries[i].length() != 1) && !entries[i].equals("--")) {
-						throw new NotCharacterException();
-					}
+					if ((thisTable.get(i).getType() == "char") && (entries[i].length() != 1)) throw new NotCharacterException();
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -124,6 +112,7 @@ public class Table{
 				System.out.println("Please try again!");
 			}
 		}
+
 		return correctEntry;
 	}
 
@@ -148,7 +137,7 @@ public class Table{
 
 		} while (correctEntry == false);
 		for (int i = 0; i < entries.length; i++) {
-			attributes.get(i).setEntryField(entries[i]);
+			thisTable.get(i).setEntryField(entries[i]);
 		}
 	}
 
@@ -172,6 +161,10 @@ public class Table{
 		this.name = name;
 	}
 
+	public int getLinesNumber() {
+			return linesNumber;
+	}
+
 	/**
 	 * This method implements a simple check on the entry that the user
 	 * has given on demand, in order to decide if it is an integer between
@@ -193,22 +186,22 @@ public class Table{
 			else {
 				switch(choice) {
 					case 1:
-						attributes.add(new Attribute(name, "string"));
+						thisTable.add(new Attribute(name, "string"));
 						break;
 					case 2:
-						attributes.add(new Attribute(name, "char"));
+						thisTable.add(new Attribute(name, "char"));
 						break;
 					case 3:
-						attributes.add(new Attribute(name, "int"));
+						thisTable.add(new Attribute(name, "int"));
 						break;
 					case 4:
-						attributes.add(new Attribute(name, "double"));
+						thisTable.add(new Attribute(name, "double"));
 						break;
 					case 5:
-						attributes.add(new Attribute(name, "date"));
+						thisTable.add(new Attribute(name, "date"));
 						break;
 					case 6:
-						attributes.add(new Attribute(name, "obj"));
+						thisTable.add(new Attribute(name, "obj"));
 						break;
 				}
 			}
@@ -218,6 +211,8 @@ public class Table{
 		}
 		return correctEntry;
 	}
+
+
 
 	/**
 	 * This method creates an attribute (column) on the user's demand.
@@ -258,25 +253,82 @@ public class Table{
 		} while(correctEntry == false);
 	}
 
-	public static boolean exists(String name) {
-		for (Table table : tables) {
-			if (table.getName() == name) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean exists(String tableName, String attributeName) {
-		for (Table table : tables) {
-			if (table.getName() == tableName) {
-				for (Attribute attribute : attributes) {
-					if (attribute.getName() == attributeName) {
-						return true;
+	public void delete() {
+			while (true){
+			System.out.println(" What would you like to  delete? ");
+			System.out.println("   1. A table");
+			System.out.println("   2. An entry ");
+			System.out.println("   3. A whole attribute ");
+			System.out.println("   4. Just an element ");
+			System.out.println("   Make a choice: ");
+			int choice = scanner.nextInt();
+			if(choice==1) {
+				do {
+					System.out.println("Give the name of the table you want to delete:");
+					String name = input.nextLine();
+				} while (exists(name) == false);
+				for (int i = 0; i < tables.size(); i++) {
+					if (name.equals(tables.get(i).getName())) {
+						tables.remove(i);
 					}
 				}
-			}
-		}
-		return false;
+			} else if (choice==2) {
+				do {
+					System.out.println("Give the name of table that contains the entry that you want to delete:");
+					String name = input.nextLine();
+				} while (exists(name) == false);
+				System.out.println("Give the line number of entry you want to delete(index starts with zero)");
+				int line_number = input.nextInt();
+				for (int i = 0; i < tables.size(); i++) {
+					if (name.equals(tables.get(i).getName())) {
+						for (int j = 0; j < tables.get(i).getLinesNumber(); j++) {
+							if (getLinesNumber() == line_number) {
+  								table.get(i).getArray(line_number).remove(line_number);
+							}
+						}
+					}
+				}
+			} else if (choice==3) {
+				do {
+					System.out.println("Give the name of table that contains the attribute that you want to delete:");
+					String name = input.nextLine();
+				} while (exists(name) == false);
+				do {
+					System.out.println("Give the  the name of the attribute you want to delete:");
+					String attributeName = input.nextLine();
+				} while (exists(name,attributeName) == false);
+				for (int i = 0; i < tables.size(); i++) {
+					if (name.equals(tables.get(i).getName())) {
+						for (int k = 0; k < tables.get(i).getAttributes().size(); k++)  {
+							if (attributeName.equals(tables.get(i).getAttributes().get(k).getName())) {
+				  				table.get(i).getAttributes().get(k).remove(k);
+							}
+						}
+					}
+				}
+			} else if (choice==4) {
+				do {
+					System.out.println("Give name of table that contains the element you want to delete:");
+					String name = input.nextLine();
+				} while (exists(name) == false);
+				do {
+					System.out.println("Give the name of element's attribute you want to delete:");
+					String attributeName = input.nextLine();
+				} while (exists(name,attributeName) == false);
+				System.out.println("Give the line number of the element you want to delete:");
+				int line_number = input.nextInt();
+				for (int i = 0; i < tables.size(); i++) {
+					if (name.equals(tables.get(i).getName())) {
+						for (int j = 0; j < tables.get(i).getLinesNumber(); j++) {
+							for (int k = 0; k < tables.get(i).getAttributes().size(); k++) {
+								if ((getLinesNumber() == line_number) && (attributeName.equals(tables.get(i).getAttributes().get(k).getName()))) {
+									tables.get(i).remove(getAttributes().get(k).getArray().get(j));
+								}
+							}
+						}
+					}
+				}
+
+
 	}
 }
