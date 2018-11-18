@@ -21,7 +21,9 @@
   </dependencies>
   <url>https://github.com/GBakalis/Databasics-Database/</url>
   <description>Flexible database</description>
+<<<<<<< HEAD
  
+<build>
   <plugins>
   	<plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -44,6 +46,8 @@
         </executions>
       </plugin>
  </plugins>
+</build>
+
  
  <reporting>
 		<plugins>
