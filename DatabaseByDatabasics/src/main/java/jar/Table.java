@@ -293,9 +293,11 @@ public class Table{
 		}
 		for (int i = 0; i < lines; i++) {
 			boolean matchingRow = true;
+			int k = 0;
 			for (int j : columnIndeces) {
-				if (elements.get(j) != attributes.get(j).getArray().get(i)) {
+				if (elements.get(k) != attributes.get(j).getArray().get(i)) {
 					matchingRow = false; //At least one element of the row does not match with one of the given elements
+					k++
 					break;
 				}
 			}
