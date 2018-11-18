@@ -1,10 +1,8 @@
 package jar;
 import java.text.DateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
-import java.util.Date;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 
@@ -54,7 +52,7 @@ public class Table{
 
 	private String name;
 	private int attributeNumber;
-	private int linesNumber;
+	private int lines;
 	private static ArrayList<Table> tables = new ArrayList<Table>();
 	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
@@ -67,7 +65,7 @@ public class Table{
 		this.name = name;
 		attributes.add(new Attribute("#", "int"));
 		attributeNumber = 1;
-		linesNumber = 0;
+		lines = 0;
 		tables.add(this);
 	}
 
@@ -91,10 +89,11 @@ public class Table{
 			if (entries.length != attributeNumber - 1) {
 				correctEntry = false;
 			} else {
+				System.out.println();
 				for (String entry : entries){
 					System.out.print(entry + "|");
 				}
-				System.out.println();
+				System.out.println("\n");
 				for (int i = 1; i < attributeNumber; i++) {
 					if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
 						Integer.parseInt(entries[i-1]);
@@ -138,7 +137,7 @@ public class Table{
 	 */
 
 	public void newEntry() {
-		attributes.get(0).setEntryField(String.valueOf(++linesNumber));
+		attributes.get(0).setEntryField(String.valueOf(++lines));
 		boolean correctEntry;
 		String[] entries;
 		do {
@@ -179,8 +178,8 @@ public class Table{
 		this.name = name;
 	}
 
-	public int getLinesNumber() {
-		return linesNumber;
+	public int getLines() {
+		return lines;
 	}
 
 	/**
@@ -301,7 +300,7 @@ public class Table{
 		return max;
 	}
 
-	public static void view(String... tableNames) {
+	public static void viewTable(ArrayList<String> tableNames) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		ArrayList<Integer> tablePositions = position(tableNames);
 		for (int pos : tablePositions) {
@@ -312,7 +311,7 @@ public class Table{
 					tables.get(pos).getAttributes().get(i).getName());
 			}
 			System.out.println();
-			for (int j = 0; j < tables.get(pos).getLinesNumber(); j++) {
+			for (int j = 0; j < tables.get(pos).getLines(); j++) {
 				for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
 					System.out.printf("%-" + columnLength.get(i) + "s|",
 						tables.get(pos).getAttributes().get(i).getArray().get(j));
@@ -322,7 +321,7 @@ public class Table{
 		}
 	}
 
-	public static void view(boolean ignore, String table, String... attributeNames) {
+	public static void viewAttribute(String table, ArrayList<String> attributeNames) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		int tablePosition = position(table);
 		ArrayList<Integer> attPositions = position(table, attributeNames);
@@ -334,7 +333,7 @@ public class Table{
 				tables.get(tablePosition).getAttributes().get(attPositions.get(j)).getName());
 		}
 		System.out.println();
-		for (int i = 0; i < tables.get(tablePosition).getLinesNumber(); i++) {
+		for (int i = 0; i < tables.get(tablePosition).getLines(); i++) {
 			for (int j = 0; j < attPositions.size(); j++) {
 				System.out.printf("%-" + columnLength.get(j) + "s|",
 					tables.get(tablePosition).getAttributes().get(attPositions.get(j)).getArray().get(i));
@@ -342,8 +341,8 @@ public class Table{
 			System.out.println();
 		}
 	}
-	
-	public static ArrayList<Integer> position(String tableName, String... atts) {
+
+	public static ArrayList<Integer> position(String tableName, ArrayList<String> atts) {
 		Table table = tables.get(position(tableName));
 		ArrayList<Integer> positions = new ArrayList<Integer>();
 		for (String att : atts) {
@@ -367,7 +366,7 @@ public class Table{
 		return position;
 	}
 
-	public static ArrayList<Integer> position(String... tableNames) {
+	public static ArrayList<Integer> position(ArrayList<String> tableNames) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
 		for (String table : tableNames) {
 			for (int i = 0; i < tables.size(); i++) {

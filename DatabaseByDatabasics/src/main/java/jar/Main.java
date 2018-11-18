@@ -12,13 +12,16 @@ public class Main {
 		System.out.print("Please insert table name:");
 		String name = input.nextLine().trim();
 		Table table = new Table(name);
+		ArrayList<String> test = new ArrayList<String>();
+		test.add("a");
+		test.add("c");
 		for (int i = 0; i < 3; i++) {
 			table.newAttribute();
 		}
 		for (int i = 0; i < 2; i++) {
 			table.newEntry();
 		}
-		Table.view(false, name, table.getAttributes().get(3).getName(), table.getAttributes().get(2).getName());
+		Table.viewAttribute(name, test);
 
 	}
 
