@@ -308,7 +308,7 @@ public class Table{
 	/* Method checking if the attribute names given for search exist in the table */
 	public int [] matchSearchAttributes(ArrayList<String> attributeNames)
 			throws NotMatchingAttributeException {
-		int [] columnIndeces = new int[attributeNames.size()];
+		int [] columnIndices = new int[attributeNames.size()];
 		for (int i = 0; i < attributeNames.size(); i++) {
 			boolean correctAttribute = false;
 			for (int j = 0; j < attributeNumber; j++) {
