@@ -1,10 +1,11 @@
-package Databasics;
+package jar;
 import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.Date;
+import java.util.HashMap;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 
@@ -188,7 +189,7 @@ public class Table{
 	 *                     <code>false</code> if there's a wrong input.
 	 */
 
-	public boolean checkInput (int choice, boolean correctEntry) {
+	public boolean checkInput (int choice, boolean correctEntry, String name) {
 		try{
 			if(choice < 1 || choice > 6)
 				throw new WrongEntryException();
@@ -255,14 +256,23 @@ public class Table{
 				continue;
 			}
 
-			correctEntry = checkInput(choice, correctEntry);
+			correctEntry = checkInput(choice, correctEntry, name);
 
 		} while(correctEntry == false);
 	}
 
-	public static boolean exists(String name) {
+	public static boolean tableExists(String name) {
 		for (Table table : tables) {
 			if (table.getName() == name) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean attributeExists(String attributeName) {
+		for (Attribute attribute : attributes) {
+			if (attribute.getName() == attributeName) {
 				return true;
 			}
 		}
@@ -293,15 +303,17 @@ public class Table{
 		}
 		for (int i = 0; i < lines; i++) {
 			boolean matchingRow = true;
-			int k = 0;
+			int k = 0; //counter for the elements arraylist
 			for (int j : columnIndeces) {
-				if (elements.get(k) != attributes.get(j).getArray().get(i)) {
-					matchingRow = false; //At least one element of the row does not match with one of the given elements
-					k++
-					break;
-				}
+					if (!(elements.get(k).equals(attributes.get(j).getArray().get(i)))) {
+						matchingRow = false; //At least one element of the row does not match with one of the given elements						
+						break;
+					}
+					k++;
 			}
-			positions.add(i);
+			if (matchingRow == true) {
+				positions.add(i);
+			}
 		}
 		return positions;
 	}
@@ -312,16 +324,16 @@ public class Table{
 		for (int i = 0; i < attributeNames.size(); i++) {
 			boolean correctAttribute = false;
 			for (int j = 0; j < attributeNumber; j++) {
-				if (attributeNames.get(i) == attributes.get(j).getName()) {
+				if (attributeNames.get(i).equals(attributes.get(j).getName())) {
 					correctAttribute = true;
-					columnIndeces[i] = j; //The name of the attribute given for search was found in column j
+					columnIndices[i] = j; //The name of the attribute given for search was found in column j
 					break;
 				}
 			}
-			if (correctAttribute = false) {
+			if (correctAttribute == false) {
 				throw new NotMatchingAttributeException(attributeNames.get(i)+" is not an attribute name!");
 			}
 		}
-		return columnIndeces;
+		return columnIndices;
 	}
 }

@@ -1,4 +1,4 @@
-package Databasics;
+package jar;
 
 public class NotMatchingAttributeException extends Exception {
 	public NotMatchingAttributeException() { }
