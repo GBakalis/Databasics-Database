@@ -55,7 +55,8 @@ public class Table{
 	private String name;
 	private int attributeNumber;
 	private static ArrayList<Table> tables = new ArrayList<Table>();
-	private ArrayList<Attribute> thisTable = new ArrayList<Attribute>();
+	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+	private int lines;
 
 	/**
 	 * A simple constructor that only expects a name to initialize a table
@@ -65,7 +66,6 @@ public class Table{
 	public Table(String name){
 		this.name = name;
 		attributeNumber = 0;
-		linesNumber = 0;
 		tables.add(this);
 	}
 
@@ -73,7 +73,9 @@ public class Table{
 	 * This method implements a simple check on the entry that the user
 	 * has given on demand, in order to decide if it has the correct
 	 * number and types of input. It uses existing and custom exceptions
-	 * to guide the user into a correct entry, if needed.
+	 * to guide the user into a correct entry, if needed. If the user does
+	 * not want to insert an element to a column he should type <code>--</code>
+	 * instead
 	 *
 	 * @param entries      an array of <code>String</code> elements, which is the user's input
 	 * @param correctEntry a <code>boolean</code> initialized as <code>true</code>, prone
@@ -87,15 +89,26 @@ public class Table{
 			if (entries.length != attributeNumber) {
 				correctEntry = false;
 			} else {
+				for (String entry : entries){
+					System.out.print(entry + "|");
+				}
+				System.out.println();
 				for (int i = 0; i < attributeNumber; i++) {
-					if (thisTable.get(i).getType() == "int") Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
-					if (thisTable.get(i).getType() == "double") Double.parseDouble(entries[i]);
-					if (thisTable.get(i).getType() == "date") {
+					if (attributes.get(i).getType() == "int" && !entries[i].equals("--")) {
+						Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
+					}
+					if (attributes.get(i).getType() == "double" && !entries[i].equals("--")) {
+						Double.parseDouble(entries[i]);
+					}
+					if (attributes.get(i).getType() == "date" && !entries[i].equals("--")) {
 						DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						format.setLenient(false);
 						format.parse(entries[i]);
 					}
-					if ((thisTable.get(i).getType() == "char") && (entries[i].length() != 1)) throw new NotCharacterException();
+					if ((attributes.get(i).getType() == (String) "char") && (
+							entries[i].length() != 1) && !entries[i].equals("--")) {
+						throw new NotCharacterException();
+					}
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -112,9 +125,10 @@ public class Table{
 				System.out.println("Please try again!");
 			}
 		}
-
 		return correctEntry;
 	}
+
+
 
 	/**
 	 * This method creates an entry on the user's demand. It asks for the
@@ -137,8 +151,9 @@ public class Table{
 
 		} while (correctEntry == false);
 		for (int i = 0; i < entries.length; i++) {
-			thisTable.get(i).setEntryField(entries[i]);
+			attributes.get(i).setEntryField(entries[i]);
 		}
+		lines++;
 	}
 
 	public ArrayList<Attribute> getAttributes() {
@@ -159,10 +174,6 @@ public class Table{
 
 	public void setName(String name){
 		this.name = name;
-	}
-
-	public int getLinesNumber() {
-			return linesNumber;
 	}
 
 	/**
@@ -186,22 +197,22 @@ public class Table{
 			else {
 				switch(choice) {
 					case 1:
-						thisTable.add(new Attribute(name, "string"));
+						attributes.add(new Attribute(name, "string"));
 						break;
 					case 2:
-						thisTable.add(new Attribute(name, "char"));
+						attributes.add(new Attribute(name, "char"));
 						break;
 					case 3:
-						thisTable.add(new Attribute(name, "int"));
+						attributes.add(new Attribute(name, "int"));
 						break;
 					case 4:
-						thisTable.add(new Attribute(name, "double"));
+						attributes.add(new Attribute(name, "double"));
 						break;
 					case 5:
-						thisTable.add(new Attribute(name, "date"));
+						attributes.add(new Attribute(name, "date"));
 						break;
 					case 6:
-						thisTable.add(new Attribute(name, "obj"));
+						attributes.add(new Attribute(name, "obj"));
 						break;
 				}
 			}
@@ -211,8 +222,6 @@ public class Table{
 		}
 		return correctEntry;
 	}
-
-
 
 	/**
 	 * This method creates an attribute (column) on the user's demand.
@@ -253,82 +262,153 @@ public class Table{
 		} while(correctEntry == false);
 	}
 
-	public void delete() {
-			while (true){
-			System.out.println(" What would you like to  delete? ");
-			System.out.println("   1. A table");
-			System.out.println("   2. An entry ");
-			System.out.println("   3. A whole attribute ");
-			System.out.println("   4. Just an element ");
-			System.out.println("   Make a choice: ");
-			int choice = scanner.nextInt();
-			if(choice==1) {
-				do {
-					System.out.println("Give the name of the table you want to delete:");
-					String name = input.nextLine();
-				} while (exists(name) == false);
-				for (int i = 0; i < tables.size(); i++) {
-					if (name.equals(tables.get(i).getName())) {
-						tables.remove(i);
-					}
-				}
-			} else if (choice==2) {
-				do {
-					System.out.println("Give the name of table that contains the entry that you want to delete:");
-					String name = input.nextLine();
-				} while (exists(name) == false);
-				System.out.println("Give the line number of entry you want to delete(index starts with zero)");
-				int line_number = input.nextInt();
-				for (int i = 0; i < tables.size(); i++) {
-					if (name.equals(tables.get(i).getName())) {
-						for (int j = 0; j < tables.get(i).getLinesNumber(); j++) {
-							if (getLinesNumber() == line_number) {
-  								table.get(i).getArray(line_number).remove(line_number);
-							}
-						}
-					}
-				}
-			} else if (choice==3) {
-				do {
-					System.out.println("Give the name of table that contains the attribute that you want to delete:");
-					String name = input.nextLine();
-				} while (exists(name) == false);
-				do {
-					System.out.println("Give the  the name of the attribute you want to delete:");
-					String attributeName = input.nextLine();
-				} while (exists(name,attributeName) == false);
-				for (int i = 0; i < tables.size(); i++) {
-					if (name.equals(tables.get(i).getName())) {
-						for (int k = 0; k < tables.get(i).getAttributes().size(); k++)  {
-							if (attributeName.equals(tables.get(i).getAttributes().get(k).getName())) {
-				  				table.get(i).getAttributes().get(k).remove(k);
-							}
-						}
-					}
-				}
-			} else if (choice==4) {
-				do {
-					System.out.println("Give name of table that contains the element you want to delete:");
-					String name = input.nextLine();
-				} while (exists(name) == false);
-				do {
-					System.out.println("Give the name of element's attribute you want to delete:");
-					String attributeName = input.nextLine();
-				} while (exists(name,attributeName) == false);
-				System.out.println("Give the line number of the element you want to delete:");
-				int line_number = input.nextInt();
-				for (int i = 0; i < tables.size(); i++) {
-					if (name.equals(tables.get(i).getName())) {
-						for (int j = 0; j < tables.get(i).getLinesNumber(); j++) {
-							for (int k = 0; k < tables.get(i).getAttributes().size(); k++) {
-								if ((getLinesNumber() == line_number) && (attributeName.equals(tables.get(i).getAttributes().get(k).getName()))) {
-									tables.get(i).remove(getAttributes().get(k).getArray().get(j));
-								}
-							}
-						}
-					}
-				}
+	public static boolean exists(String name) {
+		for (Table table : tables) {
+			if (table.getName() == name) {
+				return true;
+			}
+		}
+		return false;
+	}
 
+	public boolean exists(String tableName, String attributeName) {
+		for (Table table : tables) {
+			if (table.getName() == tableName) {
+				for (Attribute attribute : attributes) {
+					if (attribute.getName() == attributeName) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
+			ArrayList<Integer> positions = new ArrayList<Integer>();
+			int [] columnIndeces = new int[attributeNames.size()]; //Table containing the position of each attribute name given in the table
+			try {
+				columnIndeces = matchSearchAttributes(attributeNames);
+			} catch (NotMatchingAttributeException e) {
+				System.err.println(e);
+				return positions; //If the search fails, an empty ArrayList is returned
+			}
+			for (int i = 0; i < lines; i++) {
+				boolean matchingRow = true;
+				for (int j : columnIndeces) {
+					if (elements.get(j) != attributes.get(j).getArray().get(i)) {
+						matchingRow = false; //At least one element of the row does not match with one of the given elements
+						break;
+					}
+				}
+				positions.add(i);
+			}
+			return positions;
+		}
+		/* Method checking if the attribute names given for search exist in the table */
+		public int [] matchSearchAttributes(ArrayList<String> attributeNames)
+				throws NotMatchingAttributeException {
+			int [] columnIndeces = new int[attributeNames.size()];
+			for (int i = 0; i < attributeNames.size(); i++) {
+				boolean correctAttribute = false;
+				for (int j = 0; j < attributeNumber; j++) {
+					if (attributeNames.get(i) == attributes.get(j).getName()) {
+						correctAttribute = true;
+						columnIndeces[i] = j; //The name of the attribute given for search was found in column j
+						break;
+					}
+				}
+				if (correctAttribute = false) {
+					throw new NotMatchingAttributeException(attributeNames.get(i)+" is not an attribute name!");
+				}
+			}
+			return columnIndeces;
+	}
+
+		public int position(String tableName) {
+			int position=0;
+			for (int i = 0; i < tables.size(); i++) {
+				if (tableName.equals(tables.get(i).getName())) {
+					position = i;
+					continue;
+				}
+			}
+			return position;
+	}
+
+	public ArrayList<Integer> position(String... tableNames) {
+			ArrayList<Integer> positions = new ArrayList<Integer>();
+				for (String table : tableNames) {
+					for (int i = 0; i < tables.size(); i++) {
+						if (table.equals(tables.get(i).getName())) {
+							positions.add(i);
+						}
+					}
+				}
+				return positions;
+	}
+
+	public ArrayList<Integer> position(String tableName, String... atts) {
+
+			ArrayList<Integer> positions = new ArrayList<Integer>();
+			for (String att : atts) {
+				for (int i = 0; i < tables.get(position(tableName)).getAttributes().size(); i++) {
+					if (att.equals(tables.get(position(tableName)).getAttributes().get(i).getName())) {
+						positions.add(i);
+					}
+				}
+			}
+			return positions;
+	}
+
+	public void deleteTable(String tableName) {
+		int pos=position(tableName);
+		tables.remove(pos);
+
+		System.out.println("The table you selected is deleted");
+	}
+
+
+
+	public void deleteAttribute(String tableName, String... attributeName) {
+		int t_pos = position(tableName);
+		ArrayList<Integer> pos = new ArrayList<Integer>();
+		pos = position(tableName,attributeName);
+		for (int i = 0; i <= pos.size(); i++) {
+			tables.get(t_pos).getAttributes().remove(pos.get(i));
+
+		}
+
+		System.out.println("The attribute you selected is deleted");
+	}
+
+	public void deleteEntry(String tableName, int lineNumber) {
+		int t_pos = position(tableName);
+		for (int i = 0; i <= lines; i++) {
+			for (int j=0; j<= attributes.size(); j++) {
+				if (lineNumber == i) {
+					tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
+				}
+			}
+		}
+
+		System.out.println("The line number you selected is deleted");
+	}
+
+	public void deleteElement(String tableName, ArrayList<String> attributeNames, ArrayList<String> elements, int line_number){
+		int t_pos = position(tableName);
+		ArrayList<Integer> pos = new ArrayList<Integer>();
+		pos = search(attributeNames, elements);
+		for (int i = 0; i <= pos.size(); i++) {
+			for (int j = 0; j <= lines; j++) {
+				if (j == line_number) {
+					tables.get(t_pos).getAttributes().get(pos.get(i)).getArray().remove(line_number);
+				}
+			}
+		}
+        System.out.println("The element you selected is deleted");
 
 	}
+
+
+
 }
