@@ -280,195 +280,84 @@ public class Table{
 		return false;
 	}
 	
-	public void copy() {
-		Scanner input = new Scanner();
-		boolean flag = true;
-		while (flag) {
-			int choice;
-			do {
-				boolean correctChoice == true;
-				System.out.println("What do you want to copy;");
-				System.out.println("	1.A table");
-				System.out.println("	2.An entry");
-				System.out.println("	3.A whole attribute");
-				System.out.println("	4.Just an element");
-				System.out.println("Please enter the number of your choice");
-				try {
-					choice = input.nextInt();
-				} catch (InputMismatchException err) {
-					System.out.println("This was not a number!");
-					correctChoice= false;
-					input.next();
-					continue;
-				}
-			}while (correctChoice == false);
-			switch (choice) {
-			case 1:
-				copyTable();
-			case 2:
-				copyEntry();
-			case 3:
-				copyAttribute();
-			case 4:
-				copyElement();
-			}
-
-			System.out.println("Do you want to copy anything else?");
-			System.out.println("	1.Yes");
-			System.out.println("	2.No");
-			System.out.println("Please choose a number");
-			int ch = input.nextInt();
-			if (ch == 2) {
-				flag = false;
-			}
-
-
-		}
-
-	public void copyTable() {
-		String nameCopy;
-		String namePaste;
-		do {
-			System.out.println("Please enter the name of the table that you want to copy");
-			nameCopy = input.nextLine();
-		} while (exists(nameCopy) == false);
-		copyK = search_table(nameCopy);
-		System.out.println("Please enter the name of the table that you want to paste");
-		namePaste = input.nextLine();
+	public void copyTable(String nameCopy, String namePaste) {
+		int copyK = position(nameCopy);
 		if (exists(namePaste)) {
-			int pasteK = search_table(namePaste);
+			int pasteK = position(namePaste);
 			tables.set(pasteK,tables.get(copyK));
 		}else {
-			Table t = new Table(namePaste);
+			new Table(namePaste);
 			tables.set(tables.size()-1,tables.get(copyK));
 		}
 
 	}
 
-	public void copyEntry() {
-		String nameCopy;
-		String namePaste;
-		do {
-			System.out.println("Please enter the name of the table that contains the entry");
-			nameCopy = input.nextLine();
-		} while (exists(nameCopy) == false);
-		int copyK = search_table(nameCopy);
-		view(nameCopy);
-		do {
-			System.out.println("Please enter the number of the entry that you want to copy");
-			int entryNumCopy = input.nextInt();
-		} while (entryNumCopy > tables.get(copyK).getAttributes().getArray.size());
-		do {
-			System.out.println("Please enter the name of the table that that you want to paste the entry");
-			namePaste = input.nextLine();
-		} while (exists(namePaste) == false);
-		int pasteK = search_table(namePaste);
-		view(namePaste);
-		do {
-			System.out.println("Please enter the number of the entry that you want to paste");
-			int entryNumPaste = input.nextInt();
-		} while (entryNumPaste > tables.get(copyP).getAttributes().getArray.size());
-		for (int i=0;i< tables.get(pasteK).getAttributeNumber(); i++)
-			tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,tables.get(pasteK).getAttributes().get(i).getArray().get(entryNumCopy));
+	public void copyEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) {
+		int copyK = position(nameCopy);
+		int pasteK = position(namePaste);
+		if (entryNumPaste == 0) {
+			if (tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
+				for (int i=0;i< tables.get(pasteK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+			} else if (tables.get(copyK).getAttributeNumber() < tables.get(pasteK).getAttributeNumber()) {
+				for (int i=0;i< tables.get(copyK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+				for (int i=tables.get(copyK).getAttributeNumber();i< tables.get(pasteK).getAttributeNumber();i++) {
+					tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste, "--");
+				}
+			} else  {
+				System.out.println("This procedure is not possible" );
+			}
+			
+		} else {
+			if (tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
+				for (int i=0;i< tables.get(pasteK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).getArray().add(tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+			}else if (tables.get(copyK).getAttributeNumber() < tables.get(pasteK).getAttributeNumber()) {
+				for (int i = 0;i < tables.get(copyK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).getArray().add(tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+				for (int i = tables.get(copyK).getAttributeNumber();i < tables.get(pasteK).getAttributeNumber();i++)
+					tables.get(pasteK).getAttributes().get(i).getArray().add("--");
+			} else {
+				System.out.println("This procedure is not possible" );
+			}
+		}
 	}
 
-	public void copyAttribute() {
-		String nameCopy;
-		String namePaste;
-		do {
-			System.out.println("Please enter the name of the table that contains the attribute");
-			nameCopy = input.nextLine();
-		} while (exists(nameCopy) == false);
-		int copyK = search_table(nameCopy);
-		view(nameCopy);
-		do {
-			System.out.println("Please enter the name of the attribute that you want to copy");
-			String attNameC = input.nextLine();
-		} while (exists(nameCopy,attNameC) == false);
-		int attNumC = search_attribute(nameCopy,attNameC);
-		do {
-			System.out.println("Please enter the name of the table that that you want to paste the attribute");
-			namePaste = input.nextLine();
-		} while (exists(namePaste) == false);
-		int pasteK = search_table(namePaste);
-		view(namePaste);
-		System.out.println("Please enter the name of the attribute where you want to paste");
-		String attNameP = input.nextLine();
+	public void copyAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
+		int copyK = position(nameCopy);
+		int attNumC = search_attribute(copyK,attNameC);
+		int pasteK = position(namePaste);
 		if (exists(namePaste,attNameP)) {
-			int attNumP = search_attribute(namePaste,attNameP);
-			tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(pasteC).getAttributes().get(attNumC).getArray());
+			int attNumP = search_attribute(pasteK,attNameP);
+			tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 		} else {
 			tables.get(pasteK).newAttribute();
-			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber).setArray(tables.get(pasteC).getAttributes().get(attNumC).getArray());
+			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 
 		}
 	}
 
-	public void copyElement() {
-		String nameCopy;
-		String namePaste;
-		do {
-			System.out.println("Please enter the name of the table that contains the element that you want to copy");
-			nameCopy = input.nextLine();
-		} while (exists(nameCopy) == false);
-		int copyK = search_table(nameCopy);
-		view(nameCopy);
-		do {
-			System.out.println("Please enter the name of the attribute that contains the element tha you want to copy");
-			String attNameC = input.nextLine();
-		} while (exists(nameCopy,attNameC) == false);
-		int attNumC = search_attribute(nameCopy,attNameC);
-		do {
-			System.out.println("Please enter the number of the line that contains the element that you want to copy");
-			int lineC = input.nextInt();
-		} while (lineC > tables.get(pasteC).attributeNumber);
-
-		do {
-			System.out.println("Please enter the name of the table where you want to paste the element");
-			namePaste = input.nextLine();
-		} while (exists(namePaste) == false);
-		int pasteK = search_table(namePaste);
-		view(namePaste);
-		do {
-			System.out.println("Please enter the name of the attribute where you want to paste the element");
-			String attNameC = input.nextLine();
-		} while (exists(nameCopy,attNameC) == false);
-		int attNump = search_attribute(namePaste,attNameP);
-
-		do {
-			System.out.println("Please enter the number of the line where you want to paste the element");
-			int lineP = input.nextInt();
-		} while (lineP > tables.get(pasteK).attributeNumber);
-		tables.get(pasteK).getAttributes.get(attNumP).changeField(lineP,tables.get(pasteC).getAttributes.getArray.get(attNumC).get(lineC));
+	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) {
+		int copyK = position(nameCopy);
+		int attNumC = search_attribute(copyK,attNameC);
+		int pasteK = position(namePaste);
+		int attNumP = search_attribute(pasteK,attNameP);
+		tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC));
 	}
 
-	public int search_table(String tableName) {
-		int pos;
-		int i = 0;
-		boolean check = true;
-		while (i< tables.size() && check == true) {
-			if (tableName.equals(tables.get(i).getName()) {
-				pos = i;
-				check = false;
-			}
-			i += 1;
-		}
-		return pos;
-
-	}
 	public int search_attribute(int num,String attName) {
-		int pos;
+		int pos = -1;
 		int i = 0;
 		boolean check = true;
 		while (i< tables.get(num).attributeNumber && check == true) {
-			if (attName.equals(tables.get(num).getAttributes().get(i))) {
+			if (attName.equals(tables.get(num).getAttributes().get(i).getName())) {
 				pos = i;
 				check = false;
 			}
 			i += 1;
 		}
 		return pos;
-
 	}
 
 }
