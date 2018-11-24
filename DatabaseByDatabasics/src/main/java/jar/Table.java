@@ -196,32 +196,10 @@ public class Table{
 	 *                     <code>false</code> if there's a wrong input.
 	 */
 
-	public boolean checkInput (int choice, String name, boolean correctEntry) {
+	public static boolean checkInput(int choice, boolean correctEntry) {
 		try{
 			if(choice < 1 || choice > 6)
 				throw new WrongEntryException();
-			else {
-				switch(choice) {
-					case 1:
-						attributes.add(new Attribute(name, "string"));
-						break;
-					case 2:
-						attributes.add(new Attribute(name, "char"));
-						break;
-					case 3:
-						attributes.add(new Attribute(name, "int"));
-						break;
-					case 4:
-						attributes.add(new Attribute(name, "double"));
-						break;
-					case 5:
-						attributes.add(new Attribute(name, "date"));
-						break;
-					case 6:
-						attributes.add(new Attribute(name, "obj"));
-						break;
-				}
-			}
 		} catch (WrongEntryException e) {
 			System.out.println(choice + " is not a valid input.");
 			correctEntry = false;
@@ -230,16 +208,36 @@ public class Table{
 	}
 
 	/**
-	 * This method creates an attribute (column) on the user's demand.
-	 * It asks for a name and a data type for the attribute, checks for
-	 * possible <code>InputMismatchException</code> and/or an invalid int
-	 * via the checkInput(int, boolean) method. If everything is correct,
-	 * a new Attribute object is successfully being initialized.
+	 * This method creates an attribute (column) using a name and an integer 
+	 * which corresponds to the data type the attribute will hold
 	 */
 
-	public void newAttribute() throws InputMismatchException {
-		boolean correctEntry;
+	public void newAttribute(String name, int choice) {
 		attributeNumber++;
+		switch(choice) {
+		case 1:
+			attributes.add(new Attribute(name, "string"));
+			break;
+		case 2:
+			attributes.add(new Attribute(name, "char"));
+			break;
+		case 3:
+			attributes.add(new Attribute(name, "int"));
+			break;
+		case 4:
+			attributes.add(new Attribute(name, "double"));
+			break;
+		case 5:
+			attributes.add(new Attribute(name, "date"));
+			break;
+		case 6:
+			attributes.add(new Attribute(name, "obj"));
+			break;
+		}
+	}
+	
+	public static void attributeMenu() throws InputMismatchException {
+		boolean correctEntry;
 		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the name of the new attribute");
 		String name = input.nextLine().trim();
@@ -263,7 +261,7 @@ public class Table{
 				continue;
 			}
 
-			correctEntry = checkInput(choice, name, correctEntry);
+			correctEntry = checkInput(choice, correctEntry);
 
 		} while(correctEntry == false);
 	}
@@ -277,13 +275,12 @@ public class Table{
 		return false;
 	}
 
-	public boolean exists(String tableName, String name) {
-		for (Table table : tables) {
-			if (table.getName() == tableName) {
-				for (Attribute attribute : attributes) {
-					if (attribute.getName() == name) {
-						return true;
-					}
+	public static boolean exists(String tableName, String name) {
+		if (exists(tableName)) {
+			int p = position(tableName);
+			for (Attribute attribute : tables.get(p).getAttributes()) {
+				if (attribute.getName() == name) {
+					return true;
 				}
 			}
 		}
