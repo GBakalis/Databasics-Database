@@ -208,7 +208,7 @@ public class Table{
 	}
 
 	/**
-	 * This method creates an attribute (column) using a name and an integer 
+	 * This method creates an attribute (column) using a name and an integer
 	 * which corresponds to the data type the attribute will hold
 	 */
 
@@ -235,7 +235,7 @@ public class Table{
 			break;
 		}
 	}
-	
+
 	public static void attributeMenu() throws InputMismatchException {
 		boolean correctEntry;
 		Scanner input = new Scanner(System.in);
@@ -268,7 +268,7 @@ public class Table{
 
 	public static boolean exists(String name) {
 		for (Table table : tables) {
-			if (table.getName() == name) {
+			if (table.getName().equals(name)) {
 				return true;
 			}
 		}
@@ -279,7 +279,7 @@ public class Table{
 		if (exists(tableName)) {
 			int p = position(tableName);
 			for (Attribute attribute : tables.get(p).getAttributes()) {
-				if (attribute.getName() == name) {
+				if (attribute.getName().equals(name)) {
 					return true;
 				}
 			}

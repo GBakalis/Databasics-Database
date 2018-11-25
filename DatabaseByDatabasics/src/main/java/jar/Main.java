@@ -16,7 +16,7 @@ public class Main {
 		test.add("a");
 		test.add("c");
 		for (int i = 0; i < 3; i++) {
-			table.newAttribute();
+			table.newAttribute("a", 1);
 		}
 		for (int i = 0; i < 2; i++) {
 			table.newEntry();
