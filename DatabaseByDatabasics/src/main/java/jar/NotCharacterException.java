@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package jar;
 
 public class NotCharacterException extends Exception {
@@ -7,3 +8,14 @@ public class NotCharacterException extends Exception {
 	}
 
 }
+=======
+package jar;
+
+public class NotCharacterException extends Exception {
+	public NotCharacterException() { }
+	public NotCharacterException(String msg) {
+		super(msg);
+	}
+
+}
+>>>>>>> view_function

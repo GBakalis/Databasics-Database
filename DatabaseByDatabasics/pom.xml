@@ -21,8 +21,9 @@
   </dependencies>
   <url>https://github.com/GBakalis/Databasics-Database/</url>
   <description>Flexible database</description>
-<<<<<<< HEAD
- 
+  <url>https://github.com/GBakalis/Databasics-Database/</url>
+  <description>Flexible database</description>
+>>>>>>> view_function
 <build>
   <plugins>
   	<plugin>
@@ -46,9 +47,7 @@
         </executions>
       </plugin>
  </plugins>
-</build>
-
- 
+</build> 
  <reporting>
 		<plugins>
 			<plugin>
@@ -67,4 +66,20 @@
 		</plugins>
 	</reporting>
  <artifactId>DatabaseByDatabasics</artifactId>
+ <dependencies>
+ 	<dependency>
+ 		<groupId>junit</groupId>
+ 		<artifactId>junit</artifactId>
+ 		<scope>test</scope>
+ 	</dependency>
+ </dependencies>
+ <dependencyManagement>
+ 	<dependencies>
+ 		<dependency>
+ 			<groupId>junit</groupId>
+ 			<artifactId>junit</artifactId>
+ 			<version>4.12</version>
+ 		</dependency>
+ 	</dependencies>
+ </dependencyManagement>
 </project>
