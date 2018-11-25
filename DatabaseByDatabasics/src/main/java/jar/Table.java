@@ -1,4 +1,4 @@
-package Databasics;
+package jar;
 import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,6 +54,7 @@ public class Table{
 
 	private String name;
 	private int attributeNumber;
+	private int lines;
 	private static ArrayList<Table> tables = new ArrayList<Table>();
 	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
@@ -64,7 +65,9 @@ public class Table{
 	 */
 	public Table(String name){
 		this.name = name;
-		attributeNumber = 0;
+		attributes.add(new Attribute("#", "int"));
+		attributeNumber = 1;
+		lines = 0;
 		tables.add(this);
 	}
 
@@ -83,72 +86,30 @@ public class Table{
 	 * @return             <code>true</code> if no mistake was found;
 	 *                     <code>false</code> if there's a wrong input.
 	 */
-	public boolean checkType(String[] entries, boolean correctEntry) {
-		try {
-			if (entries.length != attributeNumber) {
-				correctEntry = false;
-			} else {
-				for (String entry : entries){
-					System.out.print(entry + "|");
-				}
-				System.out.println();
-				for (int i = 0; i < attributeNumber; i++) {
-					if (attributes.get(i).getType() == "int" && !entries[i].equals("--")) {
-						Integer.parseInt(entries[i]); //changed all "attributeTypes.getType(i)" to that
-					}
-					if (attributes.get(i).getType() == "double" && !entries[i].equals("--")) {
-						Double.parseDouble(entries[i]);
-					}
-					if (attributes.get(i).getType() == "date" && !entries[i].equals("--")) {
-						DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-						format.setLenient(false);
-						format.parse(entries[i]);
-					}
-					if ((attributes.get(i).getType() == (String) "char") && (
-							entries[i].length() != 1) && !entries[i].equals("--")) {
-						throw new NotCharacterException();
-					}
-				}
+	public void checkEntryType(String[] entries) throws ParseException, NumberFormatException, NotCharacterException {
+		for (int i = 1; i < attributeNumber; i++) {
+			if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
+				Integer.parseInt(entries[i-1]);
 			}
-		} catch (NumberFormatException e) {
-			System.out.println("Wrong entry on an Integer or Decimal column!");
-			correctEntry = false;
-		} catch (ParseException e) {
-			System.out.println("Invalid date format in a date column!");
-			correctEntry = false;
-		} catch (NotCharacterException e) {
-			System.out.println("Large entry on a single letter column!");
-			correctEntry = false;
-		} finally {
-			if (correctEntry == false) {
-				System.out.println("Please try again!");
+			if (attributes.get(i).getType() == "double" && !entries[i-1].equals("--")) {
+				Double.parseDouble(entries[i-1]);
+			}
+			if (attributes.get(i).getType() == "date" && !entries[i-1].equals("--")) {
+				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				format.setLenient(false);
+				format.parse(entries[i-1]);
+			}
+			if ((attributes.get(i).getType() == (String) "char") && (
+					entries[i].length() != 1) && !entries[i].equals("--")) {
+				throw new NotCharacterException();
 			}
 		}
-		return correctEntry;
 	}
 
-	/**
-	 * This method creates an entry on the user's demand. It asks for the
-	 * entry, splits it on commas and holds it inside an array.
-	 * Checks whether the input is valid using checktype(String[], boolean)
-	 * and then proceeds to pass the correct input inside the table.
-	 */
-
-	public void newEntry() {
-		boolean correctEntry;
-		String[] entries;
-		do {
-			System.out.print("Please add a new entry:");
-			Scanner input = new Scanner(System.in);
-			String entry = input.nextLine();
-			correctEntry = true;
-			entries = entry.split(",");
-
-			correctEntry = checkType(entries, correctEntry);
-
-		} while (correctEntry == false);
-		for (int i = 0; i < entries.length; i++) {
-			attributes.get(i).setEntryField(entries[i]);
+	public void newEntry(String[] entries) {
+		attributes.get(0).setEntryField(String.valueOf(++lines));
+		for (int i = 1; i <= entries.length; i++) {
+			attributes.get(i).setEntryField(entries[i-1]);
 		}
 	}
 
@@ -171,6 +132,10 @@ public class Table{
 	public void setName(String name){
 		this.name = name;
 	}
+	
+	public int getLines() {
+		return lines;
+	}
 
 	/**
 	 * This method implements a simple check on the entry that the user
@@ -186,126 +151,88 @@ public class Table{
 	 *                     <code>false</code> if there's a wrong input.
 	 */
 
-	public boolean checkInput (int choice, boolean correctEntry) {
-		try{
-			if(choice < 1 || choice > 6)
+	public static boolean checkInput (int choice, boolean correctEntry) {
+		try {
+			if (choice < 1 || choice > 6)
 				throw new WrongEntryException();
-			else {
-				switch(choice) {
-					case 1:
-						attributes.add(new Attribute(name, "string"));
-						break;
-					case 2:
-						attributes.add(new Attribute(name, "char"));
-						break;
-					case 3:
-						attributes.add(new Attribute(name, "int"));
-						break;
-					case 4:
-						attributes.add(new Attribute(name, "double"));
-						break;
-					case 5:
-						attributes.add(new Attribute(name, "date"));
-						break;
-					case 6:
-						attributes.add(new Attribute(name, "obj"));
-						break;
-				}
-			}
 		} catch (WrongEntryException e) {
-			System.out.println(choice + " is not a valid input.");
+			System.out.println(choice + "is not a valid input");
 			correctEntry = false;
 		}
 		return correctEntry;
 	}
 
 	/**
-	 * This method creates an attribute (column) on the user's demand.
-	 * It asks for a name and a data type for the attribute, checks for
-	 * possible <code>InputMismatchException</code> and/or an invalid int
-	 * via the checkInput(int, boolean) method. If everything is correct,
-	 * a new Attribute object is successfully being initialized.
+	 * This method creates an attribute (column) using a name and an integer
+	 * which corresponds to the data type the attribute will hold
 	 */
 
-	public void newAttribute() throws InputMismatchException {
-		boolean correctEntry;
+	public void newAttribute(String name, int choice) {
 		attributeNumber++;
-		Scanner input = new Scanner(System.in);
-		System.out.println("Enter the name of the new attribute");
-		String name = input.nextLine();
-		int choice = 0;
-		do {
-			correctEntry = true;
-			System.out.println("Your attribute can be of any of the following types:\n"
-					+ "1. Text\n"
-					+ "2. Single letter\n"
-					+ "3. Integer\n"
-					+ "4. Decimal\n"
-					+ "5. Date\n"
-					+ "6. Other (e.g. Image)\n\n"
-					+ "Insert the number that corresponds to the type you want.");
-			try {
-				choice = input.nextInt();
-			} catch (InputMismatchException err) {
-				System.out.println("This was not a number!");
-				correctEntry = false;
-				input.next();
-				continue;
-			}
-
-			correctEntry = checkInput(choice, correctEntry);
-
-		} while(correctEntry == false);
+		switch(choice) {
+		case 1:
+			attributes.add(new Attribute(name, "string"));
+			break;
+		case 2:
+			attributes.add(new Attribute(name, "char"));
+			break;
+		case 3:
+			attributes.add(new Attribute(name, "int"));
+			break;
+		case 4:
+			attributes.add(new Attribute(name, "double"));
+			break;
+		case 5:
+			attributes.add(new Attribute(name, "date"));
+			break;
+		case 6:
+			attributes.add(new Attribute(name, "obj"));
+			break;
+		}
 	}
 
 	public static boolean exists(String name) {
 		for (Table table : tables) {
-			if (table.getName() == name) {
+			if (table.getName().equals(name)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean exists(String tableName, String attributeName) {
-		for (Table table : tables) {
-			if (table.getName() == tableName) {
-				for (Attribute attribute : attributes) {
-					if (attribute.getName() == attributeName) {
-						return true;
-					}
+	public static boolean exists(String tableName, String name) {
+		if (exists(tableName)) {
+			int p = position(tableName);
+			for (Attribute attribute : tables.get(p).getAttributes()) {
+				if (attribute.getName().equals(name)) {
+					return true;
 				}
 			}
 		}
 		return false;
 	}
+	
+	public static int position(String tableName) {
+		int position = 0;
+		for (int i = 0; i < tables.size(); i++) {
+			if (tableName.equals(tables.get(i).getName())) {
+				position = i;
+				continue;
+			}
+		}
+		return position;
+	}
 
-	public String dataChange() {
-		Scanner input = new Scanner(System.in);
-		String tblName;
-		String attrName;
-		do {
-			System.out.println("Give the name of the table where the field you want to change is at");
-			tblName = input.nextLine();
-		} while (exists(tblName) == false);
-		do {
-			System.out.println("Give the name of the attribute you want to change");
-			attrName = input.nextLine();
-		} while (exists(tblName, attrName) == false);
-		System.out.println("Give the line number of the element you want to change");
-		int num = input.nextInt();
-		System.out.println("Give the new value of the element");
-		String newValue = input.nextLine();
-		for (int i=0; i<tables.size(); i++) {
-			if (tblName.equals(getTables(i).getName()) == true) {
-				for (int j=0; j<attributes.size(); j++) {
-					if (attrName.equals(attributes.get(j).getName()) == true) {
-						attributes.get(j).changeField(num, newValue);
-						return "Succesful change";
-					}
+	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
+		ArrayList<String> changedValues = new ArrayList<String>();
+		for (int i=0; i < attrNames.size(); i++) {
+			for (int j = 0; j < attributes.size(); j++) {
+				if (attributes.get(j).getName().equals(attrNames.get(i))) {
+					attributes.get(j).changeField(num, newValues.get(i));
+					changedValues.add(newValues.get(i));
 				}
 			}
 		}
-		return "Unsuccesful change";
+		return changedValues;
 	}
 }
