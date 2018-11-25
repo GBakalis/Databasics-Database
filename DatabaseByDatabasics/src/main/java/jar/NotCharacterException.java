@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> search_branch
 package jar;
 
 public class NotCharacterException extends Exception {
@@ -7,6 +10,7 @@ public class NotCharacterException extends Exception {
 		super(msg);
 	}
 
+<<<<<<< HEAD
 }
 =======
 package jar;
@@ -19,3 +23,6 @@ public class NotCharacterException extends Exception {
 
 }
 >>>>>>> view_function
+=======
+}
+>>>>>>> search_branch

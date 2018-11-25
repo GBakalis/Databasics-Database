@@ -1,0 +1,6 @@
+jar\Attribute.class
+jar\Table.class
+jar\NotMatchingAttributeException.class
+jar\App.class
+jar\WrongEntryException.class
+jar\NotCharacterException.class

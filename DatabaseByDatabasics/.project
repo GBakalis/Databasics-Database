@@ -20,4 +20,19 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+<<<<<<< HEAD
+=======
+	<linkedResources>
+		<link>
+			<name>src/main/java/jar/Main.java</name>
+			<type>1</type>
+			<location>C:/Users/Niko_vls/Desktop/Andreas/DMST/GitHub/Databasics-Database/DatabaseByDatabasics/src/main/java/jar/Main.java</location>
+		</link>
+		<link>
+			<name>src/main/java/jar/NotMatchingAttributeException.java</name>
+			<type>1</type>
+			<location>C:/Users/Niko_vls/Desktop/Andreas/DMST/GitHub/Databasics-Database/DatabaseByDatabasics/src/main/java/jar/NotMatchingAttributeException.java</location>
+		</link>
+	</linkedResources>
+>>>>>>> search_branch
 </projectDescription>

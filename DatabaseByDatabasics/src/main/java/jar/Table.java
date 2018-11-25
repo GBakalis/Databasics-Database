@@ -106,7 +106,7 @@ public class Table{
 			}
 		}
 	}
-	
+
 	public boolean checkEntry(String[] entries) {
 		boolean correctEntry = true;
 		try {
@@ -127,6 +127,13 @@ public class Table{
 		} 
 		return correctEntry;
 	}
+
+	/**
+	 * This method creates an entry on the user's demand. It asks for the
+	 * entry, splits it on commas and holds it inside an array.
+	 * Checks whether the input is valid using checkEntry(String[])
+	 * and then proceeds to pass the correct input inside the table.
+	 */
 
 	public static void newEntryMenu(Table table) {
 		boolean correctEntry;
@@ -205,6 +212,11 @@ public class Table{
 		}
 		return correctEntry;
 	}
+
+	/**
+	 * This method creates an attribute (column) using a name and an integer 
+	 * which corresponds to the data type the attribute will hold
+	 */
 
 	public void newAttribute(String name, int choice) {
 		attributeNumber++;
@@ -369,7 +381,53 @@ public class Table{
 		}
 		return positions;
 	}
-	
+
+	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		int [] columnIndices = new int[attributeNames.size()]; //Table containing the position of each attribute name given in the table
+		try {
+			columnIndices = matchSearchAttributes(attributeNames);
+		} catch (NotMatchingAttributeException e) {
+			System.err.println(e);
+			return positions; //If the search fails, an empty ArrayList is returned
+		}
+		for (int i = 0; i < lines; i++) {
+			boolean matchingRow = true;
+			int k = 0; //counter for the elements arraylist
+			for (int j : columnIndices) {
+					if (!(elements.get(k).equals(attributes.get(j).getArray().get(i)))) {
+						matchingRow = false; //At least one element of the row does not match with one of the given elements						
+						break;
+					}
+					k++;
+			}
+			if (matchingRow == true) {
+				positions.add(i);
+			}
+		}
+		return positions;
+	}
+
+	/* Method checking if the attribute names given for search exist in the table */
+	public int [] matchSearchAttributes(ArrayList<String> attributeNames)
+			throws NotMatchingAttributeException {
+		int [] columnIndices = new int[attributeNames.size()]; 
+		for (int i = 0; i < attributeNames.size(); i++) {
+			boolean correctAttribute = false;
+			for (int j = 0; j < attributeNumber; j++) {
+				if (attributeNames.get(i).equals(attributes.get(j).getName())) {
+					correctAttribute = true;
+					columnIndices[i] = j; //The name of the attribute given for search was found in column j
+					break;
+				}
+			}
+			if (correctAttribute == false) {
+				throw new NotMatchingAttributeException(attributeNames.get(i)+" is not an attribute name!");
+			}
+		}
+		return columnIndices;
+	}
+
 	@Override
 	public String toString() {
 		return ("name = " + name + "\n"
