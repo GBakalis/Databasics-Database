@@ -279,6 +279,155 @@ public class Table{
 		}
 		return false;
 	}
+	public ArrayList<Integer> position(String tableName, String... atts) {
+		Table table = tables.get(position(tableName));
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		for (String att : atts) {
+			for (int i = 0; i < table.getAttributes().size(); i++) {
+				if (att.equals(table.getAttributes().get(i).getName())) {
+					positions.add(i);
+				}
+			}
+		}
+		return positions;
+	}
+
+	public int position(String tableName) {
+		int position = -1;
+		for (int i = 0; i < tables.size(); i++) {
+			if (tableName.equals(tables.get(i).getName())) {
+				position = i;
+				continue;
+			}
+		}
+		return position;
+	}
+
+	public ArrayList<Integer> position(String... tableNames) {
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		for (String table : tableNames) {
+			for (int i = 0; i < tables.size(); i++) {
+				if (table.equals(tables.get(i).getName())) {
+					positions.add(i);
+				}
+			}
+		}
+		return positions;
+	}
+	
+	public String dataChange() {
+		Scanner input = new Scanner(System.in);
+		String tblName;
+		String attrName;
+		do {
+			System.out.println("Give the name of the table where the field you want to change is at");
+			tblName = input.nextLine();
+		} while (exists(tblName) == false);
+		do {
+			System.out.println("Give the name of the attribute you want to change");
+			attrName = input.nextLine();
+		} while (exists(tblName, attrName) == false);
+		System.out.println("Give the line number of the element you want to change");
+		int num = input.nextInt();
+		System.out.println("Give the new value of the element");
+		String newValue = input.nextLine();
+		for (int i=0; i<tables.size(); i++) {
+			if (tblName.equals(getTables(i).getName()) == true) {
+				for (int j=0; j<attributes.size(); j++) {
+					if (attrName.equals(attributes.get(j).getName()) == true) {
+						attributes.get(j).changeField(num, newValue);
+						return "Succesful change";
+					}
+				}
+			}
+		}
+		return "Unsuccesful change";
+	}
+	
+
+
+	public void copyTable(String nameCopy, String namePaste) {
+		int copyK = position(nameCopy);
+		if (exists(namePaste)) {
+			int pasteK = position(namePaste);
+			tables.set(pasteK,tables.get(copyK));
+		}else {
+			new Table(namePaste);
+			tables.set(tables.size()-1,tables.get(copyK));
+		}
+
+	}
+
+	public void copyEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) {
+		int copyK = position(nameCopy);
+		int pasteK = position(namePaste);
+		if (entryNumPaste == 0) {
+			if (tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
+				for (int i=0;i< tables.get(pasteK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+			} else if (tables.get(copyK).getAttributeNumber() < tables.get(pasteK).getAttributeNumber()) {
+				for (int i=0;i< tables.get(copyK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+				for (int i=tables.get(copyK).getAttributeNumber();i< tables.get(pasteK).getAttributeNumber();i++) {
+					tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste, "--");
+				}
+			} else  {
+				System.out.println("This procedure is not possible" );
+			}
+			
+		} else {
+			if (tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
+				for (int i=0;i< tables.get(pasteK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).getArray().add(tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+			}else if (tables.get(copyK).getAttributeNumber() < tables.get(pasteK).getAttributeNumber()) {
+				for (int i = 0;i < tables.get(copyK).getAttributeNumber(); i++)
+					tables.get(pasteK).getAttributes().get(i).getArray().add(tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
+				for (int i = tables.get(copyK).getAttributeNumber();i < tables.get(pasteK).getAttributeNumber();i++)
+					tables.get(pasteK).getAttributes().get(i).getArray().add("--");
+			} else {
+				System.out.println("This procedure is not possible" );
+			}
+		}
+	}
+
+	public void copyAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
+		int copyK = position(nameCopy);
+		int attNumC = search_attribute(copyK,attNameC);
+		int pasteK = position(namePaste);
+		if (exists(namePaste,attNameP)) {
+			int attNumP = search_attribute(pasteK,attNameP);
+			tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+		} else {
+			tables.get(pasteK).newAttribute();
+			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+
+		}
+	}
+
+	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) {
+		int copyK = position(nameCopy);
+		int attNumC = search_attribute(copyK,attNameC);
+		int pasteK = position(namePaste);
+		int attNumP = search_attribute(pasteK,attNameP);
+		tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC));
+	}
+
+	public int search_attribute(int num,String attName) {
+		int pos = -1;
+		int i = 0;
+		boolean check = true;
+		while (i< tables.get(num).attributeNumber && check == true) {
+			if (attName.equals(tables.get(num).getAttributes().get(i).getName())) {
+				pos = i;
+				check = false;
+			}
+			i += 1;
+		}
+		return pos;
+	}
+
+
+	
 }
 
 
