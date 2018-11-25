@@ -1,6 +1,7 @@
 package jar;
 
 import java.util.ArrayList;
+
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.Assert;
@@ -15,14 +16,14 @@ public class TableTest {
 		table.newAttribute("Name", 1);
 		table.newAttribute("Sex", 2);
 		table.newAttribute("Age", 3);
-		String[] entries1 = {"Andreas", "m", "19"};//από εδώ
+		String[] entries1 = {"Andreas", "m", "19"};
 		String[] entries2 = {"George", "m", "19"};
 		String[] entries3 = {"Martha", "f", "21"};
 		String[] entries4 = {"Kostas", "m", "20"};
-		table.checkType(entries1, true);//σε αυτά θέλει newEntry μετά τη διόρθωση
-		table.checkType(entries2, true);
-		table.checkType(entries3, true);
-		table.checkType(entries4, true);//μέχρι εδώ
+		table.newEntry(entries1);
+		table.newEntry(entries2);
+		table.newEntry(entries3);
+		table.newEntry(entries4);
 	}
 	
 	@Test
@@ -41,27 +42,30 @@ public class TableTest {
 	@Test
 	public void testMaxLength() {
 		Assert.assertEquals("Failure : Wrong column width.", 
-				Table.maxLength(table.getAttributes().get(0)), 7);
-		Assert.assertEquals("Failure : Wrong column width.", 
-				Table.maxLength(table.getAttributes().get(1)), 3);
+				Table.maxLength(table.getAttributes().get(1)), 7);
 		Assert.assertEquals("Failure : Wrong column width.", 
 				Table.maxLength(table.getAttributes().get(2)), 3);
+		Assert.assertEquals("Failure : Wrong column width.", 
+				Table.maxLength(table.getAttributes().get(3)), 3);
 	}
 
 	@Test
 	public void testPositionStringArrayListOfString() {
 		ArrayList<String> atts = new ArrayList<String>();
-		atts.add(table.getAttributes().get(2).getName());
-		atts.add(table.getAttributes().get(0).getName());		
+		atts.add(table.getAttributes().get(3).getName());
+		atts.add(table.getAttributes().get(1).getName());		
 		ArrayList<Integer> attPos = Table.position("Student", atts);
 		Assert.assertEquals("Failure : Wrong first column position.", 
-				attPos.get(0).intValue(), 2);
+				attPos.get(0).intValue(), 3);
 		Assert.assertEquals("Failure : Wrong first column position.", 
-				attPos.get(1).intValue(), 0);
+				attPos.get(1).intValue(), 1);
 	}
 
 	@Test
 	public void testPositionString() {
+		for (int i = 0 ; i < Table.getT().size() ; i++) {
+			System.out.println(Table.getTables(i).toString());
+		}
 		Assert.assertEquals("Failure : Wrong table position.", Table.position("Student"), 0);
 	}
 

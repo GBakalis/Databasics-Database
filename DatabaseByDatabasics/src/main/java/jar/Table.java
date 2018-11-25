@@ -84,75 +84,76 @@ public class Table{
 	 * @return             <code>true</code> if no mistake was found;
 	 *                     <code>false</code> if there's a wrong input.
 	 */
-	public boolean checkType(String[] entries, boolean correctEntry) {
+	public void checkEntryType(String[] entries) throws ParseException, NumberFormatException,
+				NotCharacterException {
+		for (int i = 1; i < attributeNumber; i++) {
+			if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
+				Integer.parseInt(entries[i-1]);
+			}
+			if (attributes.get(i).getType() == "double" && !entries[i-1].equals("--")) {
+				Double.parseDouble(entries[i-1]);
+			}
+			if (attributes.get(i).getType() == "date" && !entries[i-1].equals("--")) {
+				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				format.setLenient(false);
+				format.parse(entries[i-1]);
+			}
+			if ((attributes.get(i).getType() == (String) "char") && (
+					entries[i-1].length() != 1) && !entries[i-1].equals("--")) {
+				throw new NotCharacterException();
+			}
+		}
+	}
+	
+	public boolean checkEntry(String[] entries) {
+		boolean correctEntry = true;
 		try {
 			if (entries.length != attributeNumber - 1) {
 				correctEntry = false;
 			} else {
-				System.out.println();
-				for (String entry : entries){
-					System.out.print(entry + "|");
-				}
-				System.out.println("\n");
-				for (int i = 1; i < attributeNumber; i++) {
-					if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
-						Integer.parseInt(entries[i-1]);
-					}
-					if (attributes.get(i).getType() == "double" && !entries[i-1].equals("--")) {
-						Double.parseDouble(entries[i-1]);
-					}
-					if (attributes.get(i).getType() == "date" && !entries[i-1].equals("--")) {
-						DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-						format.setLenient(false);
-						format.parse(entries[i-1]);
-					}
-					if ((attributes.get(i).getType() == (String) "char") && (
-							entries[i-1].length() != 1) && !entries[i-1].equals("--")) {
-						throw new NotCharacterException();
-					}
-				}
+				checkEntryType(entries);
 			}
 		} catch (NumberFormatException e) {
-			System.out.println("Wrong entry on an Integer or Decimal column!");
+			System.err.println("Wrong entry on an Integer or Decimal column!");
 			correctEntry = false;
 		} catch (ParseException e) {
-			System.out.println("Invalid date format in a date column!");
+			System.err.println("Invalid date format in a date column!");
 			correctEntry = false;
 		} catch (NotCharacterException e) {
-			System.out.println("Large entry on a single letter column!");
+			System.err.println("Large entry on a single letter column!");
 			correctEntry = false;
-		} finally {
-			if (correctEntry == false) {
-				System.out.println("Please try again!");
-			}
-		}
+		} 
 		return correctEntry;
 	}
 
 	/**
 	 * This method creates an entry on the user's demand. It asks for the
 	 * entry, splits it on commas and holds it inside an array.
-	 * Checks whether the input is valid using checktype(String[], boolean)
+	 * Checks whether the input is valid using checkEntry(String[])
 	 * and then proceeds to pass the correct input inside the table.
 	 */
-
-	public void newEntry() {
-		attributes.get(0).setEntryField(String.valueOf(++lines));
+	public static void newEntryMenu(Table table) {
 		boolean correctEntry;
 		String[] entries;
+		Scanner input = new Scanner(System.in);
 		do {
 			System.out.print("Please add a new entry:");
-			Scanner input = new Scanner(System.in);
 			String entry = input.nextLine();
-			correctEntry = true;
 			entries = entry.split(",");
 			for (int i = 0; i < entries.length; i++) {
 				entries[i] = entries[i].trim();
 			}
-
-			correctEntry = checkType(entries, correctEntry);
-
+			correctEntry = table.checkEntry(entries);
+			if (correctEntry == false) {
+				System.out.println("Please try again!");
+			}
 		} while (correctEntry == false);
+		table.newEntry(entries);
+		input.close();
+	}
+	
+	public void newEntry(String[] entries) {
+		attributes.get(0).setEntryField(String.valueOf(++lines));
 		for (int i = 1; i <= entries.length; i++) {
 			attributes.get(i).setEntryField(entries[i-1]);
 		}
@@ -168,6 +169,10 @@ public class Table{
 
 	public static Table getTables(int i){
 		return tables.get(i);
+	}
+	
+	public static ArrayList<Table> getT() {
+		return tables;
 	}
 
 	public String getName(){
@@ -236,7 +241,7 @@ public class Table{
 		}
 	}
 
-	public static void attributeMenu() throws InputMismatchException {
+	public static void attributeMenu(Table table) throws InputMismatchException {
 		boolean correctEntry;
 		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the name of the new attribute");
@@ -264,6 +269,7 @@ public class Table{
 			correctEntry = checkInput(choice, correctEntry);
 
 		} while(correctEntry == false);
+		table.newAttribute(name, choice);
 	}
 
 	public static boolean exists(String name) {
@@ -373,6 +379,13 @@ public class Table{
 			}
 		}
 		return positions;
+	}
+	
+	@Override
+	public String toString() {
+		return ("name = " + name + "\n"
+				+ "attributeNumber = " + attributeNumber + "\n"
+				+ "lines = " + lines + "\n");
 	}
 
 }

@@ -18,8 +18,9 @@ public class Main {
 		for (int i = 0; i < 3; i++) {
 			table.newAttribute("a", 1);
 		}
+		String[] a = {"a","b"};
 		for (int i = 0; i < 2; i++) {
-			table.newEntry();
+			table.newEntry(a);
 		}
 		Table.viewAttribute(name, test);
 
