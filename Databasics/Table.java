@@ -415,7 +415,7 @@ public class Table{
 		int t_pos = position(tableName);
 		ArrayList<String> att = new ArrayList<String>();
 		att.add(attributeName);
-		tables.get(t_pos).getAttributes().get(position(tableName,att).get(0)).getArray().remove(line_number);
+		tables.get(t_pos).getAttributes().get(position(tableName,att).get(0)).getArray().set(line_number,null);
 	}
 
 
