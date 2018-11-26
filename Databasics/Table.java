@@ -381,13 +381,6 @@ public class Table{
 		return positions;
 	}
 
-	@Override
-	public String toString() {
-		return ("name = " + name + "\n"
-				+ "attributeNumber = " + attributeNumber + "\n"
-				+ "lines = " + lines + "\n");
-	}
-
 	public void deleteTable(String tableName) {
 		int pos=position(tableName);
 		tables.remove(pos);
@@ -418,5 +411,10 @@ public class Table{
 		tables.get(t_pos).getAttributes().get(position(tableName,att).get(0)).getArray().set(line_number,null);
 	}
 
-
+	@Override
+	public String toString() {
+		return ("name = " + name + "\n"
+				+ "attributeNumber = " + attributeNumber + "\n"
+				+ "lines = " + lines + "\n");
+	}
 }
