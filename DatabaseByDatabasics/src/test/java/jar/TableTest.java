@@ -1,7 +1,7 @@
 package jar;
 
 import java.util.ArrayList;
-
+import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.Assert;
@@ -79,5 +79,10 @@ public class TableTest {
 		Assert.assertEquals("Failure : Wrong second table position.", 
 				Table.position(tableNames.get(1)), 0);		
 	}
-
+	
+	@After
+	public void tearDown() {
+		Table.getT().clear();
+		Assert.assertNull(Table.getT());
+	}
 }

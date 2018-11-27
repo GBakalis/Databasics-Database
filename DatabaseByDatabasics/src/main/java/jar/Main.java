@@ -22,6 +22,10 @@ public class Main {
 		for (int i = 0; i < 2; i++) {
 			table.newEntry(a);
 		}
+		for (int i = 0 ; i < Table.getT().size() ; i++) {
+			System.out.println(Table.getTables(i).toString());
+		}
+		System.out.println(Table.getT().size());
 		Table.viewAttribute(name, test);
 
 	}

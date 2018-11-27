@@ -387,5 +387,4 @@ public class Table{
 				+ "attributeNumber = " + attributeNumber + "\n"
 				+ "lines = " + lines + "\n");
 	}
-
 }
