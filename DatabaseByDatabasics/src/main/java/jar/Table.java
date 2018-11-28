@@ -559,6 +559,22 @@ public class Table {
 		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number,null);
 	}
 
+	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
+		ArrayList<String> changedValues = new ArrayList<String>();
+		for (int i=0; i < attrNames.size(); i++) {
+			for (int j = 1; j < attributes.size()-1; j++) {
+				if (attributes.get(j).getName().equals(attrNames.get(i))) {
+					attributes.get(j).changeField(num, newValues.get(i));
+					changedValues.add(newValues.get(i));
+				}
+			}
+		}
+		Date date = new Date();
+		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
+		return changedValues;
+	}
+
 	@Override
 	public String toString() {
 		return ("name = " + name + "\n"
