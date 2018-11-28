@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 package jar;
 
 import static org.junit.Assert.fail;
@@ -95,6 +96,17 @@ public class TableTest {
 
 	private Table table = new Table("Student");
 	private Table table2 = new Table("Extra");
+=======
+package jar;
+
+import java.util.ArrayList;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TableTest {
+	private Table  table = new Table("Student");
+>>>>>>> Data_change_function
 
 	@Before
 	public void setUp() {
@@ -113,12 +125,18 @@ public class TableTest {
 
 	@Test
 	public void testExistsString() {
+<<<<<<< HEAD
 		Assert.assertTrue("Failure : Table not found.", Table.exists("Student"));
 		Assert.assertFalse("Failure : Table found without existing.", Table.exists("aa"));
+=======
+		Assert.assertTrue("Failure : Table not found", Table.exists("Student"));
+		Assert.assertFalse("Failure : Table found without existing", Table.exists("k"));
+>>>>>>> Data_change_function
 	}
 
 	@Test
 	public void testExistsStringString() {
+<<<<<<< HEAD
 		Assert.assertTrue("Failure : Attribute not found.", Table.exists("Student", "Sex"));
 		Assert.assertFalse("Failure : Attribute found without existing.",
 				Table.exists("Student", "Uhm, no"));
@@ -232,3 +250,20 @@ public class TableTest {
 
 }
 >>>>>>> 7507c4538684cf80d66cdac3b9e34a8a3d3730ab
+=======
+		Assert.assertTrue("Failure : Attribute not found", Table.exists("Student", "Age"));
+		Assert.assertFalse("Failure : Attribute found without existing", Table.exists("Student", "smt"));
+	}
+
+	@Test
+	public void testDataChange() {
+		ArrayList<String> attrNames = new ArrayList<String>();
+		ArrayList<String> newValues = new ArrayList<String>();
+		attrNames.add("Name");
+		newValues.add("Eve");
+		attrNames.add("Sex");
+		newValues.add("f");
+		Assert.assertEquals("Failure : Wrong data change", newValues ,table.dataChange(3, attrNames, newValues));
+	}
+}
+>>>>>>> Data_change_function

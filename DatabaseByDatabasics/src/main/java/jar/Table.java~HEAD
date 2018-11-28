@@ -1,17 +1,21 @@
 package jar;
-import java.text.DateFormat;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 
 /**
- * Table is the class that allows the creation and editing of tables
- * inside a database.
- * A Table object is practically a series of Attribute (might also be
- * referred to as "column") objects held inside an ArrayList of type
- * Attribute and encapsulates the basic information needed for this purpose:
+
+ * Table is the class that allows the creation and editing of tables inside a
+ * database. A Table object is practically a series of Attribute (might also be
+ * referred to as "column") objects held inside an ArrayList of type Attribute
+ * and encapsulates the basic information needed for this purpose:
  * <ul>
  * <li>The table's name
  * <li>The number of attributes that the table holds
@@ -19,9 +23,9 @@ import java.util.InputMismatchException;
  * <li>An ArrayList of the Tables constructed by the user.
  * </ul>
  * <p>
- * The class is designed in such manner that it will support methods
- * inside of it and other classes externally to execute the usual
- * functions that a database has, such as:
+ * The class is designed in such manner that it will support methods inside of
+ * it and other classes externally to execute the usual functions that a
+ * database has, such as:
  * <ul>
  * <li>View Table's content
  * <li>View a column's content
@@ -40,15 +44,13 @@ import java.util.InputMismatchException;
  * <li>More
  * </ul>
  * <p>
- * An important point to consider is that the methods inside the class
- * are written in such a manner that they require the data input given
- * in a strict way by the user.
+ * An important point to consider is that the methods inside the class are
+ * written in such a manner that they require the data input given in a strict
+ * way by the user.
  *
- * @author George Bakalis
- * @author Andreas Vlachos
  */
 
-public class Table{
+public class Table {
 
 	private String name;
 	private int attributeNumber;
@@ -61,45 +63,49 @@ public class Table{
 	 *
 	 * @param name the name to be used as a title for the table
 	 */
-	public Table(String name){
+
+	public Table(String name) {
 		this.name = name;
 		attributes.add(new Attribute("#", "int"));
-		attributeNumber = 1;
+		attributes.add(new Attribute("Time of last edit", "Date"));
+		attributeNumber = 2;
 		lines = 0;
 		tables.add(this);
 	}
 
 	/**
-	 * This method implements a simple check on the entry that the user
-	 * has given on demand, in order to decide if it has the correct
-	 * number and types of input. It uses existing and custom exceptions
-	 * to guide the user into a correct entry, if needed. If the user does
-	 * not want to insert an element to a column he should type <code>--</code>
-	 * instead
+	 * This method implements a simple check on the entry that the user has given on
+	 * demand, in order to decide if it has the correct number and types of input.
+	 * It uses existing and custom exceptions to guide the user into a correct
+	 * entry, if needed. If the user does not want to insert an element to a column
+	 * he should type <code>--</code> instead
 	 *
-	 * @param entries      an array of <code>String</code> elements, which is the user's input
-	 * @param correctEntry a <code>boolean</code> initialized as <code>true</code>, prone
-	 *                     to switching to <code>false</code> if there's a wrong input
+	 * @param entries
+	 *            an array of <code>String</code> elements, which is the user's
+	 *            input
+	 * @param correctEntry
+	 *            a <code>boolean</code> initialized as <code>true</code>, prone to
+	 *            switching to <code>false</code> if there's a wrong input
 	 *
-	 * @return             <code>true</code> if no mistake was found;
-	 *                     <code>false</code> if there's a wrong input.
+	 * @return <code>true</code> if no mistake was found; <code>false</code> if
+	 *         there's a wrong input.
 	 */
-	public void checkEntryType(String[] entries) throws ParseException, NumberFormatException,
-				NotCharacterException {
-		for (int i = 1; i < attributeNumber; i++) {
-			if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
-				Integer.parseInt(entries[i-1]);
+	public void checkEntryType(String[] entries) throws ParseException,
+				NumberFormatException, NotCharacterException {
+		for (int i = 1; i < attributeNumber - 2; i++) {
+			if (attributes.get(i).getType() == "int" && !entries[i - 1].equals("--")) {
+				Integer.parseInt(entries[i - 1]);
 			}
-			if (attributes.get(i).getType() == "double" && !entries[i-1].equals("--")) {
-				Double.parseDouble(entries[i-1]);
+			if (attributes.get(i).getType() == "double" && !entries[i - 1].equals("--")) {
+				Double.parseDouble(entries[i - 1]);
 			}
-			if (attributes.get(i).getType() == "date" && !entries[i-1].equals("--")) {
+			if (attributes.get(i).getType() == "date" && !entries[i - 1].equals("--")) {
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				format.setLenient(false);
-				format.parse(entries[i-1]);
+				format.parse(entries[i - 1]);
 			}
-			if ((attributes.get(i).getType() == (String) "char") && (
-					entries[i-1].length() != 1) && !entries[i-1].equals("--")) {
+			if ((attributes.get(i).getType() == (String) "char") && (entries[i - 1].length() != 1)
+					&& !entries[i - 1].equals("--")) {
 				throw new NotCharacterException();
 			}
 		}
@@ -108,7 +114,7 @@ public class Table{
 	public boolean checkEntry(String[] entries) {
 		boolean correctEntry = true;
 		try {
-			if (entries.length != attributeNumber - 1) {
+			if (entries.length != attributeNumber - 2) {
 				correctEntry = false;
 			} else {
 				checkEntryType(entries);
@@ -122,17 +128,23 @@ public class Table{
 		} catch (NotCharacterException e) {
 			System.err.println("Large entry on a single letter column!");
 			correctEntry = false;
-		} 
+		}
 		return correctEntry;
 	}
 
-	public static void newEntryMenu(Table table) {
+	/**
+	 * This method creates an entry on the user's demand. It asks for the entry,
+	 * splits it on commas and holds it inside an array. Checks whether the input is
+	 * valid using checkEntry(String[]) and then proceeds to pass the correct input
+	 * inside the table.
+	 */
+	public static void newEntryMenu(Table table, String entry) {
 		boolean correctEntry;
 		String[] entries;
-		Scanner input = new Scanner(System.in);
+	//	Scanner input = new Scanner(System.in);
 		do {
-			System.out.print("Please add a new entry:");
-			String entry = input.nextLine();
+	//		System.out.print("Please add a new entry:");
+	//		String entry = input.nextLine();
 			entries = entry.split(",");
 			for (int i = 0; i < entries.length; i++) {
 				entries[i] = entries[i].trim();
@@ -140,15 +152,21 @@ public class Table{
 			correctEntry = table.checkEntry(entries);
 			if (correctEntry == false) {
 				System.out.println("Please try again!");
+				return;
 			}
 		} while (correctEntry == false);
 		table.newEntry(entries);
+
 	}
 
 	public void newEntry(String[] entries) {
+		Date date = new Date();
+		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+		attributes.get(attributeNumber - 1).setEntryField(format.format(date));
+
 		attributes.get(0).setEntryField(String.valueOf(++lines));
 		for (int i = 1; i <= entries.length; i++) {
-			attributes.get(i).setEntryField(entries[i-1]);
+			attributes.get(i).setEntryField(entries[i - 1]);
 		}
 	}
 
@@ -175,10 +193,6 @@ public class Table{
 	public void setName(String name){
 		this.name = name;
 	}
-	
-	public int getLines() {
-		return lines;
-	}
 
 	public int getLines() {
 		return lines;
@@ -197,62 +211,62 @@ public class Table{
 	 * @return             <code>true</code> if no mistake was found;
 	 *                     <code>false</code> if there's a wrong input.
 	 */
+
+
 	public static boolean checkInput(int choice, boolean correctEntry) {
-		try{
-			if(choice < 1 || choice > 6)
+		try {
+			if (choice < 1 || choice > 6)
 				throw new WrongEntryException();
 		} catch (WrongEntryException e) {
-			System.out.println(choice + "is not a valid input");
+			System.out.println(choice + " is not a valid input.");
 			correctEntry = false;
 		}
 		return correctEntry;
 	}
 
 	/**
-	 * This method creates an attribute (column) using a name and an integer
-	 * which corresponds to the data type the attribute will hold
+	 * This method creates an attribute (column) using a name and an integer which
+	 * corresponds to the data type the attribute will hold
 	 */
 
 	public void newAttribute(String name, int choice) {
 		attributeNumber++;
-		switch(choice) {
+		switch (choice) {
 		case 1:
-			attributes.add(new Attribute(name, "string"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "string"));
 			break;
 		case 2:
-			attributes.add(new Attribute(name, "char"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "char"));
 			break;
 		case 3:
-			attributes.add(new Attribute(name, "int"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "int"));
 			break;
 		case 4:
-			attributes.add(new Attribute(name, "double"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "double"));
 			break;
 		case 5:
-			attributes.add(new Attribute(name, "date"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "date"));
 			break;
 		case 6:
-			attributes.add(new Attribute(name, "obj"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "obj"));
 			break;
 		}
 	}
 
-	public static void attributeMenu(Table table) throws InputMismatchException {
+	public static void attributeMenu(Table table, String name) throws InputMismatchException {
 		boolean correctEntry;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Enter the name of the new attribute");
-		String name = input.nextLine().trim();
 		int choice = 0;
 		do {
 			correctEntry = true;
 			System.out.println("Your attribute can be of any of the following types:\n"
-					+ "1. Text\n"
-					+ "2. Single letter\n"
-					+ "3. Integer\n"
-					+ "4. Decimal\n"
-					+ "5. Date\n"
-					+ "6. Other (e.g. Image)\n\n"
-					+ "Insert the number that corresponds to the type you want.");
+								+ "1. Text\n"
+								+ "2. Single letter\n"
+								+ "3. Integer\n"
+								+ "4. Decimal\n"
+								+ "5. Date\n"
+								+ "6. Other (e.g. Image)\n\n"
+								+ "Insert the number that corresponds to the type you want.");
 			try {
 				choice = input.nextInt();
 			} catch (InputMismatchException err) {
@@ -261,10 +275,8 @@ public class Table{
 				input.next();
 				continue;
 			}
-
 			correctEntry = checkInput(choice, correctEntry);
-
-		} while(correctEntry == false);
+		} while (correctEntry == false);
 		table.newAttribute(name, choice);
 	}
 
@@ -277,12 +289,15 @@ public class Table{
 		return false;
 	}
 
+
+
 	public static boolean exists(String tableName, String name) {
 		if (exists(tableName)) {
 			int p = position(tableName);
 			for (Attribute attribute : tables.get(p).getAttributes()) {
 				if (attribute.getName().equals(name)) {
 					return true;
+
 				}
 			}
 		}
@@ -377,16 +392,150 @@ public class Table{
 		return positions;
 	}
 
+	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		int [] columnIndices = new int[attributeNames.size()]; //Table containing the position of each attribute name given in the table
+		try {
+			columnIndices = matchSearchAttributes(attributeNames);
+		} catch (NotMatchingAttributeException e) {
+			System.err.println(e);
+			return positions; //If the search fails, an empty ArrayList is returned
+		}
+		for (int i = 0; i < lines; i++) {
+			boolean matchingRow = true;
+			int k = 0; //counter for the elements arraylist
+			for (int j : columnIndices) {
+					if (!(elements.get(k).equals(attributes.get(j).getArray().get(i)))) {
+						matchingRow = false; //At least one element of the row does not match with one of the given elements
+						break;
+					}
+					k++;
+			}
+			if (matchingRow == true) {
+				positions.add(i);
+			}
+		}
+		return positions;
+	}
+
+	/* Method checking if the attribute names given for search exist in the table */
+	public int [] matchSearchAttributes(ArrayList<String> attributeNames)
+			throws NotMatchingAttributeException {
+		int [] columnIndices = new int[attributeNames.size()];
+		for (int i = 0; i < attributeNames.size(); i++) {
+			boolean correctAttribute = false;
+			for (int j = 0; j < attributeNumber; j++) {
+				if (attributeNames.get(i).equals(attributes.get(j).getName())) {
+					correctAttribute = true;
+					columnIndices[i] = j; //The name of the attribute given for search was found in column j
+					break;
+				}
+			}
+			if (correctAttribute == false) {
+				throw new NotMatchingAttributeException(attributeNames.get(i)+" is not an attribute name!");
+			}
+		}
+		return columnIndices;
+	}
+
+	public ArrayList<Attribute> sortTable(Table table, String keyAttribute, int choice)
+				throws ParseException {
+
+		int index = position(table.getName(), new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
+		if ((table.getAttributes().get(index).getType().equals("date"))
+				|| (table.getAttributes().get(index).getType().equals("Time of last edit"))) {
+			return dateSort(table, index, choice, returnFormater(table, index));
+		} else if ((table.getAttributes().get(index).getType().equals("obj")) || (index == 0)) {
+			System.out.println("This column contains elements that cannot be sorted");
+			return null;
+		} else {
+			return generalSort(table, index, choice);
+		}
+
+	}
+
+	protected ArrayList<Attribute> generalSort(Table table, int index, int order) {
+		if (order == 1) {
+			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++)
+				for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
+					if (table.getAttributes().get(index).getArray().get(j - 1)
+							.compareTo(table.getAttributes().get(index).getArray().get(j)) > 0)
+
+						for (int k = 1; k < table.getAttributeNumber(); k++)
+							Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
+				}
+		}
+		if (order == 2) {
+			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++)
+				for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
+					if (table.getAttributes().get(index).getArray().get(j - 1)
+							.compareTo(table.getAttributes().get(index).getArray().get(j)) < 0)
+						for (int k = 1; k < table.getAttributeNumber(); k++)
+							Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
+				}
+		}
+		return table.getAttributes();
+
+	}
+
+	protected SimpleDateFormat returnFormater(Table table, int index) {
+		if (index == table.getAttributeNumber() - 1)
+			return new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+		else
+			return new SimpleDateFormat("dd:MM:yyyy");
+	}
+
+	protected ArrayList<Attribute> dateSort(Table table, int index, int order, SimpleDateFormat formatter)
+			throws ParseException {
+		if (order == 1) {
+			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++) {
+				{
+					for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
+						if (formatter.parse(table.getAttributes().get(index).getArray().get(j - 1))
+								.compareTo(formatter.parse(table.getAttributes().get(index).getArray().get(j))) > 0) {
+							for (int k = 1; k < table.getAttributeNumber(); k++)
+								Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
+						}
+					}
+				}
+			}
+		}
+		if (order == 2) {
+			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++) {
+				{
+					for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
+						if (formatter.parse(table.getAttributes().get(index).getArray().get(j - 1))
+								.compareTo(formatter.parse(table.getAttributes().get(index).getArray().get(j))) < 0) {
+							for (int k = 1; k < table.getAttributeNumber(); k++)
+								Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
+						}
+					}
+				}
+			}
+		}
+		return table.getAttributes();
+	}
+
 	public void deleteTable(String tableName) {
 		int pos=position(tableName);
-		tables.remove(pos);
+		for (int i = 0; i <= getT().size(); i++) {
+			if (pos == i) {
+				tables.remove(i);
+				break;
+			}
+		}
 	}
+
+
 
 	public void deleteAttribute(String tableName, String attributeName) {
 		int t_pos = position(tableName);
 		ArrayList<String> att = new ArrayList<String>();
 		att.add(attributeName);
-		tables.get(t_pos).getAttributes().remove(position(tableName,att).get(0));
+		ArrayList<Integer> p = position(tableName,att);
+		int number = p.get(0);
+		tables.get(t_pos).attributes.remove(number);
+
 	}
 
 	public void deleteEntry(String tableName, int lineNumber) {
@@ -394,7 +543,8 @@ public class Table{
 		for (int i = 0; i <= lines; i++) {
 			for (int j=0; j<= attributes.size(); j++) {
 				if (lineNumber == i) {
-					tables.get(t_pos).getAttributes().get(j).getArray().set(lineNumber,null);
+					tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
+					break;
 				}
 			}
 		}
@@ -404,7 +554,9 @@ public class Table{
 		int t_pos = position(tableName);
 		ArrayList<String> att = new ArrayList<String>();
 		att.add(attributeName);
-		tables.get(t_pos).getAttributes().get(position(tableName,att).get(0)).getArray().set(line_number,null);
+		ArrayList<Integer> p = position(tableName,att);
+		int number = p.get(0);
+		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number,null);
 	}
 
 	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
@@ -429,4 +581,7 @@ public class Table{
 				+ "attributeNumber = " + attributeNumber + "\n"
 				+ "lines = " + lines + "\n");
 	}
+
+
 }
+
