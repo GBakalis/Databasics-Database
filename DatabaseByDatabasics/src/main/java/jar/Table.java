@@ -1,12 +1,12 @@
 package jar;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 
@@ -136,13 +136,13 @@ public class Table {
 	 * valid using checkEntry(String[]) and then proceeds to pass the correct input
 	 * inside the table.
 	 */
-	public static void newEntryMenu(Table table) {
+	public static void newEntryMenu(Table table, String entry) {
 		boolean correctEntry;
 		String[] entries;
-		Scanner input = new Scanner(System.in);
+	//	Scanner input = new Scanner(System.in);
 		do {
-			System.out.print("Please add a new entry:");
-			String entry = input.nextLine();
+	//		System.out.print("Please add a new entry:");
+	//		String entry = input.nextLine();
 			entries = entry.split(",");
 			for (int i = 0; i < entries.length; i++) {
 				entries[i] = entries[i].trim();
@@ -150,6 +150,7 @@ public class Table {
 			correctEntry = table.checkEntry(entries);
 			if (correctEntry == false) {
 				System.out.println("Please try again!");
+				return;
 			}
 		} while (correctEntry == false);
 		table.newEntry(entries);
@@ -204,8 +205,7 @@ public class Table {
 	 *         there's a wrong input.
 	 */
 
-	public static boolean checkInput(int choice) {
-		boolean correctEntry = true;
+	public static boolean checkInput(int choice, boolean correctEntry) {
 		try {
 			if (choice < 1 || choice > 6)
 				throw new WrongEntryException();
@@ -245,11 +245,9 @@ public class Table {
 		}
 	}
 
-	public static void attributeMenu(Table table) throws InputMismatchException {
+	public static void attributeMenu(Table table, String name) throws InputMismatchException {
 		boolean correctEntry;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Enter the name of the new attribute");
-		String name = input.nextLine().trim();
 		int choice = 0;
 		do {
 			correctEntry = true;
@@ -264,14 +262,16 @@ public class Table {
 				input.next();
 				continue;
 			}
-			correctEntry = checkInput(choice);
+
+			correctEntry = checkInput(choice, correctEntry);
+
 		} while (correctEntry == false);
 		table.newAttribute(name, choice);
 	}
 
 	public static boolean exists(String name) {
 		for (Table table : tables) {
-			if (table.getName() == name) {
+			if (table.getName().equals(name)) {
 				return true;
 			}
 		}
@@ -282,7 +282,7 @@ public class Table {
 		if (exists(tableName)) {
 			int p = position(tableName);
 			for (Attribute attribute : tables.get(p).getAttributes()) {
-				if (attribute.getName() == name) {
+				if (attribute.getName().equals(name)) {
 					return true;
 				}
 			}
@@ -377,16 +377,57 @@ public class Table {
 		return positions;
 	}
 
-	public boolean attributeExists(String attributeName) {
-		for (Attribute attribute : attributes) {
-			if (attribute.getName() == attributeName) {
-				return true;
+	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		int[] columnIndices = new int[attributeNames.size()]; // Table containing the position of each attribute name
+																// given in the table
+		try {
+			columnIndices = matchSearchAttributes(attributeNames);
+		} catch (NotMatchingAttributeException e) {
+			System.err.println(e);
+			return positions; // If the search fails, an empty ArrayList is returned
+		}
+		for (int i = 0; i < lines; i++) {
+			boolean matchingRow = true;
+			int k = 0; // counter for the elements arraylist
+			for (int j : columnIndices) {
+				if (!(elements.get(k).equals(attributes.get(j).getArray().get(i)))) {
+					matchingRow = false; // At least one element of the row does not match with one of the given
+											// elements
+					break;
+				}
+				k++;
+			}
+			if (matchingRow == true) {
+				positions.add(i);
 			}
 		}
-		return false;
+		return positions;
 	}
 
-	
+	/* Method checking if the attribute names given for search exist in the table */
+	public int[] matchSearchAttributes(ArrayList<String> attributeNames) throws NotMatchingAttributeException {
+		int[] columnIndices = new int[attributeNames.size()];
+		for (int i = 0; i < attributeNames.size(); i++) {
+			boolean correctAttribute = false;
+			for (int j = 0; j < attributeNumber; j++) {
+				if (attributeNames.get(i).equals(attributes.get(j).getName())) {
+					correctAttribute = true;
+					columnIndices[i] = j; // The name of the attribute given for search was found in column j
+					break;
+				}
+			}
+			if (correctAttribute == false) {
+				throw new NotMatchingAttributeException(attributeNames.get(i) + " is not an attribute name!");
+			}
+		}
+		return columnIndices;
+	}
+
+	@Override
+	public String toString() {
+		return ("name = " + name + "\n" + "attributeNumber = " + attributeNumber + "\n" + "lines = " + lines + "\n");
+	}
 
 	public ArrayList<Attribute> sortTable(Table table, String keyAttribute, int choice) throws ParseException {
 
@@ -394,7 +435,7 @@ public class Table {
 		if ((table.getAttributes().get(index).getType().equals("date"))
 				|| (table.getAttributes().get(index).getType().equals("Time of last edit"))) {
 			return dateSort(table, index, choice, returnFormater(table, index));
-		} else if ((table.getAttributes().get(index).getType().equals("obj"))||(index == 0)) {
+		} else if ((table.getAttributes().get(index).getType().equals("obj")) || (index == 0)) {
 			System.out.println("This column contains elements that cannot be sorted");
 			return null;
 		} else {
