@@ -194,6 +194,41 @@ public class TableTest {
 		positionsExpected.add(1);
 		Assert.assertEquals("Wrong search results", positionsActual, positionsExpected);
 	}
+	
+	@Test
+	public void testDeleteTable() {
+		table.deleteTable(table.getName());
+		Assert.assertEquals("Failure : Not deleted Table.",Table.getTables(0).getName(), "Extra");
+	}
+	
+	@Test
+	public void testDeleteAttribute() {
+		table.deleteAttribute(table.getName(), table.getAttributes().get(2).getName());
+		Assert.assertEquals("Failure : Not deleted Attribute.", Table.getTables(0).getAttributes().get(2).getName(), "Age");
+		
+	} 
+	
+	@Test
+	public void testDeleteEntry() {
+		table.deleteEntry(table.getName(), 3);
+		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes().get(2).getArray().get(3), "m");
+		
+	}
+	
+	@Test
+	public void testDeleteElement() {
+		table.deleteElement(table.getName(), 1, table.getAttributes().get(3).getName());
+		Assert.assertEquals("Failure : Not deleted Element.",null, Table.getTables(0).getAttributes().get(3).getArray().get(1));
+	}
+	
+	
+	
+	@After
+	public void tearDown() {
+		Table.getT().clear();
+		
+		
+	}
 
 }
 >>>>>>> 7507c4538684cf80d66cdac3b9e34a8a3d3730ab
