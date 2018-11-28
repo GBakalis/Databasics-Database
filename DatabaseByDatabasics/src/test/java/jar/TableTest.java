@@ -5,9 +5,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestTable {
+public class TableTest {
 	private Table  table = new Table("Student");
-	
+
 	@Before
 	public void setUp() {
 		table.newAttribute("Name", 1);
@@ -22,19 +22,19 @@ public class TestTable {
 		table.newEntry(entries3);
 		table.newEntry(entries4);
 	}
-	
+
 	@Test
 	public void testExistsString() {
 		Assert.assertTrue("Failure : Table not found", Table.exists("Student"));
 		Assert.assertFalse("Failure : Table found without existing", Table.exists("k"));
 	}
-	
+
 	@Test
 	public void testExistsStringString() {
 		Assert.assertTrue("Failure : Attribute not found", Table.exists("Student", "Age"));
 		Assert.assertFalse("Failure : Attribute found without existing", Table.exists("Student", "smt"));
 	}
-	
+
 	@Test
 	public void testDataChange() {
 		ArrayList<String> attrNames = new ArrayList<String>();
