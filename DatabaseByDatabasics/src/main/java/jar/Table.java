@@ -105,6 +105,46 @@ public class Table{
 			}
 		}
 	}
+	
+	public boolean checkEntry(String[] entries) {
+		boolean correctEntry = true;
+		try {
+			if (entries.length != attributeNumber - 1) {
+				correctEntry = false;
+			} else {
+				checkEntryType(entries);
+			}
+		} catch (NumberFormatException e) {
+			System.err.println("Wrong entry on an Integer or Decimal column!");
+			correctEntry = false;
+		} catch (ParseException e) {
+			System.err.println("Invalid date format in a date column!");
+			correctEntry = false;
+		} catch (NotCharacterException e) {
+			System.err.println("Large entry on a single letter column!");
+			correctEntry = false;
+		} 
+		return correctEntry;
+	}
+	
+	public static void newEntryMenu(Table table) {
+		boolean correctEntry;
+		String[] entries;
+		Scanner input = new Scanner(System.in);
+		do {
+			System.out.print("Please add a new entry:");
+			String entry = input.nextLine();
+			entries = entry.split(",");
+			for (int i = 0; i < entries.length; i++) {
+				entries[i] = entries[i].trim();
+			}
+			correctEntry = table.checkEntry(entries);
+			if (correctEntry == false) {
+				System.out.println("Please try again!");
+			}
+		} while (correctEntry == false);
+		table.newEntry(entries);
+	}
 
 	public void newEntry(String[] entries) {
 		attributes.get(0).setEntryField(String.valueOf(++lines));
@@ -190,6 +230,37 @@ public class Table{
 			break;
 		}
 	}
+	
+	public static void attributeMenu(Table table) throws InputMismatchException {
+		boolean correctEntry;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter the name of the new attribute");
+		String name = input.nextLine().trim();
+		int choice = 0;
+		do {
+			correctEntry = true;
+			System.out.println("Your attribute can be of any of the following types:\n"
+					+ "1. Text\n"
+					+ "2. Single letter\n"
+					+ "3. Integer\n"
+					+ "4. Decimal\n"
+					+ "5. Date\n"
+					+ "6. Other (e.g. Image)\n\n"
+					+ "Insert the number that corresponds to the type you want.");
+			try {
+				choice = input.nextInt();
+			} catch (InputMismatchException err) {
+				System.out.println("This was not a number!");
+				correctEntry = false;
+				input.next();
+				continue;
+			}
+
+			correctEntry = checkInput(choice, correctEntry);
+
+		} while(correctEntry == false);
+		table.newAttribute(name, choice);
+	}
 
 	public static boolean exists(String name) {
 		for (Table table : tables) {
@@ -212,6 +283,29 @@ public class Table{
 		return false;
 	}
 	
+	public static int maxLength(Attribute att) {
+		int max = att.getName().length();
+		for (int i = 0; i < att.getArray().size(); i++) {
+			if (att.getArray().get(i).length() > max) {
+				max = att.getArray().get(i).length();
+			}
+		}
+		return max;
+	}
+	
+	public static ArrayList<Integer> position(String tableName, ArrayList<String> atts) {
+		Table table = tables.get(position(tableName));
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		for (String att : atts) {
+			for (int i = 0; i < table.getAttributes().size(); i++) {
+				if (att.equals(table.getAttributes().get(i).getName())) {
+					positions.add(i);
+				}
+			}
+		}
+		return positions;
+	}
+	
 	public static int position(String tableName) {
 		int position = 0;
 		for (int i = 0; i < tables.size(); i++) {
@@ -226,13 +320,16 @@ public class Table{
 	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
 		ArrayList<String> changedValues = new ArrayList<String>();
 		for (int i=0; i < attrNames.size(); i++) {
-			for (int j = 0; j < attributes.size(); j++) {
+			for (int j = 1; j < attributes.size()-1; j++) {
 				if (attributes.get(j).getName().equals(attrNames.get(i))) {
 					attributes.get(j).changeField(num, newValues.get(i));
 					changedValues.add(newValues.get(i));
 				}
 			}
 		}
+		Date date = new Date();
+		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
 		return changedValues;
 	}
 }
