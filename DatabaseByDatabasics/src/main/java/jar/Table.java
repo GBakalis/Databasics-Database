@@ -32,15 +32,10 @@ import java.util.InputMismatchException;
  * <li>Input data into a table
  * <li>Copy an entry to another position of the same or another table
  * <li>Move an entry to another position of the same or another table
-<<<<<<< HEAD
  * <li>Copy a single field to another position of the same or another
  * table
  * <li>Move a single field to another position of the same or another
  * table
-=======
- * <li>Copy a single field to another position of the same or another table
- * <li>Move a single field to another position of the same or another table
->>>>>>> sortFunction
  * <li>Delete an entry
  * <li>Delete a table
  * <li>Erase a field
@@ -264,12 +259,12 @@ public class Table {
 		int choice = 0;
 		do {
 			correctEntry = true;
-			System.out.println("Your attribute can be of any of the following types:\n" 
+			System.out.println("Your attribute can be of any of the following types:\n"
 								+ "1. Text\n"
-								+ "2. Single letter\n" 
+								+ "2. Single letter\n"
 								+ "3. Integer\n"
-								+ "4. Decimal\n" 
-								+ "5. Date\n" 
+								+ "4. Decimal\n"
+								+ "5. Date\n"
 								+ "6. Other (e.g. Image)\n\n"
 								+ "Insert the number that corresponds to the type you want.");
 			try {
@@ -411,7 +406,7 @@ public class Table {
 			int k = 0; //counter for the elements arraylist
 			for (int j : columnIndices) {
 					if (!(elements.get(k).equals(attributes.get(j).getArray().get(i)))) {
-						matchingRow = false; //At least one element of the row does not match with one of the given elements						
+						matchingRow = false; //At least one element of the row does not match with one of the given elements
 						break;
 					}
 					k++;
@@ -426,7 +421,7 @@ public class Table {
 	/* Method checking if the attribute names given for search exist in the table */
 	public int [] matchSearchAttributes(ArrayList<String> attributeNames)
 			throws NotMatchingAttributeException {
-		int [] columnIndices = new int[attributeNames.size()]; 
+		int [] columnIndices = new int[attributeNames.size()];
 		for (int i = 0; i < attributeNames.size(); i++) {
 			boolean correctAttribute = false;
 			for (int j = 0; j < attributeNumber; j++) {
@@ -443,7 +438,7 @@ public class Table {
 		return columnIndices;
 	}
 
-	public ArrayList<Attribute> sortTable(Table table, String keyAttribute, int choice) 
+	public ArrayList<Attribute> sortTable(Table table, String keyAttribute, int choice)
 				throws ParseException {
 
 		int index = position(table.getName(), new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
@@ -520,7 +515,7 @@ public class Table {
 		}
 		return table.getAttributes();
 	}
-	
+
 	public void deleteTable(String tableName) {
 		int pos=position(tableName);
 		for (int i = 0; i <= getT().size(); i++) {
@@ -530,17 +525,17 @@ public class Table {
 			}
 		}
 	}
-	
-	
+
+
 
 	public void deleteAttribute(String tableName, String attributeName) {
 		int t_pos = position(tableName);
 		ArrayList<String> att = new ArrayList<String>();
 		att.add(attributeName);
 		ArrayList<Integer> p = position(tableName,att);
-		int number = p.get(0); 
+		int number = p.get(0);
 		tables.get(t_pos).attributes.remove(number);
-		
+
 	}
 
 	public void deleteEntry(String tableName, int lineNumber) {
@@ -570,7 +565,7 @@ public class Table {
 				+ "attributeNumber = " + attributeNumber + "\n"
 				+ "lines = " + lines + "\n");
 	}
-	
+
 
 }
 

@@ -9,8 +9,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-<<<<<<< HEAD
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -19,8 +17,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-=======
->>>>>>> 7507c4538684cf80d66cdac3b9e34a8a3d3730ab
   <url>https://github.com/GBakalis/Databasics-Database/</url>
   <description>Flexible database</description>
 <build>
