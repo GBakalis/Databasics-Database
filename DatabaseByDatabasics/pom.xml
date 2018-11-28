@@ -6,23 +6,11 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>DatabaseByDatabasics</name>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
   <url>https://github.com/GBakalis/Databasics-Database/</url>
   <description>Flexible database</description>
-<<<<<<< HEAD
- 
 <build>
   <plugins>
   	<plugin>
@@ -47,8 +35,6 @@
       </plugin>
  </plugins>
 </build>
-
- 
  <reporting>
 		<plugins>
 			<plugin>
@@ -67,4 +53,21 @@
 		</plugins>
 	</reporting>
  <artifactId>DatabaseByDatabasics</artifactId>
+ <dependencies>
+ 	<dependency>
+ 		<groupId>junit</groupId>
+ 		<artifactId>junit</artifactId>
+ 		<scope>test</scope>
+ 	</dependency>
+ </dependencies>
+ <dependencyManagement>
+ 	<dependencies>
+ 		<dependency>
+ 			<groupId>junit</groupId>
+ 			<artifactId>junit</artifactId>
+ 			<version>4.12</version>
+ 		</dependency>
+ 	</dependencies>
+ </dependencyManagement>
 </project>
+
