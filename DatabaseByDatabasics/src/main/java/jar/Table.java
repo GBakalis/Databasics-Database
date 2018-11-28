@@ -520,6 +520,49 @@ public class Table {
 		}
 		return table.getAttributes();
 	}
+	
+	public void deleteTable(String tableName) {
+		int pos=position(tableName);
+		for (int i = 0; i <= getT().size(); i++) {
+			if (pos == i) {
+				tables.remove(i);
+				break;
+			}
+		}
+	}
+	
+	
+
+	public void deleteAttribute(String tableName, String attributeName) {
+		int t_pos = position(tableName);
+		ArrayList<String> att = new ArrayList<String>();
+		att.add(attributeName);
+		ArrayList<Integer> p = position(tableName,att);
+		int number = p.get(0); 
+		tables.get(t_pos).attributes.remove(number);
+		
+	}
+
+	public void deleteEntry(String tableName, int lineNumber) {
+		int t_pos = position(tableName);
+		for (int i = 0; i <= lines; i++) {
+			for (int j=0; j<= attributes.size(); j++) {
+				if (lineNumber == i) {
+					tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
+					break;
+				}
+			}
+		}
+	}
+
+	public void deleteElement(String tableName, int line_number, String attributeName) {
+		int t_pos = position(tableName);
+		ArrayList<String> att = new ArrayList<String>();
+		att.add(attributeName);
+		ArrayList<Integer> p = position(tableName,att);
+		int number = p.get(0);
+		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number,null);
+	}
 
 	@Override
 	public String toString() {
@@ -527,6 +570,7 @@ public class Table {
 				+ "attributeNumber = " + attributeNumber + "\n"
 				+ "lines = " + lines + "\n");
 	}
+	
 
 }
 
