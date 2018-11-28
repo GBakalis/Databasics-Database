@@ -1,4 +1,4 @@
-package Databasics;
+package jar;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -10,20 +10,19 @@ public class Main {
 	public static void main(String args[]) {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Please insert table name:");
-		String name = input.nextLine();
+		String name = input.nextLine().trim();
 		Table table = new Table(name);
+		ArrayList<String> test = new ArrayList<String>();
+		test.add("a");
+		test.add("c");
 		for (int i = 0; i < 3; i++) {
-			table.newAttribute();
+			table.newAttribute("a", 1);
 		}
+		String[] a = {"a","b"};
 		for (int i = 0; i < 2; i++) {
-			table.newEntry();
+			table.newEntry(a);
 		}
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 3; j++) {
-				System.out.printf("%-20s|", table.getThisTable().get(j).getArray().get(i)); //Make methods per pair of gets
-			}
-			System.out.println();
-		}
+		Table.viewAttribute(name, test);
 
 	}
 
