@@ -1,4 +1,4 @@
-package jar;
+package Databasics;
 
 import java.util.ArrayList;
 
@@ -34,16 +34,13 @@ public class Attribute {
 	public ArrayList<String> getArray() {
 		return array;
 	}
-	
 	public void setArray(ArrayList<String> array) {
 		this.array = array; 
 	}
 
-
 	public void setEntryField(String entry) {
 		array.add(entry);
 	}
-	
 	public void changeField(int lineNum, String newVal) {
         array.set(lineNum, newVal);
 	}

@@ -5,5 +5,4 @@ public class NotMatchingAttributeException extends Exception {
 	public NotMatchingAttributeException(String msg) {
 		super(msg);
 	}
-
 }
