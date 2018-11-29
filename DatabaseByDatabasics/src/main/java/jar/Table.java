@@ -66,7 +66,8 @@ public class Table{
 	public Table(String name){
 		this.name = name;
 		attributes.add(new Attribute("#", "int"));
-		attributeNumber = 1;
+		attributes.add(new Attribute("Last Modified", "date" ));
+		attributeNumber = 2;
 		lines = 0;
 		tables.add(this);
 	}
@@ -88,7 +89,7 @@ public class Table{
 	 */
 	public void checkEntryType(String[] entries) throws ParseException, NumberFormatException,
 				NotCharacterException {
-		for (int i = 1; i < attributeNumber; i++) {
+		for (int i = 1; i < attributeNumber - 1; i++) {
 			if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
 				Integer.parseInt(entries[i-1]);
 			}
@@ -110,7 +111,7 @@ public class Table{
 	public boolean checkEntry(String[] entries) {
 		boolean correctEntry = true;
 		try {
-			if (entries.length != attributeNumber - 1) {
+			if (entries.length != attributeNumber - 2) {
 				correctEntry = false;
 			} else {
 				checkEntryType(entries);
@@ -142,6 +143,25 @@ public class Table{
 		do {
 		//	System.out.print("Please add a new entry:");
 		//	String entry = input.nextLine();
+			entries = entry.split(",");
+			for (int i = 0; i < entries.length; i++) {
+				entries[i] = entries[i].trim();
+			}
+			correctEntry = table.checkEntry(entries);
+			if (correctEntry == false) {
+				System.out.println("Please try again!");
+			}
+		} while (correctEntry == false);
+		table.newEntry(entries);
+	}
+	
+	public static void newEntryMenu(Table table) {
+		boolean correctEntry;
+		String[] entries;
+		Scanner input = new Scanner(System.in);
+		do {
+			System.out.print("Please add a new entry:");
+		    String entry = input.nextLine();
 			entries = entry.split(",");
 			for (int i = 0; i < entries.length; i++) {
 				entries[i] = entries[i].trim();
@@ -226,22 +246,22 @@ public class Table{
 		attributeNumber++;
 		switch(choice) {
 		case 1:
-			attributes.add(new Attribute(name, "string"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "string"));
 			break;
 		case 2:
-			attributes.add(new Attribute(name, "char"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "char"));
 			break;
 		case 3:
-			attributes.add(new Attribute(name, "int"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "int"));
 			break;
 		case 4:
-			attributes.add(new Attribute(name, "double"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "double"));
 			break;
 		case 5:
-			attributes.add(new Attribute(name, "date"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "date"));
 			break;
 		case 6:
-			attributes.add(new Attribute(name, "obj"));
+			attributes.add(attributeNumber - 2, new Attribute(name, "obj"));
 			break;
 		}
 	}
@@ -364,11 +384,11 @@ public class Table{
 	}
 
 	public static int position(String tableName) {
-		int position = 0;
+		int position = -1;
 		for (int i = 0; i < tables.size(); i++) {
 			if (tableName.equals(tables.get(i).getName())) {
 				position = i;
-				continue;
+				break;
 			}
 		}
 		return position;
@@ -485,11 +505,11 @@ public class Table{
 
 	public void tempTable(String nameCopy, int copyK, String newName) {
 		Table tempTab = new Table(newName);
-		for (int i = 1; i < tables.get(copyK).attributeNumber ; i++) {
+		for (int i = 1; i < tables.get(copyK).attributeNumber -1; i++) {
 			int choice = 0;
 			if (tables.get(copyK).getAttributes().get(i).getType().equals("string") ) {
 				choice = 1;
-			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("char ")) {
+			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("char")) {
 				choice = 2;
 			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("int")) {
 				choice = 3;
@@ -502,10 +522,19 @@ public class Table{
 			}
 			String name = tables.get(copyK).getAttributes().get(i).getName();
 			tempTab.newAttribute(name, choice);
-			for (int j = 0;j < tables.get(copyK).getAttributes().get(i).getArray().size(); j ++) {
+			for (int j = 0; j < tables.get(copyK).getLines(); j++) {
+				
 				System.out.println(tables.get(copyK).getAttributes().get(i).getArray().get(j));
-				tempTab.getAttributes().get(i).getArray().add(tables.get(copyK).getAttributes().get(i).getArray().get(j));
+				String temp = tables.get(copyK).getAttributes().get(i).getArray().get(j);
+				tempTab.getAttributes().get(i).getArray().add(temp);
 			}
+		}
+		String[] entries = new String[tables.get(copyK).attributeNumber - 2];
+		for (int j = 0; j < tables.get(copyK).getLines(); j++) {
+			for (int i = 0; i < entries.length; i++) {
+				entries[i] = tables.get(copyK).getAttributes().get(i + 1).getArray().get(j);
+			}
+			tempTab.newEntry(entries);
 		}
 		
 	}
@@ -516,7 +545,7 @@ public class Table{
 			int pasteK = position(namePaste);
 			if (exists(namePaste) && tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
 				tempTable(nameCopy, copyK, "temp");
-				tables.set(pasteK,tables.get(tables.size() - 1));
+				tables.set(pasteK, tables.get(tables.size() - 1));
 				deleteTable("temp");
 			}else {
 				tempTable(nameCopy, copyK, namePaste);

@@ -52,9 +52,9 @@ public class TestTable {
 	public void testCopyTable() {
 		table.copyTable("Student", "Extra");
 		for ( int i = 0; i < table.getAttributeNumber(); i ++ ) {
-			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getName() , Table.getT().get(2).getAttributes().get(i).getName());
+			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getName() , Table.getT().get(0).getAttributes().get(i).getName());
 			for ( int j = 0; j < table.getAttributes().get(0).getArray().size(); j ++) {
-				Assert.assertEquals("Wrong copy results",table.getAttributes().get(i).getArray().get(j), Table.getT().get(2).getAttributes().get(i).getArray().get(j));
+				Assert.assertEquals("Wrong copy results",table.getAttributes().get(i).getArray().get(j), Table.getT().get(0).getAttributes().get(i).getArray().get(j));
 			}
 		}
 	}
