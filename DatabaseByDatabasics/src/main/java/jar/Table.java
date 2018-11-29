@@ -485,28 +485,30 @@ public class Table{
 
 	public void tempTable(String nameCopy, int copyK, String newName) {
 		Table tempTab = new Table(newName);
-		for (int i = 1; i < tables.get(copyK).attributeNumber; i++) {
+		for (int i = 1; i < tables.get(copyK).attributeNumber ; i++) {
 			int choice = 0;
-			if (tables.get(copyK).getAttributes().get(i).getType() == "string") {
+			if (tables.get(copyK).getAttributes().get(i).getType().equals("string") ) {
 				choice = 1;
-			} else if (tables.get(copyK).getAttributes().get(i).getType() == "char ") {
+			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("char ")) {
 				choice = 2;
-			} else if (tables.get(copyK).getAttributes().get(i).getType() == "int") {
+			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("int")) {
 				choice = 3;
-			} else if (tables.get(copyK).getAttributes().get(i).getType() == "double") {
+			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("double")) {
 				choice = 4;
-			} else if (tables.get(copyK).getAttributes().get(i).getType() == "date") {
+			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("date")) {
 				choice = 5;
 			} else {
 				choice = 6;
 			}
 			String name = tables.get(copyK).getAttributes().get(i).getName();
 			tempTab.newAttribute(name, choice);
-			tempTab.copyAttribute(nameCopy, name, newName, name);
+			for (int j = 0;j < tables.get(copyK).getAttributes().get(i).getArray().size(); j ++) {
+				System.out.println(tables.get(copyK).getAttributes().get(i).getArray().get(j));
+				tempTab.getAttributes().get(i).getArray().add(tables.get(copyK).getAttributes().get(i).getArray().get(j));
+			}
 		}
 		
 	}
-		
 		
 
 		public void copyTable(String nameCopy, String namePaste) {
@@ -527,14 +529,14 @@ public class Table{
 			int copyK = position(nameCopy);
 			int pasteK = position(namePaste);
 			boolean check = true;
-			if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getAttributeNumber()) {
+			if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
 				if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
-					for( int i = 0; i < tables.get(pasteK).getAttributeNumber(); i++) {
-						if (tables.get(pasteK).getAttributes().get(i).getType() == tables.get(copyK).getAttributes().get(i).getType()) {
+					for( int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
+						if (tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType())) {
 							tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
 							Date date = new Date();
 							DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-							tables.get(pasteK).getAttributes().get(attributeNumber - 1).setEntryField(format.format(date));
+							tables.get(pasteK).getAttributes().get(attributeNumber - 2).setEntryField(format.format(date));
 						} else {
 							check = false;
 							break;
@@ -553,21 +555,20 @@ public class Table{
 			int copyK = position(nameCopy);
 			int attNumC = search_attribute(copyK,attNameC);
 			int pasteK = position(namePaste);
-			try {
-				if (exists(namePaste,attNameP)) {
-					int attNumP = search_attribute(pasteK,attNameP);
-					if (tables.get(pasteK).getAttributes().get(attNumP).getType() == tables.get(copyK).getAttributes().get(attNumC).getType()) {
-						tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
-					} else {
-						System.out.println("Different type of attributes");
-					}
+			if (exists(namePaste,attNameP)) {
+				int attNumP = search_attribute(pasteK,attNameP);
+				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals( tables.get(copyK).getAttributes().get(attNumC).getType())) {
+					tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+				} else {
+					System.out.println("Different type of attributes");
 				}
-			} catch (IndexOutOfBoundsException e){
+			} else {
 				attributeMenu(tables.get(pasteK));
-				tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 1).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+				tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 
 			}
 		}
+
 
 		public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
 			int copyK = position(nameCopy);
@@ -576,7 +577,7 @@ public class Table{
 			int attNumP = search_attribute(pasteK,attNameP);
 			try {
 				if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
-					if (tables.get(pasteK).getAttributes().get(attNumP).getType() == tables.get(copyK).getAttributes().get(attNumC).getType() ) {
+					if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
 						tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP - 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC - 1));
 					} else {
 						System.out.println("Different type of elements");

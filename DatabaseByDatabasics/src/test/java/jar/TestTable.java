@@ -30,16 +30,16 @@ public class TestTable {
 		String[] entries6 = {"George", "m", "19"};
 		String[] entries7 = {"Martha", "f", "21"};
 		String[] entries8 = {"Kostas", "m", "20"};
-		table.newEntry(entries1);
-		table.newEntry(entries2);
-		table.newEntry(entries3);
-		table.newEntry(entries4);
+		table2.newEntry(entries5);
+		table2.newEntry(entries6);
+		table2.newEntry(entries7);
+		table2.newEntry(entries8);
 	}
 	
 	@Test
 	public void testTempTable() {
 		table.tempTable("Student",0, "temp");
-		for ( int i = 0; i < table.getAttributeNumber(); i ++ ) {
+		for ( int i = 0; i < table.getAttributeNumber() - 1; i ++ ) {
 			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getName() , Table.getT().get(2).getAttributes().get(i).getName());
 			for ( int j = 0; j < table.getAttributes().get(0).getArray().size(); j ++) {
 				Assert.assertEquals("Wrong copy results",table.getAttributes().get(i).getArray().get(j), Table.getT().get(2).getAttributes().get(i).getArray().get(j));
@@ -100,7 +100,7 @@ public class TestTable {
 		String nameC = table.getName();
 		String nameP = table2.getName();
 		table.copyEntry(nameC, 1, nameP, 1);
-		for (int i = 0; i < table.getAttributeNumber(); i++) {
+		for (int i = 0; i < table.getAttributeNumber() - 1; i++) {
 			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getArray().get(0), table2.getAttributes().get(i).getArray().get(0));
 			
 		}
