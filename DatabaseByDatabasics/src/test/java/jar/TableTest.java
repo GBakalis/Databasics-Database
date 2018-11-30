@@ -42,7 +42,7 @@ public class TableTest {
 
 	@Test
 	public void testDescendingGeneralSort() throws ParseException {
-		table.sortTable(table, "Name", 2);
+		table.sortTable(table, "Name", -1);
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(0), "Martha");
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(1), "George");
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(2), "Andreas");
@@ -70,7 +70,7 @@ public class TableTest {
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(2), "01:01:2019" );
 	}
 	public void testDescendingDateSort() throws ParseException {
-		table.sortTable(table, "Date", 2);
+		table.sortTable(table, "Date", -1);
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(0),"01:01:2019"  );
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(1), "01:01:2009" );
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(2), "01:01:1999" );

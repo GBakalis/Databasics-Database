@@ -445,27 +445,15 @@ public class Table {
 	}
 
 	protected ArrayList<Attribute> generalSort(Table table, int index, int order) {
-		if (order == 1) {
 			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++)
 				for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
-					if (table.getAttributes().get(index).getArray().get(j - 1)
-							.compareTo(table.getAttributes().get(index).getArray().get(j)) > 0)
+					if (order * table.getAttributes().get(index).getArray().get(j - 1)
+							.compareTo(table.getAttributes().get(index).getArray().get(j))> 0)
 
 						for (int k = 1; k < table.getAttributeNumber(); k++)
 							Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
-				}
-		}
-		if (order == 2) {
-			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++)
-				for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
-					if (table.getAttributes().get(index).getArray().get(j - 1)
-							.compareTo(table.getAttributes().get(index).getArray().get(j)) < 0)
-						for (int k = 1; k < table.getAttributeNumber(); k++)
-							Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
-				}
-		}
+					}
 		return table.getAttributes();
-
 	}
 
 	protected SimpleDateFormat returnFormater(Table table, int index) {
@@ -477,11 +465,11 @@ public class Table {
 
 	protected ArrayList<Attribute> dateSort(Table table, int index, int order, SimpleDateFormat formatter)
 			throws ParseException {
-		if (order == 1) {
+		
 			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++) {
 				{
 					for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
-						if (formatter.parse(table.getAttributes().get(index).getArray().get(j - 1))
+						if (order * formatter.parse(table.getAttributes().get(index).getArray().get(j - 1))
 								.compareTo(formatter.parse(table.getAttributes().get(index).getArray().get(j))) > 0) {
 							for (int k = 1; k < table.getAttributeNumber(); k++)
 								Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
@@ -489,20 +477,6 @@ public class Table {
 					}
 				}
 			}
-		}
-		if (order == 2) {
-			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++) {
-				{
-					for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
-						if (formatter.parse(table.getAttributes().get(index).getArray().get(j - 1))
-								.compareTo(formatter.parse(table.getAttributes().get(index).getArray().get(j))) < 0) {
-							for (int k = 1; k < table.getAttributeNumber(); k++)
-								Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
-						}
-					}
-				}
-			}
-		}
 		return table.getAttributes();
 	}
 }

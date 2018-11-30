@@ -7,8 +7,8 @@ public class Menu {
 	public static void CreationMenu() {
 		String flag = null;
 		do {
-			Table table = tableCreatioMenu();
-			attributeCreatinMenu(table);
+			Table table = tableCreationMenu();
+			attributeCreatiοnMenu(table);
 			entryCreationMenu(table);
 			System.out.println("Do you want to create another table?");
 			Scanner input = new Scanner(System.in);
@@ -18,7 +18,12 @@ public class Menu {
 		
 	}
 
-	public static Table tableCreatioMenu() {
+	public static Table tableCreationMenu() {
+		Table table = new Table(readTableNameMenu());
+		return table;
+	}
+	
+	public static String readTableNameMenu() {
 		String tableName = null;
 		do {
 			System.out.print("Please type in the name of the new table.");
@@ -26,12 +31,12 @@ public class Menu {
 			tableName = input.nextLine();
 			if (Table.exists(tableName) == true)
 				System.out.println("This table already exists.");
+			input.close();
 		} while (Table.exists(tableName) == true);
-		Table table = new Table(tableName);
-		return table;
+		return tableName;
 	}
 
-	public static void attributeCreatinMenu(Table table) {
+	public static void attributeCreatiοnMenu(Table table) {
 		String answer = null;
 		do {
 			Scanner input = new Scanner(System.in);
@@ -91,7 +96,7 @@ public class Menu {
 		if (order.equals("ascending"))
 			return 1;
 		if (order.equals("descending"))
-			return 2;
+			return -1;
 		System.out
 				.println("This is not a valid choice. Do you want to sort the table by ascending or descending order");
 		return readOrder();
