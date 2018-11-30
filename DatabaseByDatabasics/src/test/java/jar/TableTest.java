@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 package jar;
 
 import static org.junit.Assert.fail;
@@ -95,6 +96,17 @@ public class TableTest {
 
 	private Table table = new Table("Student");
 	private Table table2 = new Table("Extra");
+=======
+package jar;
+
+import java.util.ArrayList;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TableTest {
+	private Table  table = new Table("Student");
+>>>>>>> Data_change_function
 
 	@Before
 	public void setUp() {
@@ -113,12 +125,18 @@ public class TableTest {
 
 	@Test
 	public void testExistsString() {
+<<<<<<< HEAD
 		Assert.assertTrue("Failure : Table not found.", Table.exists("Student"));
 		Assert.assertFalse("Failure : Table found without existing.", Table.exists("aa"));
+=======
+		Assert.assertTrue("Failure : Table not found", Table.exists("Student"));
+		Assert.assertFalse("Failure : Table found without existing", Table.exists("k"));
+>>>>>>> Data_change_function
 	}
 
 	@Test
 	public void testExistsStringString() {
+<<<<<<< HEAD
 		Assert.assertTrue("Failure : Attribute not found.", Table.exists("Student", "Sex"));
 		Assert.assertFalse("Failure : Attribute found without existing.",
 				Table.exists("Student", "Uhm, no"));
@@ -194,6 +212,58 @@ public class TableTest {
 		positionsExpected.add(1);
 		Assert.assertEquals("Wrong search results", positionsActual, positionsExpected);
 	}
+	
+	@Test
+	public void testDeleteTable() {
+		table.deleteTable(table.getName());
+		Assert.assertEquals("Failure : Not deleted Table.",Table.getTables(0).getName(), "Extra");
+	}
+	
+	@Test
+	public void testDeleteAttribute() {
+		table.deleteAttribute(table.getName(), table.getAttributes().get(2).getName());
+		Assert.assertEquals("Failure : Not deleted Attribute.", Table.getTables(0).getAttributes().get(2).getName(), "Age");
+		
+	} 
+	
+	@Test
+	public void testDeleteEntry() {
+		table.deleteEntry(table.getName(), 3);
+		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes().get(2).getArray().get(3), "m");
+		
+	}
+	
+	@Test
+	public void testDeleteElement() {
+		table.deleteElement(table.getName(), 1, table.getAttributes().get(3).getName());
+		Assert.assertEquals("Failure : Not deleted Element.",null, Table.getTables(0).getAttributes().get(3).getArray().get(1));
+	}
+	
+	
+	
+	@After
+	public void tearDown() {
+		Table.getT().clear();
+		
+		
+	}
 
 }
 >>>>>>> 7507c4538684cf80d66cdac3b9e34a8a3d3730ab
+=======
+		Assert.assertTrue("Failure : Attribute not found", Table.exists("Student", "Age"));
+		Assert.assertFalse("Failure : Attribute found without existing", Table.exists("Student", "smt"));
+	}
+
+	@Test
+	public void testDataChange() {
+		ArrayList<String> attrNames = new ArrayList<String>();
+		ArrayList<String> newValues = new ArrayList<String>();
+		attrNames.add("Name");
+		newValues.add("Eve");
+		attrNames.add("Sex");
+		newValues.add("f");
+		Assert.assertEquals("Failure : Wrong data change", newValues ,table.dataChange(3, attrNames, newValues));
+	}
+}
+>>>>>>> Data_change_function
