@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 package jar;
-
-import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,72 +67,23 @@ public class TableTest {
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(1), "01:01:2009" );
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(2), "01:01:2019" );
 	}
+	
+	@Test
 	public void testDescendingDateSort() throws ParseException {
 		table.sortTable(table, "Date", 2);
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(0),"01:01:2019"  );
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(1), "01:01:2009" );
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(3).getArray().get(2), "01:01:1999" );
 	}
-	
-	
-	
-	
-
-}
-=======
-package jar;
-
-import java.util.ArrayList;
-
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.Assert;
-
-public class TableTest {
-
-	private Table table = new Table("Student");
-	private Table table2 = new Table("Extra");
-=======
-package jar;
-
-import java.util.ArrayList;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-public class TableTest {
-	private Table  table = new Table("Student");
->>>>>>> Data_change_function
-
-	@Before
-	public void setUp() {
-		table.newAttribute("Name", 1);
-		table.newAttribute("Sex", 2);
-		table.newAttribute("Age", 3);
-		String[] entries1 = {"Andreas", "m", "19"};
-		String[] entries2 = {"George", "m", "19"};
-		String[] entries3 = {"Martha", "f", "21"};
-		String[] entries4 = {"Kostas", "m", "20"};
-		table.newEntry(entries1);
-		table.newEntry(entries2);
-		table.newEntry(entries3);
-		table.newEntry(entries4);
-	}
 
 	@Test
 	public void testExistsString() {
-<<<<<<< HEAD
 		Assert.assertTrue("Failure : Table not found.", Table.exists("Student"));
 		Assert.assertFalse("Failure : Table found without existing.", Table.exists("aa"));
-=======
-		Assert.assertTrue("Failure : Table not found", Table.exists("Student"));
-		Assert.assertFalse("Failure : Table found without existing", Table.exists("k"));
->>>>>>> Data_change_function
 	}
 
 	@Test
 	public void testExistsStringString() {
-<<<<<<< HEAD
 		Assert.assertTrue("Failure : Attribute not found.", Table.exists("Student", "Sex"));
 		Assert.assertFalse("Failure : Attribute found without existing.",
 				Table.exists("Student", "Uhm, no"));
@@ -239,22 +186,6 @@ public class TableTest {
 		Assert.assertEquals("Failure : Not deleted Element.",null, Table.getTables(0).getAttributes().get(3).getArray().get(1));
 	}
 	
-	
-	
-	@After
-	public void tearDown() {
-		Table.getT().clear();
-		
-		
-	}
-
-}
->>>>>>> 7507c4538684cf80d66cdac3b9e34a8a3d3730ab
-=======
-		Assert.assertTrue("Failure : Attribute not found", Table.exists("Student", "Age"));
-		Assert.assertFalse("Failure : Attribute found without existing", Table.exists("Student", "smt"));
-	}
-
 	@Test
 	public void testDataChange() {
 		ArrayList<String> attrNames = new ArrayList<String>();
@@ -265,5 +196,9 @@ public class TableTest {
 		newValues.add("f");
 		Assert.assertEquals("Failure : Wrong data change", newValues ,table.dataChange(3, attrNames, newValues));
 	}
+	
+	@After
+	public void tearDown() {
+		Table.getT().clear();
+	}
 }
->>>>>>> Data_change_function
