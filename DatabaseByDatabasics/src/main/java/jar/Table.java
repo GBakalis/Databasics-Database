@@ -514,6 +514,18 @@ public class Table {
 		}
 		return positions;
 	}
+	
+	public ArrayList<Integer> positions(ArrayList<String> atts) {
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		for (String att :atts) {
+			for (int i = 0; i < attributeNumber; i++) {
+				if (att.equals(attributes.get(i).getName())) {
+					positions.add(i);
+				}
+			}
+		}
+		return positions;
+	}
 
 	public static int position(String tableName) {
 		int position = 0;
@@ -540,13 +552,8 @@ public class Table {
 
 	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
-		int [] columnIndices = new int[attributeNames.size()]; //Table containing the position of each attribute name given in the table
-		try {
-			columnIndices = matchSearchAttributes(attributeNames);
-		} catch (NotMatchingAttributeException e) {
-			System.err.println(e);
-			return positions; //If the search fails, an empty ArrayList is returned
-		}
+		ArrayList<Integer> columnIndices = new ArrayList<Integer>();
+		columnIndices = positions(attributeNames);
 		for (int i = 0; i < lines; i++) {
 			boolean matchingRow = true;
 			int k = 0; //counter for the elements arraylist
@@ -562,26 +569,6 @@ public class Table {
 			}
 		}
 		return positions;
-	}
-
-	/* Method checking if the attribute names given for search exist in the table */
-	public int [] matchSearchAttributes(ArrayList<String> attributeNames)
-			throws NotMatchingAttributeException {
-		int [] columnIndices = new int[attributeNames.size()];
-		for (int i = 0; i < attributeNames.size(); i++) {
-			boolean correctAttribute = false;
-			for (int j = 0; j < attributeNumber; j++) {
-				if (attributeNames.get(i).equals(attributes.get(j).getName())) {
-					correctAttribute = true;
-					columnIndices[i] = j; //The name of the attribute given for search was found in column j
-					break;
-				}
-			}
-			if (correctAttribute == false) {
-				throw new NotMatchingAttributeException(attributeNames.get(i)+" is not an attribute name!");
-			}
-		}
-		return columnIndices;
 	}
 
 	public ArrayList<Attribute> sortTable(Table table, String keyAttribute, int choice)
@@ -686,10 +673,10 @@ public class Table {
 
 	public void deleteEntry(String tableName, int lineNumber) {
 		int t_pos = position(tableName);
-		for (int i = 0; i <= lines; i++) {
-			for (int j=0; j<= attributes.size(); j++) {
-				if (lineNumber == i) {
-					tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
+		for (int i = 0; i < lines; i++) {
+			for (int j=0; j < attributes.size(); j++) {
+				if (lineNumber - 1 == i) {
+					tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber - 1);
 					break;
 				}
 			}

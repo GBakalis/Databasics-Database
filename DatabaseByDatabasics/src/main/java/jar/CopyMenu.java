@@ -8,7 +8,7 @@ public class CopyMenu {
 	
 	
 	
-	public void menuCopy() {
+	public void copyMenu() {
 		Scanner input = new Scanner(System.in);
 		boolean flag = true;
 		boolean correctChoice = false;
@@ -44,22 +44,22 @@ public class CopyMenu {
 	public void copy(int choice) {
 		switch (choice) {
 			case 1:
-				tableMenu();
+				copyTableMenu();
 				break;
 			case 2:
-				entryMenu();
+				copyEntryMenu();
 				break;
 			case 3:
-				attributeMenu();
+				copyAttributeMenu();
 				break;
 			case 4:
-				elementMenu();
+				copyElementMenu();
 				break;
 			}
 
 	}
 	
-	public void tableMenu() {
+	public void copyTableMenu() {
 		Scanner input = new Scanner(System.in);
 		String nameCopy;
 		String namePaste;
@@ -71,7 +71,7 @@ public class CopyMenu {
 		Table.getT().get(0).copyTable(nameCopy,namePaste);
 	}
 	
-	public void entryMenu() {
+	public void copyEntryMenu() {
 		String nameCopy;
 		String namePaste;
 		System.out.println("Please enter the name of the table that contains the entry");
@@ -90,7 +90,7 @@ public class CopyMenu {
 		Table.getT().get(0).copyEntry(nameCopy,entryNumCopy,namePaste,entryNumPaste);
 	}
 	
-	public void attributeMenu() {
+	public void copyAttributeMenu() {
 		Scanner input = new Scanner(System.in);
 		String nameCopy;
 		String namePaste;
@@ -110,7 +110,7 @@ public class CopyMenu {
 		Table.getT().get(0).copyAttribute(nameCopy,attNameC, namePaste,attNameP);
 	}
 	
-	public void elementMenu() {
+	public void copyElementMenu() {
 		String nameCopy;
 		String namePaste;
 		System.out.println("Please enter the name of the table that contains the element that you want to copy");
