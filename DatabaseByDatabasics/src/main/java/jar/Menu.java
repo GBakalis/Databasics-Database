@@ -259,6 +259,32 @@ public class Menu {
 		Table.getT().get(0).copyElement( nameCopy, attNameC, lineC, namePaste, attNameP, lineP);
 	}
 	
+	public static void searchMenu() {
+		Scanner input = new Scanner(System.in);
+		ArrayList<String> attNames = new ArrayList<String>();
+		ArrayList<String> elements = new ArrayList<String>();
+		System.out.print("Please enter the name of the table you want to search in: ");
+		Table table = Table.getTables(Table.position(readTableName()));
+		for (int i = 0; i < table.getAttributeNumber(); i++) {
+			System.out.print("Please enter an attribute name according to which you want to search: ");
+			String attName = readAttribute(table.getName());
+			attNames.add(attName);
+			System.out.print("Please enter an element you want to search in the column previously inserted: ");
+			String element = input.nextLine().trim();
+			elements.add(element);
+			System.out.println("Would you like to add another attribute for search?"
+					+ " (Yes / Any other key");
+			String addAttribute = input.nextLine().trim();
+			if (addAttribute.equalsIgnoreCase("yes")) {
+				continue;
+			} else {
+				break;
+			}
+		} 
+		ArrayList<Integer> entryPositions = table.search(attNames, elements);
+		table.viewLines(entryPositions);
+	}
+	
 	public static String readTable() {
 		Scanner input = new Scanner(System.in);
 		String tableName = input.nextLine();
