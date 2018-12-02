@@ -133,50 +133,11 @@ public class Table {
 	}
 
 	/**
-	 * This method creates an entry on the user's demand. It asks for the
-	 * entry, splits it on commas and holds it inside an array.
-	 * Checks whether the input is valid using checkEntry(String[])
-	 * and then proceeds to pass the correct input inside the table.
+	 * This method creates an entry. It asks for the entry, splits 
+	 * it on commas and holds it inside an array. Checks whether the 
+	 * input is valid using checkEntry(String[]) and then proceeds to 
+	 * pass the correct input inside the table.
 	 */
-
-	public static void newEntryMenu(Table table, String entry) {
-		boolean correctEntry;
-		String[] entries;
-		//Scanner input = new Scanner(System.in);
-		do {
-			//System.out.print("Please add a new entry:");
-			//String entry = input.nextLine();
-			entries = entry.split(",");
-			for (int i = 0; i < entries.length; i++) {
-				entries[i] = entries[i].trim();
-			}
-			correctEntry = table.checkEntry(entries);
-			if (correctEntry == false) {
-				System.out.println("Please try again!");
-			}
-		} while (correctEntry == false);
-		table.newEntry(entries);
-	}
-	
-	public static void newEntryMenu(Table table) {
-		boolean correctEntry;
-		String[] entries;
-		Scanner input = new Scanner(System.in);
-		do {
-			System.out.print("Please add a new entry:");
-		    String entry = input.nextLine();
-			entries = entry.split(",");
-			for (int i = 0; i < entries.length; i++) {
-				entries[i] = entries[i].trim();
-			}
-			correctEntry = table.checkEntry(entries);
-			if (correctEntry == false) {
-				System.out.println("Please try again!");
-			}
-		} while (correctEntry == false);
-		table.newEntry(entries);
-	}
-	
 	public void newEntry(String[] entries) {
 		Date date = new Date();
 		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
@@ -268,35 +229,6 @@ public class Table {
 			attributes.add(attributeNumber - 2, new Attribute(name, "obj"));
 			break;
 		}
-	}
-
-	public static void attributeMenu(Table table) throws InputMismatchException {
-		boolean correctEntry;
-		Scanner input = new Scanner(System.in);
-		System.out.println("Enter the name of the new attribute");
-		String name = input.nextLine().trim();
-		int choice = 0;
-		do {
-			correctEntry = true;
-			System.out.println("Your attribute can be of any of the following types:\n"
-								+ "1. Text\n"
-								+ "2. Single letter\n"
-								+ "3. Integer\n"
-								+ "4. Decimal\n"
-								+ "5. Date\n"
-								+ "6. Other (e.g. Image)\n\n"
-								+ "Insert the number that corresponds to the type you want.");
-			try {
-				choice = input.nextInt();
-			} catch (InputMismatchException err) {
-				System.out.println("This was not a number!");
-				correctEntry = false;
-				input.next();
-				continue;
-			}
-			correctEntry = checkInput(choice, correctEntry);
-		} while(correctEntry == false);
-		table.newAttribute(name, choice);
 	}
 
 	public static boolean exists(String name) {
@@ -404,7 +336,7 @@ public class Table {
 				System.out.println("Different type of attributes");
 			}
 		} else {
-			attributeMenu(tables.get(pasteK));
+			Menu.menuAddAttribute(tables.get(pasteK));
 			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 		}
 	}
