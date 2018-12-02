@@ -9,7 +9,7 @@ public class Menu {
 		Scanner input = new Scanner(System.in);
 		String tableName = input.nextLine();
 		while (Table.exists(tableName) == false) {
-			System.out.println("This table does not exist. Please type an existing name.");
+			System.out.print("This table does not exist. Please type an existing name: ");
 			tableName = input.nextLine();
 		}
 		return tableName;
@@ -29,10 +29,12 @@ public class Menu {
 		
 	}
 	
-	public static void searchMenu(Table table) {
+	public static void searchMenu() {
 		Scanner input = new Scanner(System.in);
 		ArrayList<String> attNames = new ArrayList<String>();
 		ArrayList<String> elements = new ArrayList<String>();
+		System.out.print("Please insert the name of the table you want to search in: ");
+		Table table = Table.getTables(Table.position(readTableName()));
 		for (int i = 0; i < table.getAttributeNumber(); i++) {
 			System.out.print("Please insert an attribute name according to which you want to search: ");
 			String attName = readAttribute(table.getName());
@@ -49,12 +51,14 @@ public class Menu {
 				break;
 			}
 		} 
-		table.search(attNames, elements);
+		ArrayList<Integer> entryPositions = table.search(attNames, elements);
+		table.viewLines(entryPositions);
 	}
 	
-	public static void newEntryMenu(Table table) {
+	public static void newEntryMenu() {
 		boolean correctEntry;
 		String[] entries;
+		Table table = Table.getTables(Table.position(readTableName()));
 		Scanner input = new Scanner(System.in);
 		do {
 			System.out.print("Please add a new entry:");

@@ -459,6 +459,20 @@ public class Table {
 		}
 		return max;
 	}
+	
+	public void viewLines(ArrayList<Integer> entryPositions) {
+		ArrayList<Integer> columnLength = new ArrayList<Integer>();
+		for (int i = 0; i < attributeNumber; i++) {
+			columnLength.add(maxLength(attributes.get(i)));
+			System.out.printf("%-" + columnLength.get(i) + "s|", attributes.get(i).getName());
+		}
+		for (int j : entryPositions) {
+			for (int i =0; i < attributeNumber; i++) {
+				System.out.printf("%-" + columnLength.get(i) + "s|",
+						attributes.get(i).getArray().get(j));
+			}
+		}
+	}
 
 	public static void viewTable(ArrayList<String> tableNames) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
