@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.util.InputMismatchException;
 
 /**
-
  * Table is the class that allows the creation and editing of tables inside a
  * database. A Table object is practically a series of Attribute (might also be
  * referred to as "column") objects held inside an ArrayList of type Attribute
@@ -134,50 +133,12 @@ public class Table {
 	}
 
 	/**
-	 * This method creates an entry on the user's demand. It asks for the
-	 * entry, splits it on commas and holds it inside an array.
-	 * Checks whether the input is valid using checkEntry(String[])
-	 * and then proceeds to pass the correct input inside the table.
+	 * This method creates an entry. It asks for the entry, splits 
+	 * it on commas and holds it inside an array. Checks whether the 
+	 * input is valid using checkEntry(String[]) and then proceeds to 
+	 * pass the correct input inside the table.
 	 */
 
-	public static void newEntryMenu(Table table, String entry) {
-		boolean correctEntry;
-		String[] entries;
-		//Scanner input = new Scanner(System.in);
-		do {
-		//	System.out.print("Please add a new entry:");
-		//	String entry = input.nextLine();
-			entries = entry.split(",");
-			for (int i = 0; i < entries.length; i++) {
-				entries[i] = entries[i].trim();
-			}
-			correctEntry = table.checkEntry(entries);
-			if (correctEntry == false) {
-				System.out.println("Please try again!");
-			}
-		} while (correctEntry == false);
-		table.newEntry(entries);
-	}
-	
-	public static void newEntryMenu(Table table) {
-		boolean correctEntry;
-		String[] entries;
-		Scanner input = new Scanner(System.in);
-		do {
-			System.out.print("Please add a new entry:");
-		    String entry = input.nextLine();
-			entries = entry.split(",");
-			for (int i = 0; i < entries.length; i++) {
-				entries[i] = entries[i].trim();
-			}
-			correctEntry = table.checkEntry(entries);
-			if (correctEntry == false) {
-				System.out.println("Please try again!");
-			}
-		} while (correctEntry == false);
-		table.newEntry(entries);
-	}
-	
 	public void newEntry(String[] entries) {
 		Date date = new Date();
 		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
@@ -271,35 +232,6 @@ public class Table {
 		}
 	}
 
-	public static void attributeMenu(Table table) throws InputMismatchException {
-		boolean correctEntry;
-		Scanner input = new Scanner(System.in);
-		System.out.println("Enter the name of the new attribute");
-		String name = input.nextLine().trim();
-		int choice = 0;
-		do {
-			correctEntry = true;
-			System.out.println("Your attribute can be of any of the following types:\n"
-								+ "1. Text\n"
-								+ "2. Single letter\n"
-								+ "3. Integer\n"
-								+ "4. Decimal\n"
-								+ "5. Date\n"
-								+ "6. Other (e.g. Image)\n\n"
-								+ "Insert the number that corresponds to the type you want.");
-			try {
-				choice = input.nextInt();
-			} catch (InputMismatchException err) {
-				System.out.println("This was not a number!");
-				correctEntry = false;
-				input.next();
-				continue;
-			}
-			correctEntry = checkInput(choice, correctEntry);
-		} while(correctEntry == false);
-		table.newAttribute(name, choice);
-	}
-
 	public static boolean exists(String name) {
 		for (Table table : tables) {
 			if (table.getName().equals(name)) {
@@ -354,101 +286,93 @@ public class Table {
 			}
 			tempTab.newEntry(entries);
 		}
-		
 	}
 		
-
-		public void copyTable(String nameCopy, String namePaste) {
-			int copyK = position(nameCopy);
-			int pasteK = position(namePaste);
-			if (exists(namePaste) && tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
-				tempTable(nameCopy, copyK, "temp");
-				tables.set(pasteK, tables.get(tables.size() - 1));
-				deleteTable("temp");
-			}else {
-				tempTable(nameCopy, copyK, namePaste);
-			}
-
+	public void copyTable(String nameCopy, String namePaste) {
+		int copyK = position(nameCopy);
+		int pasteK = position(namePaste);
+		if (exists(namePaste) && tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
+			tempTable(nameCopy, copyK, "temp");
+			tables.set(pasteK, tables.get(tables.size() - 1));
+			deleteTable("temp");
+		}else {
+			tempTable(nameCopy, copyK, namePaste);
 		}
-		
+	}
 
-		public void copyEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
-			int copyK = position(nameCopy);
-			int pasteK = position(namePaste);
-			boolean check = true;
-			if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
-				if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
-					for( int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
-						if (tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType())) {
-							tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
-							Date date = new Date();
-							DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-							tables.get(pasteK).getAttributes().get(attributeNumber - 2).setEntryField(format.format(date));
-						} else {
-							check = false;
-							break;
-						}
-					}
-					if (check == false)
-						System.out.println("The copy function is not possible");
-				} else {
-					System.out.println("Different number of attributes");
-				}
-			}
-			
-		}
-
-		public void copyAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
-			int copyK = position(nameCopy);
-			int attNumC = search_attribute(copyK,attNameC);
-			int pasteK = position(namePaste);
-			if (exists(namePaste,attNameP)) {
-				int attNumP = search_attribute(pasteK,attNameP);
-				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals( tables.get(copyK).getAttributes().get(attNumC).getType())) {
-					tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
-				} else {
-					System.out.println("Different type of attributes");
-				}
-			} else {
-				attributeMenu(tables.get(pasteK));
-				tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
-
-			}
-		}
-
-
-		public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
-			int copyK = position(nameCopy);
-			int attNumC = search_attribute(copyK,attNameC);
-			int pasteK = position(namePaste);
-			int attNumP = search_attribute(pasteK,attNameP);
-			try {
-				if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
-					if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
-						tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP - 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC - 1));
+	public void copyEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
+		int copyK = position(nameCopy);
+		int pasteK = position(namePaste);
+		boolean check = true;
+		if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
+			if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
+				for( int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
+					if (tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType())) {
+						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
+						Date date = new Date();
+						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+						tables.get(pasteK).getAttributes().get(attributeNumber - 2).setEntryField(format.format(date));
 					} else {
-						System.out.println("Different type of elements");
+						check = false;
+						break;
 					}
 				}
-			} catch (IndexOutOfBoundsException e) {
-				System.out.println("Out of Bounds");
+				if (check == false)
+					System.out.println("The copy function is not possible");
+			} else {
+				System.out.println("Different number of attributes");
 			}
-			
 		}
+	}
 
-		public int search_attribute(int num,String attName) {
-			int pos = -1;
-			int i = 0;
-			boolean check = true;
-			while (i< tables.get(num).attributeNumber && check == true) {
-				if (attName.equals(tables.get(num).getAttributes().get(i).getName())) {
-					pos = i;
-					check = false;
-				}
-				i += 1;
+	public void copyAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
+		int copyK = position(nameCopy);
+		int attNumC = search_attribute(copyK,attNameC);
+		int pasteK = position(namePaste);
+		if (exists(namePaste,attNameP)) {
+			int attNumP = search_attribute(pasteK,attNameP);
+			if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals( tables.get(copyK).getAttributes().get(attNumC).getType())) {
+				tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+			} else {
+				System.out.println("Different type of attributes");
 			}
-			return pos;
+		} else {
+			Menu.menuAddAttribute(tables.get(pasteK));
+			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 		}
+	}
+		
+	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
+		int copyK = position(nameCopy);
+		int attNumC = search_attribute(copyK,attNameC);
+		int pasteK = position(namePaste);
+		int attNumP = search_attribute(pasteK,attNameP);
+		try {
+			if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
+				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
+					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP - 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC - 1));
+				} else {
+					System.out.println("Different type of elements");
+				}
+			}
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Out of Bounds");
+		}
+	}
+
+	public int search_attribute(int num,String attName) {
+		int pos = -1;
+		int i = 0;
+		boolean check = true;
+		while (i< tables.get(num).attributeNumber && check == true) {
+			if (attName.equals(tables.get(num).getAttributes().get(i).getName())) {
+				pos = i;
+				check = false;
+			}
+			i += 1;
+		}
+		return pos;
+	}
 
 	public static int maxLength(Attribute att) {
 		int max = att.getName().length();
@@ -460,24 +384,22 @@ public class Table {
 		return max;
 	}
 
-	public static void viewTable(ArrayList<String> tableNames) {
+	public static void viewTable(String tableName) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
-		ArrayList<Integer> tablePositions = position(tableNames);
-		for (int pos : tablePositions) {
-			System.out.println(tables.get(pos).getName() + "\n");
+		int pos = position(tableName);
+		System.out.println(tables.get(pos).getName() + "\n");
+		for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
+			columnLength.add(maxLength(tables.get(pos).getAttributes().get(i)));
+			System.out.printf("%-" + columnLength.get(i) + "s|",
+				tables.get(pos).getAttributes().get(i).getName());
+		}
+		System.out.println();
+		for (int j = 0; j < tables.get(pos).getLines(); j++) {
 			for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
-				columnLength.add(maxLength(tables.get(pos).getAttributes().get(i)));
 				System.out.printf("%-" + columnLength.get(i) + "s|",
-					tables.get(pos).getAttributes().get(i).getName());
+					tables.get(pos).getAttributes().get(i).getArray().get(j));
 			}
 			System.out.println();
-			for (int j = 0; j < tables.get(pos).getLines(); j++) {
-				for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
-					System.out.printf("%-" + columnLength.get(i) + "s|",
-						tables.get(pos).getAttributes().get(i).getArray().get(j));
-				}
-				System.out.println();
-			}
 		}
 	}
 
@@ -597,7 +519,6 @@ public class Table {
 		} else {
 			return generalSort(table, index, choice);
 		}
-
 	}
 
 	protected ArrayList<Attribute> generalSort(Table table, int index, int order) {
@@ -621,7 +542,6 @@ public class Table {
 				}
 		}
 		return table.getAttributes();
-
 	}
 
 	protected SimpleDateFormat returnFormater(Table table, int index) {
@@ -671,8 +591,6 @@ public class Table {
 			}
 		}
 	}
-
-
 
 	public void deleteAttribute(String tableName, String attributeName) {
 		int t_pos = position(tableName);
@@ -727,7 +645,6 @@ public class Table {
 				+ "attributeNumber = " + attributeNumber + "\n"
 				+ "lines = " + lines + "\n");
 	}
-
 
 }
 
