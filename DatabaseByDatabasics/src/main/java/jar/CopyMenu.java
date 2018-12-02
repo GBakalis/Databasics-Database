@@ -76,14 +76,14 @@ public class CopyMenu {
 		String namePaste;
 		System.out.println("Please enter the name of the table that contains the entry");
 		nameCopy = readTableName();
-		showTable(nameCopy);
+		Table.viewTable(nameCopy);
 		
 		System.out.println("Please enter the number of the entry that you want to copy");
 		int entryNumCopy = readLine();
 		
 		System.out.println("Please enter the name of the table that that you want to paste the entry");
 		namePaste = readTableName();
-		showTable(namePaste);
+		Table.viewTable(namePaste);
 		
 		System.out.println("Please enter the number of the entry that you want to paste");
 		int entryNumPaste = readLine();
@@ -96,14 +96,14 @@ public class CopyMenu {
 		String namePaste;
 		System.out.println("Please enter the name of the table that contains the attribute");
 		nameCopy = readTableName();
-		showTable(nameCopy);
+		Table.viewTable(nameCopy);
 		
 		System.out.println("Please enter the name of the attribute that you want to copy");
 		String attNameC = readAttribute(nameCopy);
 		
 		System.out.println("Please enter the name of the table that that you want to paste the attribute");
 		namePaste = readTableName();
-		showTable(namePaste);
+		Table.viewTable(namePaste);
 		
 		System.out.println("Please enter the name of the attribute where you want to paste");
 		String attNameP = input.nextLine();
@@ -115,7 +115,7 @@ public class CopyMenu {
 		String namePaste;
 		System.out.println("Please enter the name of the table that contains the element that you want to copy");
 		nameCopy = readTableName();
-		showTable(nameCopy);
+		Table.viewTable(nameCopy);
 		
 		System.out.println("Please enter the name of the attribute that contains the element that you want to copy");
 		String attNameC = readAttribute(nameCopy);
@@ -125,7 +125,7 @@ public class CopyMenu {
 		
 		System.out.println("Please enter the name of the table where you want to paste the element");
 		namePaste = readTableName();
-		showTable(namePaste);
+		Table.viewTable(namePaste);
 		
 		System.out.println("Please enter the name of the attribute where you want to paste the element");
 		String attNameP = readAttribute(namePaste);
@@ -159,12 +159,5 @@ public class CopyMenu {
 		Scanner input = new Scanner(System.in);
 		return input.nextInt();
 	}
-	
-	public static void showTable(String name) {
-		ArrayList<String> nameFinal = new ArrayList<String>();
-		nameFinal.add(name);
-		Table.viewTable(nameFinal);
-	}
-	
 }
 

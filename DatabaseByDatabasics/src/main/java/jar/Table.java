@@ -145,8 +145,8 @@ public class Table {
 		String[] entries;
 		//Scanner input = new Scanner(System.in);
 		do {
-		//	System.out.print("Please add a new entry:");
-		//	String entry = input.nextLine();
+			//System.out.print("Please add a new entry:");
+			//String entry = input.nextLine();
 			entries = entry.split(",");
 			for (int i = 0; i < entries.length; i++) {
 				entries[i] = entries[i].trim();
@@ -460,24 +460,22 @@ public class Table {
 		return max;
 	}
 
-	public static void viewTable(ArrayList<String> tableNames) {
+	public static void viewTable(String tableName) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
-		ArrayList<Integer> tablePositions = position(tableNames);
-		for (int pos : tablePositions) {
-			System.out.println(tables.get(pos).getName() + "\n");
+		int pos = position(tableName);
+		System.out.println(tables.get(pos).getName() + "\n");
+		for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
+			columnLength.add(maxLength(tables.get(pos).getAttributes().get(i)));
+			System.out.printf("%-" + columnLength.get(i) + "s|",
+				tables.get(pos).getAttributes().get(i).getName());
+		}
+		System.out.println();
+		for (int j = 0; j < tables.get(pos).getLines(); j++) {
 			for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
-				columnLength.add(maxLength(tables.get(pos).getAttributes().get(i)));
 				System.out.printf("%-" + columnLength.get(i) + "s|",
-					tables.get(pos).getAttributes().get(i).getName());
+					tables.get(pos).getAttributes().get(i).getArray().get(j));
 			}
 			System.out.println();
-			for (int j = 0; j < tables.get(pos).getLines(); j++) {
-				for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
-					System.out.printf("%-" + columnLength.get(i) + "s|",
-						tables.get(pos).getAttributes().get(i).getArray().get(j));
-				}
-				System.out.println();
-			}
 		}
 	}
 
