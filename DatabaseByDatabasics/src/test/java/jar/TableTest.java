@@ -63,9 +63,6 @@ public class TableTest {
 
 	@Test
 	public void testPositionString() {
-		for (int i = 0 ; i < Table.getT().size() ; i++) {
-			System.out.println(Table.getTables(i).toString());
-		}
 		Assert.assertEquals("Failure : Wrong table position.", Table.position("Student"), 0);
 	}
 
@@ -83,6 +80,7 @@ public class TableTest {
 	@After
 	public void tearDown() {
 		Table.getT().clear();
-		Assert.assertNull(Table.getT());
+		ArrayList<Table> test = new ArrayList<Table>();
+		Assert.assertEquals("Failure : Not cleared.", Table.getT(), test);
 	}
 }
