@@ -8,45 +8,51 @@ public class Menu {
 		String flag = null;
 		do {
 			Table table = tableCreationMenu();
-			attributeCreatiοnMenu(table);
+			attributeCreationMenu(table);
 			entryCreationMenu(table);
 			System.out.println("Do you want to create another table?");
 			Scanner input = new Scanner(System.in);
 			flag = input.next().toLowerCase();
 
 		} while ((flag.equals("yes")) || (!flag.equals("no")));
-		
+
 	}
 
 	public static Table tableCreationMenu() {
 		Table table = new Table(readTableNameMenu());
 		return table;
 	}
-	
+
 	public static String readTableNameMenu() {
 		String tableName = null;
+		Scanner input = new Scanner(System.in);
 		do {
-			System.out.print("Please type in the name of the new table.");
-			Scanner input = new Scanner(System.in);
+			System.out.print("Please type the name of the new table.");
 			tableName = input.nextLine();
-			if (Table.exists(tableName) == true)
+			boolean ex = false;
+			if (Table.exists(tableName) == true) {
 				System.out.println("This table already exists.");
-			input.close();
-		} while (Table.exists(tableName) == true);
+				ex = true;
+			}
+		} while (ex == true);
 		return tableName;
 	}
 
-	public static void attributeCreatiοnMenu(Table table) {
+	public static void attributeCreationMenu(Table table) {
 		String answer = null;
+		boolean ex;
 		do {
 			Scanner input = new Scanner(System.in);
 			String attributeName = null;
 			do {
-				System.out.println("Type in the name of the new attribute");
+				boolean ex = false;
+				System.out.println("Please type the name of the new attribute");
 				attributeName = input.nextLine();
-				if (Table.exists(table.getName(), attributeName))
+				if (Table.exists(table.getName(), attributeName)) {
 					System.out.println("This attribute already exists.");
-			} while (Table.exists(table.getName(), attributeName) == true);
+					ex = true;
+				}
+			} while (ex == true);
 			Table.attributeMenu(table, attributeName);
 			System.out.println("Do you want to create another attribute?");
 			answer = input.next().toLowerCase();
