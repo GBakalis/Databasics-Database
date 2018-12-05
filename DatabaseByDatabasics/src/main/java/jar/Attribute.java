@@ -43,6 +43,7 @@ public class Attribute {
 	public void setEntryField(String entry) {
 		array.add(entry);
 	}
+
 	
 	public void changeField(int lineNum, String newVal) {
         array.set(lineNum, newVal);
