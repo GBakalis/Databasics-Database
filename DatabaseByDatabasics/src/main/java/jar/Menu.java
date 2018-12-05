@@ -1,5 +1,6 @@
 package jar;
 
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class Menu {
@@ -69,7 +70,7 @@ public class Menu {
 		System.out.println("Please type in the name of the table you want to sort");
 		String tableName = readTable();
 		System.out.println("Please type in the name of the attribute you want to sort the table by.");
-		String keyAttribute = readAttributeName();
+		String keyAttribute = readAttribute();
 		System.out.println("You want to sort the table by ascending or descending order?");
 		int order = readOrder();
 		try {
