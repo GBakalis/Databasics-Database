@@ -8,7 +8,7 @@ public class Menu {
 		String flag = null;
 		do {
 			Table table = tableCreationMenu();
-			attributeCreatiοnMenu(table);
+			attributeCreationMenu(table);
 			entryCreationMenu(table);
 			System.out.println("Do you want to create another table?");
 			Scanner input = new Scanner(System.in);
@@ -31,12 +31,11 @@ public class Menu {
 			tableName = input.nextLine();
 			if (Table.exists(tableName) == true)
 				System.out.println("This table already exists.");
-			input.close();
 		} while (Table.exists(tableName) == true);
 		return tableName;
 	}
 
-	public static void attributeCreatiοnMenu(Table table) {
+	public static void attributeCreationMenu(Table table) {
 		String answer = null;
 		do {
 			Scanner input = new Scanner(System.in);
@@ -68,24 +67,35 @@ public class Menu {
 
 	public static void sortMessages() {
 		System.out.println("Please type in the name of the table you want to sort");
-		readTable();
+		String tableName = readTable();
 		System.out.println("Please type in the name of the attribute you want to sort the table by.");
-		readAttributeName();
+		String keyAttribute = readAttributeName();
 		System.out.println("You want to sort the table by ascending or descending order?");
-		readOrder();
+		int order = readOrder();
+		try {
+			readTable(tableName).sortTable(keyAttribute, order);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+	
 	}
-
-	public static Table readTable() {
+	
+	public static String readTable() {
 		Scanner input = new Scanner(System.in);
 		String tableName = input.nextLine();
 		while (Table.exists(tableName) == false) {
 			System.out.println("This table does not exist. Please type an existing name.");
 			tableName = input.nextLine();
 		}
+		return tableName;
+	}
+	
+	public static Table readTable(String tableName) {
 		return Table.getTables(Table.position(tableName));
 	}
 
-	public static String readAttributeName() {
+	public static String readAttribute() {
 		Scanner input = new Scanner(System.in);
 		return input.nextLine();
 	}

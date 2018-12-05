@@ -139,10 +139,10 @@ public class Table {
 	public static void newEntryMenu(Table table, String entry) {
 		boolean correctEntry;
 		String[] entries;
-	//	Scanner input = new Scanner(System.in);
+		// Scanner input = new Scanner(System.in);
 		do {
-	//		System.out.print("Please add a new entry:");
-	//		String entry = input.nextLine();
+			// System.out.print("Please add a new entry:");
+			// String entry = input.nextLine();
 			entries = entry.split(",");
 			for (int i = 0; i < entries.length; i++) {
 				entries[i] = entries[i].trim();
@@ -434,49 +434,68 @@ public class Table {
 		int index = position(table.getName(), new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
 		if ((table.getAttributes().get(index).getType().equals("date"))
 				|| (table.getAttributes().get(index).getType().equals("Time of last edit"))) {
-			return dateSort(table, index, choice, returnFormater(table, index));
+			return dateSort(index, choice, returnFormater(index));
 		} else if ((table.getAttributes().get(index).getType().equals("obj")) || (index == 0)) {
 			System.out.println("This column contains elements that cannot be sorted");
 			return null;
 		} else {
-			return generalSort(table, index, choice);
+			return generalSort(index, choice);
 		}
 
 	}
 
-	protected ArrayList<Attribute> generalSort(Table table, int index, int order) {
-			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++)
-				for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
-					if (order * table.getAttributes().get(index).getArray().get(j - 1)
-							.compareTo(table.getAttributes().get(index).getArray().get(j))> 0)
+	protected ArrayList<Attribute> generalSort(int index, int order) {
+		for (int i = 0; i < getAttributes().get(index).getArray().size(); i++)
+			for (int j = 1; j < getAttributes().get(index).getArray().size() - i; j++) {
+				if (order * (getAttributes().get(index).getArray().get(j - 1))
+						.compareTo(getAttributes().get(index).getArray().get(j)) > 0)
 
-						for (int k = 1; k < table.getAttributeNumber(); k++)
-							Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
-					}
-		return table.getAttributes();
+					for (int k = 1; k < getAttributeNumber(); k++)
+						Collections.swap(getAttributes().get(k).getArray(), j, j - 1);
+
+			}
+
+		return getAttributes();
+
 	}
 
-	protected SimpleDateFormat returnFormater(Table table, int index) {
-		if (index == table.getAttributeNumber() - 1)
+	protected SimpleDateFormat returnFormater(int index) {
+		if (index == getAttributeNumber() - 1)
 			return new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 		else
 			return new SimpleDateFormat("dd:MM:yyyy");
 	}
 
-	protected ArrayList<Attribute> dateSort(Table table, int index, int order, SimpleDateFormat formatter)
+	protected ArrayList<Attribute> dateSort(int index, int order, SimpleDateFormat formatter)
 			throws ParseException {
-		
-			for (int i = 0; i < table.getAttributes().get(index).getArray().size(); i++) {
-				{
-					for (int j = 1; j < table.getAttributes().get(index).getArray().size() - i; j++) {
-						if (order * formatter.parse(table.getAttributes().get(index).getArray().get(j - 1))
-								.compareTo(formatter.parse(table.getAttributes().get(index).getArray().get(j))) > 0) {
-							for (int k = 1; k < table.getAttributeNumber(); k++)
-								Collections.swap(table.getAttributes().get(k).getArray(), j, j - 1);
-						}
-					}
+
+		for (int i = 0; i < getAttributes().get(index).getArray().size(); i++) {
+			for (int j = 1; j < getAttributes().get(index).getArray().size() - i; j++) {
+				if (order * (formatter.parse(getAttributes().get(index).getArray().get(j - 1))
+						.compareTo(formatter.parse(getAttributes().get(index).getArray().get(j)))) > 0) {
+					for (int k = 1; k < getAttributeNumber(); k++)
+						Collections.swap(getAttributes().get(k).getArray(), j, j - 1);
 				}
 			}
-		return table.getAttributes();
+
+		}
+		return getAttributes();
+	}
+
+	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames,
+			ArrayList<String> newValues) {
+		ArrayList<String> changedValues = new ArrayList<String>();
+		for (int i = 0; i < attrNames.size(); i++) {
+			for (int j = 1; j < attributes.size() - 1; j++) {
+				if (attributes.get(j).getName().equals(attrNames.get(i))) {
+					attributes.get(j).changeField(num, newValues.get(i));
+					changedValues.add(newValues.get(i));
+				}
+			}
+		}
+		Date date = new Date();
+		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
+		return changedValues;
 	}
 }
