@@ -27,11 +27,9 @@ public class Menu {
 		table.newEntry(entries);
 	}
 
-	public static void menuAddAttribute(Table table) throws InputMismatchException {
+	public static void menuAddAttribute(Table table, String name) throws InputMismatchException {
 		boolean correctEntry;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Enter the name of the new attribute");
-		String name = input.nextLine().trim();
 		int choice = 0;
 		do {
 			correctEntry = true;
@@ -261,7 +259,7 @@ public class Menu {
 		ArrayList<String> attNames = new ArrayList<String>();
 		ArrayList<String> elements = new ArrayList<String>();
 		System.out.print("Please enter the name of the table you want to search in: ");
-		Table table = Table.getTables(Table.position(readTableName()));
+		Table table = Table.getTables(Table.position(readTable()));
 		for (int i = 0; i < table.getAttributeNumber(); i++) {
 			System.out.print("Please enter an attribute name according to which you want to search: ");
 			String attName = readAttribute(table.getName());
@@ -392,7 +390,7 @@ public class Menu {
 	public static void menuDeleteAttribute() {
 		String tableName;
 		System.out.println("Please enter the name of the table that contains the attribute you want to delete");
-		tableName = readTableName();
+		tableName = readTable();
 		System.out.println("Please enter the name of the attribute that you want to delete");
 		String attName = readAttribute(tableName);
 		Table.getTables(Table.position(tableName)).deleteAttribute(tableName, attName);
@@ -461,14 +459,14 @@ public class Menu {
 			String attributeName = null;
 			do {
 				System.out.println("Type in the name of the new attribute");
-				attributeName = input.nextLine();
+				attributeName = input.nextLine().trim();;
 				if (Table.exists(table.getName(), attributeName))
 					System.out.println("This attribute already exists.");
 			} while (Table.exists(table.getName(), attributeName) == true);
-			Table.attributeMenu(table, attributeName);
+			menuAddAttribute(table, attributeName);
 			System.out.println("Do you want to create another attribute?");
 			answer = input.next().toLowerCase();
-		} while ((answer.equals("yes")) || (!answer.equals("no")));
+		} while ((answer.equalsIgnoreCase("yes")) || (!answer.equalsIgnoreCase("no")));
 	}
 
 	public static void entryCreationMenu(Table table) {
@@ -481,14 +479,14 @@ public class Menu {
 			Table.newEntryMenu(table, entry);
 			System.out.println("Do you want to add anoter entry?");
 			answer = input.next().toLowerCase();
-		} while ((answer.equals("yes")) || (!answer.equals("no")));
+		} while ((answer.equalsIgnoreCase("yes")) || (!answer.equalsIgnoreCase("no")));
 	}
 
 	public static void sortMessages() {
 		System.out.println("Please type in the name of the table you want to sort");
 		String tableName = readTable();
 		System.out.println("Please type in the name of the attribute you want to sort the table by.");
-		String keyAttribute = readAttribute();
+		String keyAttribute = readAttribute(tableName);
 		System.out.println("You want to sort the table by ascending or descending order?");
 		int order = readOrder();
 		try {

@@ -138,8 +138,7 @@ public class Table {
 	 * input is valid using checkEntry(String[]) and then proceeds to 
 	 * pass the correct input inside the table.
 	 */
-<<<<<<< HEAD
-=======
+
 	public static void newEntryMenu(Table table, String entry) {
 		boolean correctEntry;
 		String[] entries;
@@ -160,7 +159,7 @@ public class Table {
 		table.newEntry(entries);
 
 	}
->>>>>>> sortFunction
+
 
 	public void newEntry(String[] entries) {
 		Date date = new Date();
@@ -360,7 +359,7 @@ public class Table {
 				System.out.println("Different type of attributes");
 			}
 		} else {
-			Menu.menuAddAttribute(tables.get(pasteK));
+			Menu.menuAddAttribute(tables.get(pasteK), attNameP);
 			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 		}
 	}
@@ -512,7 +511,7 @@ public class Table {
 	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
 		ArrayList<Integer> columnIndices = new ArrayList<Integer>();
-		columnIndices = positions(attributeNames);
+		columnIndices = attPositions(attributeNames);
 		for (int i = 0; i < lines; i++) {
 			boolean matchingRow = true;
 			int k = 0; //counter for the elements arraylist
@@ -550,10 +549,6 @@ public class Table {
 		return columnIndices;
 	}
 
-	@Override
-	public String toString() {
-		return ("name = " + name + "\n" + "attributeNumber = " + attributeNumber + "\n" + "lines = " + lines + "\n");
-	}
 	
 	public ArrayList<Attribute> sortTable( String keyAttribute, int choice) throws ParseException {
 		int index = position(getName(), new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
