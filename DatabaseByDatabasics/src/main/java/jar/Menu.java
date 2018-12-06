@@ -1,5 +1,6 @@
 package jar;
 
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class Menu {
@@ -34,7 +35,7 @@ public class Menu {
 				System.out.println("This table already exists.");
 				ex = true;
 			}
-		} while (ex == true);
+		} while (ex == true)
 		return tableName;
 	}
 
@@ -74,24 +75,35 @@ public class Menu {
 
 	public static void sortMessages() {
 		System.out.println("Please type in the name of the table you want to sort");
-		readTable();
+		String tableName = readTable();
 		System.out.println("Please type in the name of the attribute you want to sort the table by.");
-		readAttributeName();
+		String keyAttribute = readAttribute();
 		System.out.println("You want to sort the table by ascending or descending order?");
-		readOrder();
+		int order = readOrder();
+		try {
+			readTable(tableName).sortTable(keyAttribute, order);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+	
 	}
-
-	public static Table readTable() {
+	
+	public static String readTable() {
 		Scanner input = new Scanner(System.in);
 		String tableName = input.nextLine();
 		while (Table.exists(tableName) == false) {
 			System.out.println("This table does not exist. Please type an existing name.");
 			tableName = input.nextLine();
 		}
+		return tableName;
+	}
+	
+	public static Table readTable(String tableName) {
 		return Table.getTables(Table.position(tableName));
 	}
 
-	public static String readAttributeName() {
+	public static String readAttribute() {
 		Scanner input = new Scanner(System.in);
 		return input.nextLine();
 	}
