@@ -18,7 +18,7 @@ public class Menu {
 		while (!((choice == 1) || (choice == 2))) {
 			System.out.println("This is not a valid choice.\n"
 					+ "Choose one of the below:\n1.Create new database."
-					+ "\n2.Load existing dataase");
+					+ "\n2.Load existing database");
 			choice = input.nextInt();
 		}
 		if (choice == 1) {
@@ -475,7 +475,8 @@ public class Menu {
 		System.out.println("Please enter the number of the "
 				+ "line where you want to paste the element");
 		int lineP = readLine();
-		Table.getT().get(0).copyElement(nameCopy, attNameC, lineC, namePaste, attNameP, lineP);
+		Table.getT().get(0).copyElement(nameCopy, attNameC, lineC,
+				namePaste, attNameP, lineP);
 	}
 
 	public static String readAttribute(String tableName) {
