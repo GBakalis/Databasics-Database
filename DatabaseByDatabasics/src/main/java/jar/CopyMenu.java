@@ -87,7 +87,7 @@ public class CopyMenu {
 		
 		System.out.println("Please enter the number of the entry that you want to paste");
 		int entryNumPaste = readLine();
-		Table.getT().get(0).copyEntry(nameCopy,entryNumCopy,namePaste,entryNumPaste);
+		Table.getT().get(0).copyExistingEntry(nameCopy,entryNumCopy,namePaste,entryNumPaste);
 	}
 	
 	public void attributeMenu() {
