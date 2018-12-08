@@ -302,7 +302,8 @@ public class Table{
 			tempTable(nameCopy, copyK, namePaste);
 		}
 	}
-
+	
+	//New method that copy an entry to an existing entry
 	public void copyExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
@@ -328,6 +329,7 @@ public class Table{
 		}
 	}
 	
+	//New method that copy an entry by creating a new entry
 	public void copyNewEntry(String nameCopy, int entryNumCopy, String namePaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
@@ -373,6 +375,7 @@ public class Table{
 		}
 	}
 	
+	//New method that find the type of an attribute and return the correct choice 
 	public int findChoice(int copyK,int attNumC) {
 		int choice = 0;
 		if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("string") ) {
