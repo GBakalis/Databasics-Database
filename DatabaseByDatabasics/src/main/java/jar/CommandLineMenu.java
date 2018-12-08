@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.text.ParseException;
 
-public class Menu {
+public class CommandLineMenu {
 
 	public static void databaseChoiceMenu() {
 		int choice = 0;
