@@ -81,10 +81,6 @@ public class TableTest {
 			Assert.assertEquals("Wrong copy results",table.getAttributes().get(0).getArray().get(i), table2.getAttributes().get(0).getArray().get(i));
 			
 		}
-		
-
-
-		
 	}
 	
 	@Test
@@ -111,7 +107,7 @@ public class TableTest {
 		String nameC = table.getName();
 		String nameP = table2.getName();
 		table.copyExistingEntry(nameC, 1, nameP, 1);
-		for (int i = 0; i < table.getAttributeNumber() - 1; i++) {
+		for (int i = 1; i < table.getAttributeNumber() - 1; i++) {
 			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getArray().get(0), table2.getAttributes().get(i).getArray().get(0));
 			
 		}
@@ -122,8 +118,8 @@ public class TableTest {
 		String nameC = table.getName();
 		String nameP = table2.getName();
 		table.copyNewEntry(nameC, 1, nameP);
-		for (int i = 0; i < table.getAttributeNumber() - 1; i++) {
-			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getArray().get(0), table2.getAttributes().get(i).getArray().get(1));
+		for (int i = 1; i < table.getAttributeNumber() - 1; i++) {
+			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getArray().get(0), table2.getAttributes().get(i).getArray().get(4));
 			
 		}
 	}
@@ -131,7 +127,7 @@ public class TableTest {
 	@Test
 	public void testFindChoice() {
 		int choice = table.findChoice(0, 1);
-		Assert.assertEquals("Wrong results",choice, table.getAttributes().get(1).getType());
+		Assert.assertEquals("Wrong results",choice, 1);
 	}
 	
 	@After
