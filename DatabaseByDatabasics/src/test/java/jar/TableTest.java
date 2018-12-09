@@ -37,6 +37,7 @@ public class TableTest {
 		table2.newAttribute("Names", 1);
 		table2.newAttribute("Sex", 2);
 		table2.newAttribute("Age", 3);
+		table2.newAttribute("Date", 5);
 		String[] entries5 = {"Evi", "m", "19","01:01:2019"};
 		String[] entries6 = {"George", "m", "19","01:01:2019"};
 		String[] entries7 = {"Martha", "f", "21","01:01:2019"};
