@@ -253,7 +253,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		int choice = 0;
 		do {
-			System.out.println("Choose ont of the below:\n1.Add a new table\n2.View a table\n"
+			System.out.println("Choose one of the below:\n1.Add a new table\n2.View a table\n"
 					+ "3.Delete a table\n4.Choose a table (obtain access to more options)" + "\n5.exit");
 			choice = checkChoice(1, 5);
 			if (choice == 1) {
@@ -300,7 +300,7 @@ public class CommandLineMenu {
 	 */
 	public static void tableMenu(Table table) {
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose ont of the below:\n1.Search in this table\n2.Sort this table\n"
+		System.out.println("Choose one of the below:\n1.Search in this table\n2.Sort this table\n"
 				+ "3.Present data\n4.Add an attribute\n" + "5.New entry\n6.Change data\n7.Delete data" + "\n8.Exit");
 		int choice = checkChoice(1, 8);
 		if (choice == 1) {
@@ -398,7 +398,7 @@ public class CommandLineMenu {
 	public static void viewOptions(Table table) {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose ont of the below:" + "\n1.View column" + "\n2.View lines" + "\n3.Exit");
+		System.out.println("Choose one of the below:" + "\n1.View column" + "\n2.View lines" + "\n3.Exit");
 		choice = checkChoice(1, 3);
 		if (choice == 1) {
 			menuViewAttribute(table.getName());
@@ -416,7 +416,7 @@ public class CommandLineMenu {
 	public static void addAttributeOptions(Table table) {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose ont of the below:" + "\n1.Create a new attribute" + "\n2.Copy an existing attribute"
+		System.out.println("Choose one of the below:" + "\n1.Create a new attribute" + "\n2.Copy an existing attribute"
 				+ "\n3.Exit");
 		choice = checkChoice(1, 3);
 		if (choice == 1) {
@@ -455,14 +455,14 @@ public class CommandLineMenu {
 	}
 
 	/*
-	 * Offer the user the option to add an entry manualy, or by coping an existing
+	 * Offer the user the option to add an entry manually, or by coping an existing
 	 * one
 	 */
 	public static void addEntryOptions(Table table) {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
 		System.out
-				.println("Choose ont of the below:" + "\n1.Create a new entry\n2.Copy an existing entry" + "\n3.Exit");
+				.println("Choose one of the below:" + "\n1.Create a new entry\n2.Copy an existing entry" + "\n3.Exit");
 		choice = checkChoice(1, 3);
 		if (choice == 1) {
 			entryCreationMenu(table);
@@ -541,7 +541,7 @@ public class CommandLineMenu {
 	public static void changeDataOptions(Table table) {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose ont of the below:" + "\n1.Change an entry manualy"
+		System.out.println("Choose one of the below:" + "\n1.Change an entry manualy"
 				+ "\n2.Replace elements of a line with elements from another line." + "\n3.Replace entry.\n4.Exit");
 		choice = checkChoice(1, 4);
 		if (choice == 1) {
@@ -586,7 +586,7 @@ public class CommandLineMenu {
 	}
 
 	/*
-	 * Read an existing attribute and chech its existence.
+	 * Read an existing attribute and check its existence.
 	 */
 	public static String readAttribute(String tableName) {
 		Scanner input = new Scanner(System.in);
