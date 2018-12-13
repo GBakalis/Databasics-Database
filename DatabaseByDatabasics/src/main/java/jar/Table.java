@@ -315,7 +315,7 @@ public class Table{
 						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes().get(attributeNumber - 2).setEntryField(format.format(date));
+						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste - 1,format.format(date));
 					} else {
 						check = false;
 						break;
@@ -403,6 +403,9 @@ public class Table{
 			if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
 				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
 					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP - 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC - 1));
+					Date date = new Date();
+					DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP - 1,format.format(date));
 				} else {
 					System.out.println("Different type of elements");
 				}
