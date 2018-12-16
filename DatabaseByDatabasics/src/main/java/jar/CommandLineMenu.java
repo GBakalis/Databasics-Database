@@ -103,7 +103,7 @@ public class CommandLineMenu {
 		String tableName = null;
 		do {
 			Scanner input = new Scanner(System.in);
-			System.out.print("Please type in the name of the new table.");
+			System.out.print("Please type in the name of the new table: ");
 
 			tableName = input.nextLine();
 			if (Table.exists(tableName) == true)
@@ -121,7 +121,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		String attributeName = null;
 		do {
-			System.out.println("Type in the name of the new attribute");
+			System.out.print("Type in the name of the new attribute: ");
 			attributeName = input.nextLine().trim();
 			if (Table.exists(table.getName(), attributeName))
 				System.out.println("This attribute already exists.");
@@ -339,7 +339,7 @@ public class CommandLineMenu {
 			System.out.print("Please enter an element you want to " + "search in the column previously inserted: ");
 			String element = input.nextLine().trim();
 			elements.add(element);
-			System.out.println("Would you like to add another attribute for search?" + " (Yes / Any other key");
+			System.out.println("Would you like to add another attribute for search?" + " (Yes / Any other key\n");
 			String addAttribute = input.nextLine().trim();
 			if (addAttribute.equalsIgnoreCase("yes")) {
 				continue;
@@ -375,7 +375,7 @@ public class CommandLineMenu {
 	 * View lines.
 	 */
 	public static void menuViewLines(String tableName) {
-		ArrayList<Integer> lines = new ArrayList<>();
+		ArrayList<Integer> lines = new ArrayList<Integer>();
 		boolean flag = true;
 		while (flag) {
 			System.out.println("Please enter the number of the line you want to view");
@@ -683,7 +683,7 @@ public class CommandLineMenu {
 		int j = 0;
 		for (int i = 1; i < table.getAttributeNumber() - 1; i++) {
 			if (table.getAttributes().get(i).getName().equals(atts.get(j))) {
-				System.out.println("The old value is " + table.getAttributes().get(i).getArray().get(num)
+				System.out.println("The old value is " + table.getAttributes().get(i).getArray().get(num - 1)
 						+ ".\n Type in the new value.");
 				ch = input.nextLine();
 				values.add(ch);
@@ -698,6 +698,7 @@ public class CommandLineMenu {
 	 * (2) or element (3)
 	 */
 	public static void deleteMenu(Table table) {
+		printDeleteChoices();
 		Scanner input = new Scanner(System.in);
 		boolean flag = true;
 		int choice = checkChoice(1, 4);

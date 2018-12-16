@@ -46,7 +46,7 @@ public class Attribute {
 
 	
 	public void changeField(int lineNum, String newVal) {
-        array.set(lineNum, newVal);
+        array.set(lineNum - 1, newVal);
 	}
 
 }

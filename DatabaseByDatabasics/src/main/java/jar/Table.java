@@ -574,25 +574,6 @@ public class Table {
 		return positions;
 	}
 
-	/* Method checking if the attribute names given for search exist in the table */
-	public int[] matchSearchAttributes(ArrayList<String> attributeNames) throws NotMatchingAttributeException {
-		int[] columnIndices = new int[attributeNames.size()];
-		for (int i = 0; i < attributeNames.size(); i++) {
-			boolean correctAttribute = false;
-			for (int j = 0; j < attributeNumber; j++) {
-				if (attributeNames.get(i).equals(attributes.get(j).getName())) {
-					correctAttribute = true;
-					columnIndices[i] = j; // The name of the attribute given for search was found in column j
-					break;
-				}
-			}
-			if (correctAttribute == false) {
-				throw new NotMatchingAttributeException(attributeNames.get(i) + " is not an attribute name!");
-			}
-		}
-		return columnIndices;
-	}
-
 	public ArrayList<Attribute> sortTable(String keyAttribute, int choice) throws ParseException {
 		int index = position(getName(), new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
 		if ((getAttributes().get(index).getType().equals("date"))
