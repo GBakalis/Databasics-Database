@@ -31,10 +31,8 @@ import java.util.InputMismatchException;
  * <li>Input data into a table
  * <li>Copy an entry to another position of the same or another table
  * <li>Move an entry to another position of the same or another table
- * <li>Copy a single field to another position of the same or another
- * table
- * <li>Move a single field to another position of the same or another
- * table
+ * <li>Copy a single field to another position of the same or another table
+ * <li>Move a single field to another position of the same or another table
  * <li>Delete an entry
  * <li>Delete a table
  * <li>Erase a field
@@ -581,7 +579,7 @@ public class Table {
 		if (index == getAttributeNumber() - 1)
 			return new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 		else
-			return new SimpleDateFormat("dd:MM:yyyy");
+			return new SimpleDateFormat("dd/MM/yyyy");
 	}
 
 	//sort table according to timeStamp or type date attribute//
