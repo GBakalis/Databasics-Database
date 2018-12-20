@@ -322,7 +322,7 @@ public class Table {
 		}
 	}
 
-	public void copyEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
+	public void copyExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
 		boolean check = true;
@@ -333,7 +333,7 @@ public class Table {
 						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes().get(attributeNumber - 2).setEntryField(format.format(date));
+						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste - 1,format.format(date));
 					} else {
 						check = false;
 						break;
@@ -344,6 +344,32 @@ public class Table {
 			} else {
 				System.out.println("Different number of attributes");
 			}
+		}
+	}
+	
+	public void copyNewEntry(String nameCopy, int entryNumCopy, String namePaste) {
+		int copyK = position(nameCopy);
+		int pasteK = position(namePaste);
+		boolean check = true;
+		if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
+			for( int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
+				if (!(tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType()))) {
+				check = false;
+				break;
+				}
+			}
+			if (check == false) {
+				System.out.println("The copy function is not possible");
+			} else {
+				String[] entries = new String[tables.get(copyK).attributeNumber - 2];
+				for (int i = 0; i < entries.length; i++) {
+					entries[i] = tables.get(copyK).getAttributes().get(i + 1).getArray().get(entryNumCopy - 1);
+				}
+				tables.get(pasteK).newEntry(entries);
+			}
+			
+		} else {
+			System.out.println("Different number of attributes");
 		}
 	}
 
@@ -359,11 +385,30 @@ public class Table {
 				System.out.println("Different type of attributes");
 			}
 		} else {
-			Menu.menuAddAttribute(tables.get(pasteK), attNameP);
+			int choice = findChoice(copyK,attNumC);
+			tables.get(pasteK).newAttribute(attNameP, choice);
 			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 		}
 	}
-		
+
+	public int findChoice(int copyK,int attNumC) {
+		int choice = 0;
+		if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("string") ) {
+			choice = 1;
+		} else if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("char")) {
+			choice = 2;
+		} else if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("int")) {
+			choice = 3;
+		} else if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("double")) {
+			choice = 4;
+		} else if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("date")) {
+			choice = 5;
+		} else {
+			choice = 6;
+		}
+		return choice;
+	}
+	
 	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
 		int copyK = position(nameCopy);
 		int attNumC = search_attribute(copyK,attNameC);
@@ -373,6 +418,9 @@ public class Table {
 			if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
 				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
 					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP - 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC - 1));
+					Date date = new Date();
+					DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP - 1,format.format(date));
 				} else {
 					System.out.println("Different type of elements");
 				}
