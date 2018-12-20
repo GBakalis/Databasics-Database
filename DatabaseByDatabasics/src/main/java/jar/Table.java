@@ -31,10 +31,8 @@ import java.util.InputMismatchException;
  * <li>Input data into a table
  * <li>Copy an entry to another position of the same or another table
  * <li>Move an entry to another position of the same or another table
- * <li>Copy a single field to another position of the same or another
- * table
- * <li>Move a single field to another position of the same or another
- * table
+ * <li>Copy a single field to another position of the same or another table
+ * <li>Move a single field to another position of the same or another table
  * <li>Delete an entry
  * <li>Delete a table
  * <li>Erase a field
@@ -629,7 +627,7 @@ public class Table {
 		if (index == getAttributeNumber() - 1)
 			return new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 		else
-			return new SimpleDateFormat("dd:MM:yyyy");
+			return new SimpleDateFormat("dd/MM/yyyy");
 	}
 
 	//sort table according to timeStamp or type date attribute//
@@ -665,19 +663,20 @@ public class Table {
 		ArrayList<Integer> p = position(tableName,att);
 		int number = p.get(0);
 		tables.get(t_pos).attributes.remove(number);
+		attributeNumber--;
 
 	}
 
 	public void deleteEntry(String tableName, int lineNumber) {
 		int t_pos = position(tableName);
-		for (int i = 0; i <= lines; i++) {
-			for (int j=0; j<= attributes.size(); j++) {
-				if (lineNumber == i) {
-					tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
-					break;
-				}
-			}
+		for (int j=0; j< attributes.size(); j++) {
+				tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
 		}
+		for (int i = 0; i < tables.get(t_pos).getLines() - 1; i++) {
+			String num = String.valueOf(i+1);
+			tables.get(t_pos).getAttributes().get(0).changeField(i,num);
+		}
+		lines--;
 	}
 
 	public void deleteElement(String tableName, int line_number, String attributeName) {
@@ -686,7 +685,7 @@ public class Table {
 		att.add(attributeName);
 		ArrayList<Integer> p = position(tableName,att);
 		int number = p.get(0);
-		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number,null);
+		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number,"--");
 	}
 
 	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
