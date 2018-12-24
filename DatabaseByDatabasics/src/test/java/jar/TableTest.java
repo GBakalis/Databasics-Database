@@ -21,10 +21,10 @@ public class TableTest {
 		table.newAttribute("Sex", 2);
 		table.newAttribute("Age", 3);
 		table.newAttribute("Date", 5);
-		String[] entries1 = { "Andreas", "m", "19", "01:01:2019" };
-		String[] entries2 = { "George", "m", "19", "01:01:2009" };
-		String[] entries3 = { "Martha", "f", "21", "01:01:2029" };
-		String[] entries4 = { "Kostas", "m", "20", "01:01:1999" };
+		String[] entries1 = { "Andreas", "m", "19", "01/01/2019" };
+		String[] entries2 = { "George", "m", "19", "01/01/2009" };
+		String[] entries3 = { "Martha", "f", "21", "01/01/2029" };
+		String[] entries4 = { "Kostas", "m", "20", "01/01/1999" };
 		table.newEntry(entries1);
 		table.newEntry(entries2);
 		table.newEntry(entries3);
@@ -56,14 +56,14 @@ public class TableTest {
 	@Test
 	public void testReturnFormatter() {
 		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormater(4),
-				new SimpleDateFormat("dd:MM:yyyy"));
+				new SimpleDateFormat("dd/MM/yyyy"));
 		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormater(5),
 				new SimpleDateFormat("HH:mm:ss dd:MM:yyyy"));
 	}
 
 	@Test
 	public void testTimeStampSort() throws ParseException {
-		table.sortTable("Time of last edit", -1);
+		table.sortTable("Last Modified", -1);
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(5).getArray().get(0), timeStamp[3]);
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(5).getArray().get(1), timeStamp[2]);
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(5).getArray().get(2), timeStamp[1]);
@@ -73,19 +73,19 @@ public class TableTest {
 	@Test
 	public void testAscendingDateSort() throws ParseException {
 		table.sortTable("Date", 1);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(0), "01:01:1999");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(1), "01:01:2009");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01:01:2019");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(3), "01:01:2029");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(0), "01/01/1999");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(1), "01/01/2009");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01/01/2019");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(3), "01/01/2029");
 	}
 
 	@Test
 	public void testDescendingDateSort() throws ParseException {
 		table.sortTable("Date", -1);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(0), "01:01:2029");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(1), "01:01:2019");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01:01:2009");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01:01:1999");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(0), "01/01/2029");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(1), "01/01/2019");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01/01/2009");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(3), "01/01/1999");
 	}
 
 	@Test
@@ -145,9 +145,9 @@ public class TableTest {
 
 	@Test
 	public void testCheckEntry() {
-		String[] entry1 = { "Andreas", "m", "19", "01:01:2019" };
+		String[] entry1 = { "Andreas", "m", "19", "01/01/2019" };
 		Assert.assertTrue("Failure : Correct entry was not accepted.", table.checkEntry(entry1));
-		String[] entry2 = { "Andreas", "m", "19", "01:01:2019", "male" };
+		String[] entry2 = { "Andreas", "m", "19", "01/01/2019", "male" };
 		Assert.assertFalse("Failure : Accepted large entry", table.checkEntry(entry2));
 		entry1[1] = "male";
 		Assert.assertFalse("Failure : Accepted wrong type entry", table.checkEntry(entry1));
@@ -188,15 +188,15 @@ public class TableTest {
 	@Test
 	public void testDeleteEntry() {
 		table.deleteEntry(table.getName(), 3);
-		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes().get(2).getArray().get(3),
-				"m");
+		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes().get(2).getArray().get(2),
+				"f");
 
 	}
 
 	@Test
 	public void testDeleteElement() {
 		table.deleteElement(table.getName(), 1, table.getAttributes().get(3).getName());
-		Assert.assertEquals("Failure : Not deleted Element.", null,
+		Assert.assertEquals("Failure : Not deleted Element.", "--",
 				Table.getTables(0).getAttributes().get(3).getArray().get(1));
 	}
 
@@ -209,13 +209,6 @@ public class TableTest {
 		attrNames.add("Sex");
 		newValues.add("f");
 		Assert.assertEquals("Failure : Wrong data change", newValues, table.dataChange(3, attrNames, newValues));
-	}
-
-
-
-	@Test
-	public void testPositionString() {
-		Assert.assertEquals("Failure : Wrong table position.", Table.position("Student"), 0);
 	}
 
 	@After

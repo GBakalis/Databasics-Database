@@ -604,7 +604,7 @@ public class Table {
 	}
 
 	protected SimpleDateFormat returnFormater(int index) {
-		if (index == getAttributeNumber() - 1)
+		if (index == attributeNumber - 1)
 			return new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 		else
 			return new SimpleDateFormat("dd/MM/yyyy");
@@ -652,7 +652,7 @@ public class Table {
 		}
 		for (int i = 0; i < tables.get(t_pos).getLines() - 1; i++) {
 			String num = String.valueOf(i + 1);
-			tables.get(t_pos).getAttributes().get(0).changeField(i, num);
+			tables.get(t_pos).getAttributes().get(0).changeField(i + 1, num);
 		}
 		lines--;
 	}
