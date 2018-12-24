@@ -301,8 +301,9 @@ public class CommandLineMenu {
 	public static void tableMenu(Table table) {
 		Scanner input = new Scanner(System.in);
 		System.out.println("Choose one of the below:\n1.Search in this table\n2.Sort this table\n"
-				+ "3.Present data\n4.Add an attribute\n" + "5.New entry\n6.Change data\n7.Delete data" + "\n8.Exit");
-		int choice = checkChoice(1, 8);
+				+ "3.Present data\n4.Add an attribute\n" + "5.New entry\n6.Change data\n7.Delete data"
+				+ "\n8.Save table \n9.Exit" );
+		int choice = checkChoice(1, 9);
 		if (choice == 1) {
 			searchMenu(table);
 		} else if (choice == 2) {
@@ -318,6 +319,8 @@ public class CommandLineMenu {
 		} else if (choice == 7) {
 			deleteMenu(table);
 		} else if (choice == 8) {
+			table.saveTable();
+		} else if (choice == 9) {
 			return;
 		} else {
 			System.out.println("This is not a valid choice");

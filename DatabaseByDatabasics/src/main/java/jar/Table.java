@@ -1,5 +1,7 @@
 package jar;
-
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -683,6 +685,32 @@ public class Table {
 	@Override
 	public String toString() {
 		return ("name = " + name + "\n" + "attributeNumber = " + attributeNumber + "\n" + "lines = " + lines + "\n");
+	}
+	
+	public void saveTable() {
+		try {
+			File file = new File(name  + ".csv");
+			PrintWriter pw = new PrintWriter(file);
+			StringBuilder sb = new StringBuilder();
+			sb.append(name);
+			sb.append('\n');
+			for (int i = 1; i < attributeNumber - 1; i++) {
+				sb.append(attributes.get(i).getName() + ',');
+			}
+			sb.append(attributes.get(attributeNumber - 1).getName() + '\n');
+			for (int i = 0; i < lines; i++) {
+				for (int j = 1; j < attributeNumber - 1; j++) {
+					sb.append(attributes.get(j).getArray().get(i) + ",");
+				}
+				sb.append(attributes.get(attributeNumber - 1).getArray().get(i));
+				sb.append('\n');
+			}
+			pw.write(sb.toString());
+			pw.close();
+			System.out.println("File saved succesfully");
+		} catch (IOException e) {
+			System.err.println(e);
+		}
 	}
 
 }
