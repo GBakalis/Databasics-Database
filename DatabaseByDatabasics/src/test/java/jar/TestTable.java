@@ -94,7 +94,7 @@ public class TestTable {
 		int pos = table.search_attribute(0,"Name");
 		Assert.assertEquals("Wrong search results", 1, pos);
 	}
-	
+	/*
 	@Test
 	public void testCopyEntry() {
 		String nameC = table.getName();
@@ -105,7 +105,7 @@ public class TestTable {
 			
 		}
 	}
-	
+	*/
 	@After
 	public void tearDown() {
 		Table.getT().clear();

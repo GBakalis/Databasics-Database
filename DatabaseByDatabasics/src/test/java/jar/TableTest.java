@@ -85,7 +85,7 @@ public class TableTest {
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(0), "01/01/2029");
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(1), "01/01/2019");
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01/01/2009");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01/01/1999");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(3), "01/01/1999");
 	}
 
 	@Test
@@ -188,15 +188,15 @@ public class TableTest {
 	@Test
 	public void testDeleteEntry() {
 		table.deleteEntry(table.getName(), 3);
-		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes().get(2).getArray().get(3),
-				"m");
+		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes().get(2).getArray().get(2),
+				"f");
 
 	}
 
 	@Test
 	public void testDeleteElement() {
 		table.deleteElement(table.getName(), 1, table.getAttributes().get(3).getName());
-		Assert.assertEquals("Failure : Not deleted Element.", null,
+		Assert.assertEquals("Failure : Not deleted Element.", "--",
 				Table.getTables(0).getAttributes().get(3).getArray().get(1));
 	}
 
@@ -209,13 +209,6 @@ public class TableTest {
 		attrNames.add("Sex");
 		newValues.add("f");
 		Assert.assertEquals("Failure : Wrong data change", newValues, table.dataChange(3, attrNames, newValues));
-	}
-
-
-
-	@Test
-	public void testPositionString() {
-		Assert.assertEquals("Failure : Wrong table position.", Table.position("Student"), 0);
 	}
 
 	@After

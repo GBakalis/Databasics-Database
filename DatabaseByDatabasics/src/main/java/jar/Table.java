@@ -1,5 +1,7 @@
 package jar;
-
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,13 +60,14 @@ public class Table {
 	/**
 	 * A simple constructor that only expects a name to initialize a table
 	 *
-	 * @param name the name to be used as a title for the table
+	 * @param name
+	 *            the name to be used as a title for the table
 	 */
 
 	public Table(String name) {
 		this.name = name;
 		attributes.add(new Attribute("#", "int"));
-		attributes.add(new Attribute("Last Modified", "date" ));
+		attributes.add(new Attribute("Last Modified", "date"));
 		attributeNumber = 2;
 		lines = 0;
 		tables.add(this);
@@ -88,22 +91,21 @@ public class Table {
 	 *         there's a wrong input.
 	 */
 
-	public void checkEntryType(String[] entries) throws ParseException, NumberFormatException,
-				NotCharacterException {
+	public void checkEntryType(String[] entries) throws ParseException, NumberFormatException, NotCharacterException {
 		for (int i = 1; i < attributeNumber - 1; i++) {
-			if (attributes.get(i).getType() == "int" && !entries[i-1].equals("--")) {
-				Integer.parseInt(entries[i-1]);
+			if (attributes.get(i).getType() == "int" && !entries[i - 1].equals("--")) {
+				Integer.parseInt(entries[i - 1]);
 			}
-			if (attributes.get(i).getType() == "double" && !entries[i-1].equals("--")) {
-				Double.parseDouble(entries[i-1]);
+			if (attributes.get(i).getType() == "double" && !entries[i - 1].equals("--")) {
+				Double.parseDouble(entries[i - 1]);
 			}
-			if (attributes.get(i).getType() == "date" && !entries[i-1].equals("--")) {
+			if (attributes.get(i).getType() == "date" && !entries[i - 1].equals("--")) {
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				format.setLenient(false);
-				format.parse(entries[i-1]);
+				format.parse(entries[i - 1]);
 			}
-			if ((attributes.get(i).getType() == (String) "char") && (
-					entries[i-1].length() != 1) && !entries[i-1].equals("--")) {
+			if ((attributes.get(i).getType() == (String) "char") && (entries[i - 1].length() != 1)
+					&& !entries[i - 1].equals("--")) {
 				throw new NotCharacterException();
 			}
 		}
@@ -131,10 +133,10 @@ public class Table {
 	}
 
 	/**
-	 * This method creates an entry. It asks for the entry, splits 
-	 * it on commas and holds it inside an array. Checks whether the 
-	 * input is valid using checkEntry(String[]) and then proceeds to 
-	 * pass the correct input inside the table.
+	 * This method creates an entry. It asks for the entry, splits it on commas and
+	 * holds it inside an array. Checks whether the input is valid using
+	 * checkEntry(String[]) and then proceeds to pass the correct input inside the
+	 * table.
 	 */
 
 	public static void newEntryMenu(Table table, String entry) {
@@ -158,14 +160,13 @@ public class Table {
 
 	}
 
-
 	public void newEntry(String[] entries) {
 		Date date = new Date();
 		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 		attributes.get(attributeNumber - 1).setEntryField(format.format(date));
 		attributes.get(0).setEntryField(String.valueOf(++lines));
 		for (int i = 1; i <= entries.length; i++) {
-			attributes.get(i).setEntryField(entries[i-1]);
+			attributes.get(i).setEntryField(entries[i - 1]);
 		}
 	}
 
@@ -177,7 +178,7 @@ public class Table {
 		return attributeNumber;
 	}
 
-	public static Table getTables(int i){
+	public static Table getTables(int i) {
 		return tables.get(i);
 	}
 
@@ -185,11 +186,11 @@ public class Table {
 		return tables;
 	}
 
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 
-	public void setName(String name){
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -198,22 +199,24 @@ public class Table {
 	}
 
 	/**
-	 * This method implements a simple check on the entry that the user
-	 * has given on demand, in order to decide if it is an integer between
-	 * 1 and 6, as the choices indicate. It uses a custom exception to
-	 * guide the user into a correct entry, if needed.
+	 * This method implements a simple check on the entry that the user has given on
+	 * demand, in order to decide if it is an integer between 1 and 6, as the
+	 * choices indicate. It uses a custom exception to guide the user into a correct
+	 * entry, if needed.
 	 *
-	 * @param choice       <code>int</code> containing the user's choice
-	 * @param correctEntry a <code>boolean</code> initialized as <code>true</code>, prone
-	 *                     to switching to <code>false</code> if there's a wrong input
+	 * @param choice
+	 *            <code>int</code> containing the user's choice
+	 * @param correctEntry
+	 *            a <code>boolean</code> initialized as <code>true</code>, prone to
+	 *            switching to <code>false</code> if there's a wrong input
 	 *
-	 * @return             <code>true</code> if no mistake was found;
-	 *                     <code>false</code> if there's a wrong input.
+	 * @return <code>true</code> if no mistake was found; <code>false</code> if
+	 *         there's a wrong input.
 	 */
 
 	public static boolean checkInput(int choice, boolean correctEntry) {
-		try{
-			if(choice < 1 || choice > 6)
+		try {
+			if (choice < 1 || choice > 6)
 				throw new WrongEntryException();
 		} catch (WrongEntryException e) {
 			System.out.println(choice + " is not a valid input.");
@@ -223,14 +226,13 @@ public class Table {
 	}
 
 	/**
-	 * This method creates an attribute (column) using a name and an integer 
-	 * which corresponds to the data type the attribute will hold
-
+	 * This method creates an attribute (column) using a name and an integer which
+	 * corresponds to the data type the attribute will hold
 	 */
 
 	public void newAttribute(String name, int choice) {
 		attributeNumber++;
-		switch(choice) {
+		switch (choice) {
 		case 1:
 			attributes.add(attributeNumber - 2, new Attribute(name, "string"));
 			break;
@@ -337,11 +339,20 @@ public class Table {
 						break;
 					}
 				}
-				if (check == false)
+				if (check == false) {
 					System.out.println("The copy function is not possible");
+				} else {
+					String[] entries = new String[tables.get(copyK).attributeNumber - 2];
+					for (int i = 0; i < entries.length; i++) {
+						entries[i] = tables.get(copyK).getAttributes().get(i + 1).getArray().get(entryNumCopy - 1);
+					}
+					tables.get(pasteK).newEntry(entries);
+				}
+				
 			} else {
 				System.out.println("Different number of attributes");
 			}
+			
 		}
 	}
 	
@@ -372,22 +383,22 @@ public class Table {
 	}
 
 	public void copyAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
-		int copyK = position(nameCopy);
-		int attNumC = search_attribute(copyK,attNameC);
-		int pasteK = position(namePaste);
-		if (exists(namePaste,attNameP)) {
-			int attNumP = search_attribute(pasteK,attNameP);
-			if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals( tables.get(copyK).getAttributes().get(attNumC).getType())) {
-				tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+			int copyK = position(nameCopy);
+			int attNumC = search_attribute(copyK,attNameC);
+			int pasteK = position(namePaste);
+			if (exists(namePaste,attNameP)) {
+				int attNumP = search_attribute(pasteK,attNameP);
+				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals( tables.get(copyK).getAttributes().get(attNumC).getType())) {
+					tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+				} else {
+					System.out.println("Different type of attributes");
+				}
 			} else {
-				System.out.println("Different type of attributes");
+				int choice = findChoice(copyK,attNumC);
+				tables.get(pasteK).newAttribute(attNameP, choice);
+				tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 			}
-		} else {
-			int choice = findChoice(copyK,attNumC);
-			tables.get(pasteK).newAttribute(attNameP, choice);
-			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 		}
-	}
 
 	public int findChoice(int copyK,int attNumC) {
 		int choice = 0;
@@ -428,11 +439,11 @@ public class Table {
 		}
 	}
 
-	public int search_attribute(int num,String attName) {
+	public int search_attribute(int num, String attName) {
 		int pos = -1;
 		int i = 0;
 		boolean check = true;
-		while (i< tables.get(num).attributeNumber && check == true) {
+		while (i < tables.get(num).attributeNumber && check == true) {
 			if (attName.equals(tables.get(num).getAttributes().get(i).getName())) {
 				pos = i;
 				check = false;
@@ -451,7 +462,7 @@ public class Table {
 		}
 		return max;
 	}
-	
+
 	public void viewLines(ArrayList<Integer> entryPositions) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		for (int i = 0; i < attributeNumber; i++) {
@@ -459,27 +470,25 @@ public class Table {
 			System.out.printf("%-" + columnLength.get(i) + "s|", attributes.get(i).getName());
 		}
 		for (int j : entryPositions) {
-			for (int i =0; i < attributeNumber; i++) {
-				System.out.printf("%-" + columnLength.get(i) + "s|",
-						attributes.get(i).getArray().get(j));
+			for (int i = 0; i < attributeNumber; i++) {
+				System.out.printf("%-" + columnLength.get(i) + "s|", attributes.get(i).getArray().get(j));
 			}
 		}
 	}
-	
+
 	public static void viewTable(String tableName) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		int pos = position(tableName);
 		System.out.println(tables.get(pos).getName() + "\n");
 		for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
 			columnLength.add(maxLength(tables.get(pos).getAttributes().get(i)));
-			System.out.printf("%-" + columnLength.get(i) + "s|",
-				tables.get(pos).getAttributes().get(i).getName());
+			System.out.printf("%-" + columnLength.get(i) + "s|", tables.get(pos).getAttributes().get(i).getName());
 		}
 		System.out.println();
 		for (int j = 0; j < tables.get(pos).getLines(); j++) {
 			for (int i = 0; i < tables.get(pos).getAttributes().size(); i++) {
 				System.out.printf("%-" + columnLength.get(i) + "s|",
-					tables.get(pos).getAttributes().get(i).getArray().get(j));
+						tables.get(pos).getAttributes().get(i).getArray().get(j));
 			}
 			System.out.println();
 		}
@@ -489,18 +498,18 @@ public class Table {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		int tablePosition = position(table);
 		ArrayList<Integer> attPositions = position(table, attributeNames);
-		attPositions.add(0,0);
+		attPositions.add(0, 0);
 		System.out.println(tables.get(tablePosition).getName() + "\n");
 		for (int j = 0; j < attPositions.size(); j++) {
 			columnLength.add(maxLength(tables.get(tablePosition).getAttributes().get(attPositions.get(j))));
 			System.out.printf("%-" + columnLength.get(j) + "s|",
-				tables.get(tablePosition).getAttributes().get(attPositions.get(j)).getName());
+					tables.get(tablePosition).getAttributes().get(attPositions.get(j)).getName());
 		}
 		System.out.println();
 		for (int i = 0; i < tables.get(tablePosition).getLines(); i++) {
 			for (int j = 0; j < attPositions.size(); j++) {
 				System.out.printf("%-" + columnLength.get(j) + "s|",
-					tables.get(tablePosition).getAttributes().get(attPositions.get(j)).getArray().get(i));
+						tables.get(tablePosition).getAttributes().get(attPositions.get(j)).getArray().get(i));
 			}
 			System.out.println();
 		}
@@ -541,10 +550,10 @@ public class Table {
 		}
 		return positions;
 	}
-	
+
 	public ArrayList<Integer> attPositions(ArrayList<String> atts) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
-		for (String att :atts) {
+		for (String att : atts) {
 			for (int i = 0; i < attributeNumber; i++) {
 				if (att.equals(attributes.get(i).getName())) {
 					positions.add(i);
@@ -553,20 +562,21 @@ public class Table {
 		}
 		return positions;
 	}
-	
+
 	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
 		ArrayList<Integer> columnIndices = new ArrayList<Integer>();
 		columnIndices = attPositions(attributeNames);
 		for (int i = 0; i < lines; i++) {
 			boolean matchingRow = true;
-			int k = 0; //counter for the elements arraylist
+			int k = 0; // counter for the elements arraylist
 			for (int j : columnIndices) {
-					if (!(elements.get(k).equals(attributes.get(j).getArray().get(i)))) {
-						matchingRow = false; //At least one element of the row does not match with one of the given elements
-						break;
-					}
-					k++;
+				if (!(elements.get(k).equals(attributes.get(j).getArray().get(i)))) {
+					matchingRow = false; // At least one element of the row does not match with one of the given
+											// elements
+					break;
+				}
+				k++;
 			}
 			if (matchingRow == true) {
 				positions.add(i);
@@ -575,79 +585,57 @@ public class Table {
 		return positions;
 	}
 
-
-	/* Method checking if the attribute names given for search exist in the table */
-	public int[] matchSearchAttributes(ArrayList<String> attributeNames) throws NotMatchingAttributeException {
-		int[] columnIndices = new int[attributeNames.size()];
-		for (int i = 0; i < attributeNames.size(); i++) {
-			boolean correctAttribute = false;
-			for (int j = 0; j < attributeNumber; j++) {
-				if (attributeNames.get(i).equals(attributes.get(j).getName())) {
-					correctAttribute = true;
-					columnIndices[i] = j; // The name of the attribute given for search was found in column j
-					break;
-				}
-			}
-			if (correctAttribute == false) {
-				throw new NotMatchingAttributeException(attributeNames.get(i) + " is not an attribute name!");
-			}
-		}
-		return columnIndices;
-	}
-
-	
-	public ArrayList<Attribute> sortTable( String keyAttribute, int choice) throws ParseException {
+	public ArrayList<Attribute> sortTable(String keyAttribute, int choice) throws ParseException {
 		int index = position(getName(), new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
 		if ((getAttributes().get(index).getType().equals("date"))
 				|| (getAttributes().get(index).getType().equals("Time of last edit"))) {
-			return dateSort( index, choice, returnFormater( index));
+			return dateSort(index, choice, returnFormater(index));
 		} else if (getAttributes().get(index).getType().equals("obj") || (index == 0)) {
 			System.out.println("This column contains elements that cannot be sorted");
 			return null;
 		} else {
-			return generalSort( index, choice);
+			return generalSort(index, choice);
 		}
 	}
 
-	//sorts table according to int, float, String or char type attribute//
-	protected ArrayList<Attribute> generalSort( int index, int order) {
-			for (int i = 0; i < getAttributes().get(index).getArray().size(); i++)
-				for (int j = 1; j < getAttributes().get(index).getArray().size() - i; j++) {
-					if (order * ( getAttributes().get(index).getArray().get(j - 1))
-							.compareTo(getAttributes().get(index).getArray().get(j)) > 0)
+	// sorts table according to int, float, String or char type attribute//
+	protected ArrayList<Attribute> generalSort(int index, int order) {
+		for (int i = 0; i < getAttributes().get(index).getArray().size(); i++)
+			for (int j = 1; j < getAttributes().get(index).getArray().size() - i; j++) {
+				if (order * (getAttributes().get(index).getArray().get(j - 1))
+						.compareTo(getAttributes().get(index).getArray().get(j)) > 0)
 
-						for (int k = 1; k < getAttributeNumber(); k++)
-							Collections.swap(getAttributes().get(k).getArray(), j, j - 1);
-				
-		}
+					for (int k = 1; k < getAttributeNumber(); k++)
+						Collections.swap(getAttributes().get(k).getArray(), j, j - 1);
+
+			}
 		return getAttributes();
 	}
 
-	protected SimpleDateFormat returnFormater( int index ) {
-		if (index == getAttributeNumber() - 1)
+	protected SimpleDateFormat returnFormater(int index) {
+		if (index == attributeNumber - 1)
 			return new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 		else
 			return new SimpleDateFormat("dd/MM/yyyy");
 	}
 
-	//sort table according to timeStamp or type date attribute//
-	protected ArrayList<Attribute> dateSort(int index, int order, SimpleDateFormat formatter)
-			throws ParseException {		
-			for (int i = 0; i < getAttributes().get(index).getArray().size(); i++) {
-					for (int j = 1; j <getAttributes().get(index).getArray().size() - i; j++) {
-						if (order * (formatter.parse(getAttributes().get(index).getArray().get(j - 1))
-								.compareTo(formatter.parse(getAttributes().get(index).getArray().get(j))))> 0) {
-							for (int k = 1; k < getAttributeNumber(); k++)
-								Collections.swap(getAttributes().get(k).getArray(), j, j - 1);
-						}
-					}
-				
+	// sort table according to timeStamp or type date attribute//
+	protected ArrayList<Attribute> dateSort(int index, int order, SimpleDateFormat formatter) throws ParseException {
+		for (int i = 0; i < getAttributes().get(index).getArray().size(); i++) {
+			for (int j = 1; j < getAttributes().get(index).getArray().size() - i; j++) {
+				if (order * (formatter.parse(getAttributes().get(index).getArray().get(j - 1))
+						.compareTo(formatter.parse(getAttributes().get(index).getArray().get(j)))) > 0) {
+					for (int k = 1; k < getAttributeNumber(); k++)
+						Collections.swap(getAttributes().get(k).getArray(), j, j - 1);
+				}
 			}
-			return getAttributes();
+
+		}
+		return getAttributes();
 	}
 
 	public void deleteTable(String tableName) {
-		int pos=position(tableName);
+		int pos = position(tableName);
 		for (int i = 0; i <= getT().size(); i++) {
 			if (pos == i) {
 				tables.remove(i);
@@ -660,21 +648,20 @@ public class Table {
 		int t_pos = position(tableName);
 		ArrayList<String> att = new ArrayList<String>();
 		att.add(attributeName);
-		ArrayList<Integer> p = position(tableName,att);
+		ArrayList<Integer> p = position(tableName, att);
 		int number = p.get(0);
 		tables.get(t_pos).attributes.remove(number);
 		attributeNumber--;
-
 	}
 
 	public void deleteEntry(String tableName, int lineNumber) {
 		int t_pos = position(tableName);
-		for (int j=0; j< attributes.size(); j++) {
-				tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
+		for (int j = 0; j < attributes.size(); j++) {
+			tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
 		}
 		for (int i = 0; i < tables.get(t_pos).getLines() - 1; i++) {
-			String num = String.valueOf(i+1);
-			tables.get(t_pos).getAttributes().get(0).changeField(i,num);
+			String num = String.valueOf(i + 1);
+			tables.get(t_pos).getAttributes().get(0).changeField(i + 1, num);
 		}
 		lines--;
 	}
@@ -683,15 +670,15 @@ public class Table {
 		int t_pos = position(tableName);
 		ArrayList<String> att = new ArrayList<String>();
 		att.add(attributeName);
-		ArrayList<Integer> p = position(tableName,att);
+		ArrayList<Integer> p = position(tableName, att);
 		int number = p.get(0);
 		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number,"--");
 	}
 
 	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
 		ArrayList<String> changedValues = new ArrayList<String>();
-		for (int i=0; i < attrNames.size(); i++) {
-			for (int j = 1; j < attributes.size()-1; j++) {
+		for (int i = 0; i < attrNames.size(); i++) {
+			for (int j = 1; j < attributes.size() - 1; j++) {
 				if (attributes.get(j).getName().equals(attrNames.get(i))) {
 					attributes.get(j).changeField(num, newValues.get(i));
 					changedValues.add(newValues.get(i));
@@ -706,10 +693,33 @@ public class Table {
 
 	@Override
 	public String toString() {
-		return ("name = " + name + "\n"
-				+ "attributeNumber = " + attributeNumber + "\n"
-				+ "lines = " + lines + "\n");
+		return ("name = " + name + "\n" + "attributeNumber = " + attributeNumber + "\n" + "lines = " + lines + "\n");
+	}
+	
+	public void saveTable() {
+		try {
+			File file = new File(name  + ".csv");
+			PrintWriter pw = new PrintWriter(file);
+			StringBuilder sb = new StringBuilder();
+			sb.append(name);
+			sb.append('\n');
+			for (int i = 1; i < attributeNumber - 1; i++) {
+				sb.append(attributes.get(i).getName() + ',');
+			}
+			sb.append(attributes.get(attributeNumber - 1).getName() + '\n');
+			for (int i = 0; i < lines; i++) {
+				for (int j = 1; j < attributeNumber - 1; j++) {
+					sb.append(attributes.get(j).getArray().get(i) + ",");
+				}
+				sb.append(attributes.get(attributeNumber - 1).getArray().get(i));
+				sb.append('\n');
+			}
+			pw.write(sb.toString());
+			pw.close();
+			System.out.println("File saved succesfully");
+		} catch (IOException e) {
+			System.err.println(e);
+		}
 	}
 
 }
-
