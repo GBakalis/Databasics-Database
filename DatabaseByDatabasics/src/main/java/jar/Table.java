@@ -1,5 +1,8 @@
 package jar;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -637,7 +640,7 @@ public class Table {
 		return getAttributes();
 	}
 
-	public void deleteTable(String tableName) {
+	public static void deleteTable(String tableName) {
 		int pos = position(tableName);
 		for (int i = 0; i <= getT().size(); i++) {
 			if (pos == i) {
@@ -706,15 +709,19 @@ public class Table {
 			StringBuilder sb = new StringBuilder();
 			sb.append(name);
 			sb.append('\n');
-			for (int i = 1; i < attributeNumber - 1; i++) {
+			for (int i = 1; i < attributeNumber - 2; i++) {
+				sb.append(attributes.get(i).getType() + ',');
+			}
+			sb.append(attributes.get(attributeNumber - 2).getType() + '\n');
+			for (int i = 1; i < attributeNumber - 2; i++) {
 				sb.append(attributes.get(i).getName() + ',');
 			}
-			sb.append(attributes.get(attributeNumber - 1).getName() + '\n');
+			sb.append(attributes.get(attributeNumber - 2).getName() + '\n');
 			for (int i = 0; i < lines; i++) {
-				for (int j = 1; j < attributeNumber - 1; j++) {
+				for (int j = 1; j < attributeNumber - 2; j++) {
 					sb.append(attributes.get(j).getArray().get(i) + ",");
 				}
-				sb.append(attributes.get(attributeNumber - 1).getArray().get(i));
+				sb.append(attributes.get(attributeNumber - 2).getArray().get(i));
 				sb.append('\n');
 			}
 			pw.write(sb.toString());
@@ -725,4 +732,47 @@ public class Table {
 		}
 	}
 
+	
+	 public static void importTable(BufferedReader br) {
+		 String line;
+		 Table table = null;
+		 try {
+			 String tableName = br.readLine();
+			 table = new Table(tableName);
+			 int[] types = convertTypes(br.readLine().split(","));
+			 String[] names = br.readLine().split(",");
+			 assert (types.length == names.length);
+			 for (int i = 0 ; i < types.length; i++) {
+				 table.newAttribute(names[i], types[i]);
+			 }
+			 while ((line = br.readLine()) != null) {
+				 String[] entries = line.split(",");
+				 table.newEntry(entries);
+			 }
+		 } catch (IOException e) {
+			 e.printStackTrace();
+			 deleteTable(table.getName());
+		 }
+		 System.out.println("Table succesfully imported!");
+	 }
+	
+	 public static int[] convertTypes(String[] types) {
+		 int[] typeNums = new int[types.length];
+		 for (int i = 0 ; i < types.length; i++) {
+			 if (types[i].equals("string")) {
+				 typeNums[i] = 1;
+			 } else if (types[i].equals("char")) {
+				 typeNums[i] = 2;
+			 } else if (types[i].equals("int")) {
+				 typeNums[i] = 3;
+			 } else if (types[i].equals("double")) {
+				 typeNums[i] = 4;
+			 } else if (types[i].equals("date")) {
+				 typeNums[i] = 5;
+			 } else {
+				 typeNums[i] = 6;
+			 }
+		 }
+		 return typeNums;
+	 }
 }
