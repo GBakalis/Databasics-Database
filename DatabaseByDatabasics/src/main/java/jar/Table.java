@@ -468,10 +468,12 @@ public class Table {
 			columnLength.add(maxLength(attributes.get(i)));
 			System.out.printf("%-" + columnLength.get(i) + "s|", attributes.get(i).getName());
 		}
+		System.out.println();
 		for (int j : entryPositions) {
 			for (int i = 0; i < attributeNumber; i++) {
 				System.out.printf("%-" + columnLength.get(i) + "s|", attributes.get(i).getArray().get(j));
 			}
+			System.out.println();
 		}
 	}
 
