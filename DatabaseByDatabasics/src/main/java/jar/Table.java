@@ -294,7 +294,7 @@ public class Table {
 			String name = tables.get(copyK).getAttributes().get(i).getName();
 			tempTab.newAttribute(name, choice);
 			for (int j = 0; j < tables.get(copyK).getLines(); j++) {
-				
+
 				System.out.println(tables.get(copyK).getAttributes().get(i).getArray().get(j));
 				String temp = tables.get(copyK).getAttributes().get(i).getArray().get(j);
 				tempTab.getAttributes().get(i).getArray().add(temp);
@@ -308,7 +308,7 @@ public class Table {
 			tempTab.newEntry(entries);
 		}
 	}
-		
+
 	public void copyTable(String nameCopy, String namePaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
@@ -327,12 +327,12 @@ public class Table {
 		boolean check = true;
 		if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
 			if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
-				for( int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
+				for (int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
 					if (tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType())) {
 						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste - 1,format.format(date));//το λάθος είναι κάπου εδώ και στην 332 or smth
+						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste - 1,format.format(date));//332&335
 					} else {
 						check = false;
 						break;
@@ -347,14 +347,14 @@ public class Table {
 					}
 					tables.get(pasteK).newEntry(entries);
 				}
-				
+
 			} else {
 				System.out.println("Different number of attributes");
 			}
-			
+
 		}
 	}
-	
+
 	public void copyNewEntry(String nameCopy, int entryNumCopy, String namePaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
@@ -375,7 +375,7 @@ public class Table {
 				}
 				tables.get(pasteK).newEntry(entries);
 			}
-			
+
 		} else {
 			System.out.println("Different number of attributes");
 		}
@@ -416,7 +416,7 @@ public class Table {
 		}
 		return choice;
 	}
-	
+
 	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
 		int copyK = position(nameCopy);
 		int attNumC = search_attribute(copyK,attNameC);
@@ -468,11 +468,14 @@ public class Table {
 			columnLength.add(maxLength(attributes.get(i)));
 			System.out.printf("%-" + columnLength.get(i) + "s|", attributes.get(i).getName());
 		}
+		System.out.println();
 		for (int j : entryPositions) {
 			for (int i = 0; i < attributeNumber; i++) {
 				System.out.printf("%-" + columnLength.get(i) + "s|", attributes.get(i).getArray().get(j));
 			}
+			System.out.println();
 		}
+		System.out.println();
 	}
 
 	public static void viewTable(String tableName) {
@@ -491,6 +494,7 @@ public class Table {
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 
 	public static void viewAttribute(String table, ArrayList<String> attributeNames) {
@@ -694,7 +698,7 @@ public class Table {
 	public String toString() {
 		return ("name = " + name + "\n" + "attributeNumber = " + attributeNumber + "\n" + "lines = " + lines + "\n");
 	}
-	
+
 	public void saveTable() {
 		try {
 			File file = new File(name  + ".csv");

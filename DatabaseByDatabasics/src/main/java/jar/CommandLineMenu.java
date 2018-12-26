@@ -384,11 +384,11 @@ public class CommandLineMenu {
 		boolean flag = true;
 		while (flag) {
 			System.out.println("Please enter the number of the line you want to view");
-			int line = readLines(tableName);
-			lines.add(line);
+			int pos = readLines(tableName);
+			lines.add(pos + 1);
 			Scanner input = new Scanner(System.in);
 			System.out.println("Do you want to view another line of this table?");
-			System.out.println("Type 'yes' to add another one or " + "'no' to view the ones you have already entered");
+			System.out.println("Type 'yes' to add another one or 'no' to view the ones you have already entered");
 			String ch = input.nextLine();
 			if (!(ch.equalsIgnoreCase("yes"))) {
 				flag = false;
@@ -524,20 +524,19 @@ public class CommandLineMenu {
 	/*
 	 * Read an existing line number. Check its existence and if it is a number.
 	 */
-	public static int readLines(String tableName) {
+	public static int readLines(String tableName) throws ArrayIndexOutOfBoundsException {
 		Scanner input = new Scanner(System.in);
 		int lineNum = -1;
 		try {
 			lineNum = input.nextInt();
-		} catch (InputMismatchException err) {
+		} catch (InputMismatchException e) {
 			System.out.println("This is not a number. Please try again.");
-			readLines(tableName);
 		}
-		while (lineNum > Table.getTables(Table.position(tableName)).getLines()) {
+		while (lineNum > Table.getTables(Table.position(tableName)).getLines() || lineNum <= 0) {
 			System.out.println("This line does not exist. Please type an existing line.");
 			lineNum = input.nextInt();
 		}
-		return lineNum;
+		return lineNum - 1;
 	}
 
 	/*
@@ -584,7 +583,7 @@ public class CommandLineMenu {
 		int lineC = readLines(nameCopy);
 		Table.viewTable(tableName);
 		System.out.println("Please enter the name of the " + "attribute where you want to paste the element");
-		String attNameP = readAttribute(tableName);
+		String attNameP = readAttributeRestrictedPermission(tableName);
 		System.out.println("Please enter the number of the " + "line where you want to paste the element");
 		int lineP = readLines(tableName);
 		Table.getT().get(0).copyElement(nameCopy, attNameC, lineC, tableName, attNameP, lineP);
@@ -593,7 +592,7 @@ public class CommandLineMenu {
 	/*
 	 * Read an existing attribute and check its existence.
 	 */
-	public static String readAttribute(String tableName) {
+	public static String readAttributeRestrictedPermission(String tableName) {
 		Scanner input = new Scanner(System.in);
 		String attName = input.nextLine();
 		while (Table.exists(tableName, attName) == false || attName.equalsIgnoreCase("Last Modified") || attName.equals("#")) {
@@ -603,6 +602,16 @@ public class CommandLineMenu {
 				System.out.println("You do not have permission to access that attribute. Try again.");
 			}
 			attName = input.nextLine();
+		}
+		return attName;
+	}
+	
+	public static String readAttribute(String tableName) {
+		Scanner input = new Scanner(System.in);
+		String attName = input.nextLine();
+		while (Table.exists(tableName, attName) == false) {
+				System.out.println("This attribute does not exist." + " Please type an existing name.");
+				attName = input.nextLine();
 		}
 		return attName;
 	}
@@ -650,7 +659,7 @@ public class CommandLineMenu {
 			Scanner input = new Scanner(System.in);
 			System.out.println("Type in the number of the line you want to change");
 			num = readLines(table.getName());
-			attributes = readAttributes(table, num);
+			attributes = readAttributes(table);
 			values = readValues(table, num, attributes);
 			table.dataChange(num, attributes, values);
 			Table.viewTable(table.getName());
@@ -662,7 +671,7 @@ public class CommandLineMenu {
 	/*
 	 * Read an array list of attributes that are used in change data function.
 	 */
-	public static ArrayList<String> readAttributes(Table table, int num) {
+	public static ArrayList<String> readAttributes(Table table) {
 		ArrayList<String> atts = new ArrayList<String>();
 		Scanner input = new Scanner(System.in);
 		boolean flag = false;
@@ -692,7 +701,7 @@ public class CommandLineMenu {
 		int j = 0;
 		for (int i = 1; i < table.getAttributeNumber() - 1; i++) {
 			if (table.getAttributes().get(i).getName().equals(atts.get(j))) {
-				System.out.println("The old value is " + table.getAttributes().get(i).getArray().get(num - 1)
+				System.out.println("The old value is " + table.getAttributes().get(i).getArray().get(num)
 						+ ".\n Type in the new value.");
 				ch = input.nextLine();
 				values.add(ch);
@@ -767,7 +776,7 @@ public class CommandLineMenu {
 		int line;
 		System.out.println("Please enter the number of the entry that you want to delete");
 		line = readLines(tableName);
-		Table.getTables(Table.position(tableName)).deleteEntry(tableName, line - 1);
+		Table.getTables(Table.position(tableName)).deleteEntry(tableName, line);
 	}
 
 	/*
@@ -775,7 +784,7 @@ public class CommandLineMenu {
 	 */
 	public static void deleteAttributeMenu(String tableName) {
 		System.out.println("Please enter the name of the attribute that you want to delete");
-		String attName = readAttribute(tableName);
+		String attName = readAttributeRestrictedPermission(tableName);
 		Table.getTables(Table.position(tableName)).deleteAttribute(tableName, attName);
 	}
 
@@ -785,10 +794,10 @@ public class CommandLineMenu {
 	public static void deleteElementMenu(String tableName) {
 		System.out.println(
 				"Please enter the name of " + "the attribute that contains the element that you want to delete");
-		String attName = readAttribute(tableName);
+		String attName = readAttributeRestrictedPermission(tableName);
 		System.out.println("Please enter the " + "number of the element line that you want to delete");
 		int line = readLines(tableName);
-		Table.getTables(Table.position(tableName)).deleteElement(tableName, line - 1, attName);
+		Table.getTables(Table.position(tableName)).deleteElement(tableName, line, attName);
 	}
 
 	/*

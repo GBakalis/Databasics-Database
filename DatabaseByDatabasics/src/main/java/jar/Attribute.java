@@ -34,9 +34,9 @@ public class Attribute {
 	public ArrayList<String> getArray() {
 		return array;
 	}
-	
+
 	public void setArray(ArrayList<String> array) {
-		this.array = array; 
+		this.array = array;
 	}
 
 
@@ -44,7 +44,7 @@ public class Attribute {
 		array.add(entry);
 	}
 
-	
+
 	public void changeField(int lineNum, String newVal) {
         array.set(lineNum - 1, newVal);
 	}
