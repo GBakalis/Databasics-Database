@@ -1,4 +1,5 @@
 package jar;
+
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
@@ -279,9 +280,9 @@ public class Table {
 
 	public void tempTable(String nameCopy, int copyK, String newName) {
 		Table tempTab = new Table(newName);
-		for (int i = 1; i < tables.get(copyK).attributeNumber -1; i++) {
+		for (int i = 1; i < tables.get(copyK).attributeNumber - 1; i++) {
 			int choice = 0;
-			if (tables.get(copyK).getAttributes().get(i).getType().equals("string") ) {
+			if (tables.get(copyK).getAttributes().get(i).getType().equals("string")) {
 				choice = 1;
 			} else if (tables.get(copyK).getAttributes().get(i).getType().equals("char")) {
 				choice = 2;
@@ -297,7 +298,7 @@ public class Table {
 			String name = tables.get(copyK).getAttributes().get(i).getName();
 			tempTab.newAttribute(name, choice);
 			for (int j = 0; j < tables.get(copyK).getLines(); j++) {
-				
+
 				System.out.println(tables.get(copyK).getAttributes().get(i).getArray().get(j));
 				String temp = tables.get(copyK).getAttributes().get(i).getArray().get(j);
 				tempTab.getAttributes().get(i).getArray().add(temp);
@@ -306,36 +307,42 @@ public class Table {
 		String[] entries = new String[tables.get(copyK).attributeNumber - 2];
 		for (int j = 0; j < tables.get(copyK).getLines(); j++) {
 			for (int i = 0; i < entries.length; i++) {
-				entries[i] = tables.get(copyK).getAttributes().get(i + 1).getArray().get(j);
+				entries[i] = tables.get(copyK).getAttributes().get(i + 1)
+							 .getArray().get(j);
 			}
 			tempTab.newEntry(entries);
 		}
 	}
-		
+
 	public void copyTable(String nameCopy, String namePaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
-		if (exists(namePaste) && tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
+		if (exists(namePaste) && 
+			tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
 			tempTable(nameCopy, copyK, "temp");
 			tables.set(pasteK, tables.get(tables.size() - 1));
 			deleteTable("temp");
-		}else {
+		} else { 
 			tempTable(nameCopy, copyK, namePaste);
 		}
 	}
 
-	public void copyExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
+	public void copyExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste)
+			throws IndexOutOfBoundsException {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
 		boolean check = true;
 		if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
 			if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
-				for( int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
-					if (tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType())) {
-						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
+				for (int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
+					if (tables.get(pasteK).getAttributes().get(i).getType()
+							.equals(tables.get(copyK).getAttributes().get(i).getType())) {
+						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,
+								tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste,format.format(date));//το λάθος είναι κάπου εδώ και στην 332 or smth
+						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste,
+								format.format(date));// το λάθος είναι κάπου εδώ και στην 332 or smth
 					} else {
 						check = false;
 						break;
@@ -349,16 +356,19 @@ public class Table {
 			}
 		}
 	}
-	
+
 	public void copyNewEntry(String nameCopy, int entryNumCopy, String namePaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
 		boolean check = true;
-		if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
-			for( int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
-				if (!(tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType()))) {
-				check = false;
-				break;
+		if (tables.get(pasteK).getAttributeNumber() == 
+			tables.get(copyK).getAttributeNumber()) {
+			for (int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
+				if (!(tables.get(pasteK).getAttributes().get(i).getType()
+						.equals(tables.get(copyK).getAttributes()
+						.get(i).getType()))) {
+					check = false;
+					break;
 				}
 			}
 			if (check == false) {
@@ -370,33 +380,37 @@ public class Table {
 				}
 				tables.get(pasteK).newEntry(entries);
 			}
-			
 		} else {
 			System.out.println("Different number of attributes");
 		}
 	}
 
-	public void copyAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
-			int copyK = position(nameCopy);
-			int attNumC = search_attribute(copyK,attNameC);
-			int pasteK = position(namePaste);
-			if (exists(namePaste,attNameP)) {
-				int attNumP = search_attribute(pasteK,attNameP);
-				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals( tables.get(copyK).getAttributes().get(attNumC).getType())) {
-					tables.get(pasteK).getAttributes().get(attNumP).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
-				} else {
-					System.out.println("Different type of attributes");
-				}
+	public void copyAttribute (String nameCopy, String attNameC, String namePaste, String attNameP) {
+		int copyK = position(nameCopy);
+		int attNumC = search_attribute(copyK, attNameC);
+		int pasteK = position(namePaste);
+		if (exists(namePaste, attNameP)) {
+			int attNumP = search_attribute(pasteK, attNameP);
+			if (tables.get(pasteK).getAttributes().get(attNumP).getType()
+					.equals(tables.get(copyK).getAttributes()
+					.get(attNumC).getType())) {
+				tables.get(pasteK).getAttributes().get(attNumP)
+						.setArray(tables.get(copyK).getAttributes()
+						.get(attNumC).getArray());
 			} else {
-				int choice = findChoice(copyK,attNumC);
-				tables.get(pasteK).newAttribute(attNameP, choice);
-				tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
+				System.out.println("Different type of attributes");
 			}
+		} else {
+			int choice = findChoice(copyK, attNumC);
+			tables.get(pasteK).newAttribute(attNameP, choice);
+			tables.get(pasteK).getAttributes().get(tables.get(pasteK).attributeNumber - 2)
+					.setArray(tables.get(copyK).getAttributes().get(attNumC).getArray());
 		}
+	}
 
-	public int findChoice(int copyK,int attNumC) {
+	public int findChoice(int copyK, int attNumC) {
 		int choice = 0;
-		if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("string") ) {
+		if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("string")) {
 			choice = 1;
 		} else if (tables.get(copyK).getAttributes().get(attNumC).getType().equals("char")) {
 			choice = 2;
@@ -411,16 +425,22 @@ public class Table {
 		}
 		return choice;
 	}
-	
-	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
+
+	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP)
+			throws IndexOutOfBoundsException {
 		int copyK = position(nameCopy);
-		int attNumC = search_attribute(copyK,attNameC);
+		int attNumC = search_attribute(copyK, attNameC);
 		int pasteK = position(namePaste);
-		int attNumP = search_attribute(pasteK,attNameP);
+		int attNumP = search_attribute(pasteK, attNameP);
 		try {
-			if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
-				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
-					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC));
+			if (lineC <= tables.get(copyK).getAttributes()
+						 .get(attNumC).getArray().size()
+					&& lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
+				if (tables.get(pasteK).getAttributes().get(attNumP).getType()
+						.equals(tables.get(copyK).getAttributes()
+						.get(attNumC).getType())) {
+					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP,
+							tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC));
 					Date date = new Date();
 					DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP,format.format(date));
@@ -596,7 +616,7 @@ public class Table {
 
 	// sorts table according to int, float, String or char type attribute//
 	protected ArrayList<Attribute> generalSort(int index, int order) {
-		for (int i = 0; i < getAttributes().get(index).getArray().size(); i++)
+		for (int i = 0; i < getAttributes().get(index).getArray().size(); i++) {
 			for (int j = 1; j < getAttributes().get(index).getArray().size() - i; j++) {
 				if (order * (getAttributes().get(index).getArray().get(j - 1))
 						.compareTo(getAttributes().get(index).getArray().get(j)) > 0)
@@ -605,6 +625,7 @@ public class Table {
 						Collections.swap(getAttributes().get(k).getArray(), j, j - 1);
 
 			}
+		}
 		return getAttributes();
 	}
 
@@ -668,7 +689,7 @@ public class Table {
 		att.add(attributeName);
 		ArrayList<Integer> p = position(tableName, att);
 		int number = p.get(0);
-		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number,"--");
+		tables.get(t_pos).getAttributes().get(number).getArray().set(line_number, "--");
 	}
 
 	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
@@ -691,10 +712,10 @@ public class Table {
 	public String toString() {
 		return ("name = " + name + "\n" + "attributeNumber = " + attributeNumber + "\n" + "lines = " + lines + "\n");
 	}
-	
+
 	public void saveTable() {
 		try {
-			File file = new File(name  + ".csv");
+			File file = new File(name + ".csv");
 			PrintWriter pw = new PrintWriter(file);
 			StringBuilder sb = new StringBuilder();
 			sb.append(name);
@@ -722,47 +743,46 @@ public class Table {
 		}
 	}
 
-	
-	 public static void importTable(BufferedReader br) {
-		 String line;
-		 Table table = null;
-		 try {
-			 String tableName = br.readLine();
-			 table = new Table(tableName);
-			 int[] types = convertTypes(br.readLine().split(","));
-			 String[] names = br.readLine().split(",");
-			 assert (types.length == names.length);
-			 for (int i = 0 ; i < types.length; i++) {
-				 table.newAttribute(names[i], types[i]);
-			 }
-			 while ((line = br.readLine()) != null) {
-				 String[] entries = line.split(",");
-				 table.newEntry(entries);
-			 }
-		 } catch (IOException e) {
-			 e.printStackTrace();
-			 deleteTable(table.getName());
-		 }
-		 System.out.println("Table succesfully imported!");
-	 }
-	
-	 public static int[] convertTypes(String[] types) {
-		 int[] typeNums = new int[types.length];
-		 for (int i = 0 ; i < types.length; i++) {
-			 if (types[i].equals("string")) {
-				 typeNums[i] = 1;
-			 } else if (types[i].equals("char")) {
-				 typeNums[i] = 2;
-			 } else if (types[i].equals("int")) {
-				 typeNums[i] = 3;
-			 } else if (types[i].equals("double")) {
-				 typeNums[i] = 4;
-			 } else if (types[i].equals("date")) {
-				 typeNums[i] = 5;
-			 } else {
-				 typeNums[i] = 6;
-			 }
-		 }
-		 return typeNums;
-	 }
+	public static void importTable(BufferedReader br) {
+		String line;
+		Table table = null;
+		try {
+			String tableName = br.readLine();
+			table = new Table(tableName);
+			int[] types = convertTypes(br.readLine().split(","));
+			String[] names = br.readLine().split(",");
+			assert (types.length == names.length);
+			for (int i = 0; i < types.length; i++) {
+				table.newAttribute(names[i], types[i]);
+			}
+			while ((line = br.readLine()) != null) {
+				String[] entries = line.split(",");
+				table.newEntry(entries);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			deleteTable(table.getName());
+		}
+		System.out.println("Table succesfully imported!");
+	}
+
+	public static int[] convertTypes(String[] types) {
+		int[] typeNums = new int[types.length];
+		for (int i = 0; i < types.length; i++) {
+			if (types[i].equals("string")) {
+				typeNums[i] = 1;
+			} else if (types[i].equals("char")) {
+				typeNums[i] = 2;
+			} else if (types[i].equals("int")) {
+				typeNums[i] = 3;
+			} else if (types[i].equals("double")) {
+				typeNums[i] = 4;
+			} else if (types[i].equals("date")) {
+				typeNums[i] = 5;
+			} else {
+				typeNums[i] = 6;
+			}
+		}
+		return typeNums;
+	}
 }
