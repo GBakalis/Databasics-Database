@@ -332,16 +332,16 @@ public class Table {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
 		boolean check = true;
-		if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
+		if (entryNumPaste >= 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
 			if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
 				for (int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
 					if (tables.get(pasteK).getAttributes().get(i).getType()
 							.equals(tables.get(copyK).getAttributes().get(i).getType())) {
-						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste,
-								tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
+						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste + 1,
+								tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste,
+						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste + 1,
 								format.format(date));// το λάθος είναι κάπου εδώ και στην 332 or smth
 					} else {
 						check = false;
@@ -433,17 +433,17 @@ public class Table {
 		int pasteK = position(namePaste);
 		int attNumP = search_attribute(pasteK, attNameP);
 		try {
-			if (lineC <= tables.get(copyK).getAttributes()
+			if (lineC < tables.get(copyK).getAttributes()
 						 .get(attNumC).getArray().size()
-					&& lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
+					&& lineP < tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
 				if (tables.get(pasteK).getAttributes().get(attNumP).getType()
 						.equals(tables.get(copyK).getAttributes()
 						.get(attNumC).getType())) {
-					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP,
+					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP + 1,
 							tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC));
 					Date date = new Date();
 					DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP,format.format(date));
+					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP + 1,format.format(date));
 				} else {
 					System.out.println("Different type of elements");
 				}

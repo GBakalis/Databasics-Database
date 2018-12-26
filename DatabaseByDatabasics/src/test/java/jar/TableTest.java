@@ -287,7 +287,7 @@ public class TableTest {
 	public void testCopyExistingEntry() {
 		String nameC = table.getName();
 		String nameP = table2.getName();
-		table.copyExistingEntry(nameC, 1, nameP, 1);
+		table.copyExistingEntry(nameC, 0, nameP, 0);
 		for (int i = 1; i < table.getAttributeNumber() - 1; i++) {
 			Assert.assertEquals("Wrong copy results", table.getAttributes().get(i).getArray().get(0)
 								, table2.getAttributes().get(i).getArray().get(0));

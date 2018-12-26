@@ -546,7 +546,7 @@ public class CommandLineMenu {
 			System.out.println("This line does not exist. Please type an existing line.");
 			lineNum = input.nextInt();
 		}
-		return lineNum ;
+		return lineNum - 1;
 	}
 
 	/*
