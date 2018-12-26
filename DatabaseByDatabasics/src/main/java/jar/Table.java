@@ -157,7 +157,6 @@ public class Table {
 			}
 		} while (correctEntry == false);
 		table.newEntry(entries);
-
 	}
 
 	public void newEntry(String[] entries) {
@@ -333,7 +332,7 @@ public class Table {
 						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste - 1,format.format(date));
+						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste - 1,format.format(date));//το λάθος είναι κάπου εδώ και στην 332 or smth
 					} else {
 						check = false;
 						break;

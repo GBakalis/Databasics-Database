@@ -1,4 +1,3 @@
-
 package jar;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class CommandLineMenu {
 	public static void databaseChoiceMenu() {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose one of the below:" + "\n1.Create new database.\n2.Load existing database");
+		System.out.println("Choose one of the following:" + "\n1.Create new database.\n2.Load existing database");
 		choice = checkChoice(1, 2);
 		if (choice == 1) {
 			databaseCreationMenu();
@@ -71,7 +70,7 @@ public class CommandLineMenu {
 		int choice;
 		Scanner input = new Scanner(System.in);
 		System.out.println(
-				"Choose one of the below:\n1.Create a new table" + "\n2.Use an existing table from the database.");
+				"Choose one of the following:\n1.Create a new table" + "\n2.Use an existing table from the database.");
 		choice = checkChoice(1, 2);
 
 		if (choice == 1) {
@@ -253,25 +252,28 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		int choice = 0;
 		do {
-			System.out.println("Choose one of the below:\n1.Add a new table\n2.View a table\n"
+			System.out.println("Choose one of the following:\n1.Add a new table\n2.View a table\n"
 					+ "3.Delete a table\n4.Choose a table (obtain access to more options)" + "\n5.exit");
 			choice = checkChoice(1, 5);
 			if (choice == 1) {
 				addTable();
+				viewDatabase();
 			} else if (choice == 2) {
 				viewTableMenu();
 			} else if (choice == 3) {
 				deleteTableMenu();
+				viewDatabase();
 			} else if (choice == 4) {
 				System.out.println("Type in the name of the table of your choice.");
 				tableMenu(readTable(readTable()));
+				viewDatabase();
 			} else if (choice == 5) {
+				viewDatabase();
 				return;
 			} else {
 				System.out.println("This is not a valid intput.");
 				databaseMenu();
 			}
-			viewDatabase();
 		} while (choice != 5);
 	}
 
@@ -300,7 +302,7 @@ public class CommandLineMenu {
 	 */
 	public static void tableMenu(Table table) {
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose one of the below:\n1.Search in this table\n2.Sort this table\n"
+		System.out.println("Choose one of the following:\n1.Search in this table\n2.Sort this table\n"
 				+ "3.Present data\n4.Add an attribute\n" + "5.New entry\n6.Change data\n7.Delete data"
 				+ "\n8.Save table \n9.Exit" );
 		int choice = checkChoice(1, 9);
@@ -401,7 +403,7 @@ public class CommandLineMenu {
 	public static void viewOptions(Table table) {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose one of the below:" + "\n1.View column" + "\n2.View lines" + "\n3.Exit");
+		System.out.println("Choose one of the following:" + "\n1.View column" + "\n2.View lines" + "\n3.Exit");
 		choice = checkChoice(1, 3);
 		if (choice == 1) {
 			menuViewAttribute(table.getName());
@@ -419,7 +421,7 @@ public class CommandLineMenu {
 	public static void addAttributeOptions(Table table) {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose one of the below:" + "\n1.Create a new attribute" + "\n2.Copy an existing attribute"
+		System.out.println("Choose one of the following:" + "\n1.Create a new attribute" + "\n2.Copy an existing attribute"
 				+ "\n3.Exit");
 		choice = checkChoice(1, 3);
 		if (choice == 1) {
@@ -465,7 +467,7 @@ public class CommandLineMenu {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
 		System.out
-				.println("Choose one of the below:" + "\n1.Create a new entry\n2.Copy an existing entry" + "\n3.Exit");
+				.println("Choose one of the following:" + "\n1.Create a new entry\n2.Copy an existing entry" + "\n3.Exit");
 		choice = checkChoice(1, 3);
 		if (choice == 1) {
 			entryCreationMenu(table);
@@ -544,7 +546,7 @@ public class CommandLineMenu {
 	public static void changeDataOptions(Table table) {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose one of the below:" + "\n1.Change an entry manualy"
+		System.out.println("Choose one of the following:" + "\n1.Change an entry manually"
 				+ "\n2.Replace elements of a line with elements from another line." + "\n3.Replace entry.\n4.Exit");
 		choice = checkChoice(1, 4);
 		if (choice == 1) {
@@ -594,8 +596,12 @@ public class CommandLineMenu {
 	public static String readAttribute(String tableName) {
 		Scanner input = new Scanner(System.in);
 		String attName = input.nextLine();
-		while (Table.exists(tableName, attName) == false) {
-			System.out.println("This attribute does not exist." + " Please type an existing name.");
+		while (Table.exists(tableName, attName) == false || attName.equalsIgnoreCase("Last Modified") || attName.equals("#")) {
+			if (Table.exists(tableName, attName) == false) {
+				System.out.println("This attribute does not exist." + " Please type an existing name.");
+			} else {
+				System.out.println("You do not have permission to access that attribute. Try again.");
+			}
 			attName = input.nextLine();
 		}
 		return attName;
@@ -662,7 +668,7 @@ public class CommandLineMenu {
 		boolean flag = false;
 		do {
 			for (int i = 1; i < table.getAttributeNumber() - 1; i++) {
-				System.out.println("Do you want to change the attribute " + table.getAttributes().get(i).getName());
+				System.out.println("Do you want to change attribute " + table.getAttributes().get(i).getName() + "?");
 				String choice = input.nextLine();
 				if (choice.equals("yes")) {
 					atts.add(table.getAttributes().get(i).getName());
@@ -804,7 +810,7 @@ public class CommandLineMenu {
 	 */
 	public static int checkChoice(int lowLimit, int highLimit) {
 		Scanner input = new Scanner(System.in);
-		int choice = -1;		
+		int choice = -1;
 		try {
 			choice = input.nextInt();
 		} catch (InputMismatchException err) {
@@ -812,9 +818,9 @@ public class CommandLineMenu {
 			return checkChoice(lowLimit, highLimit);
 		}
 		if ((choice < lowLimit) || (choice > highLimit)) {
-			System.out.println("This is not a valid input please try again.");
+			System.out.println("This is not a valid input, please try again.");
 			return checkChoice( lowLimit, highLimit);
-		}				
+		}
 		return choice;
 	}
 }
