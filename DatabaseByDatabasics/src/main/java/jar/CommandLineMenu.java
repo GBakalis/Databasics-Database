@@ -533,7 +533,7 @@ public class CommandLineMenu {
 	/*
 	 * Read an existing line number. Check its existence and if it is a number.
 	 */
-	public static int readLines(String tableName) throws ArrayIndexOutOfBoundsException {
+	public static int readLines(String tableName) {
 		Scanner input = new Scanner(System.in);
 		int lineNum = -1;
 		try {
