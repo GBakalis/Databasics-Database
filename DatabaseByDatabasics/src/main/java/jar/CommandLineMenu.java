@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.text.ParseException;
 
 public class CommandLineMenu {
@@ -70,8 +73,10 @@ public class CommandLineMenu {
 		int choice;
 		Scanner input = new Scanner(System.in);
 		System.out.println(
-				"Choose one of the following:\n1.Create a new table" + "\n2.Use an existing table from the database.");
-		choice = checkChoice(1, 2);
+				"Choose one of the following:\n1.Create a new table"
+				+ "\n2.Use an existing table from the database."
+				+ "\n3.Import a table from a csv file");
+		choice = checkChoice(1, 3);
 
 		if (choice == 1) {
 			createTable();
@@ -79,6 +84,10 @@ public class CommandLineMenu {
 		}
 		if (choice == 2) {
 			copyTableMenu();
+			return;
+		}
+		if (choice == 3) {
+			importTableMenu();
 			return;
 		}
 		System.out.println("This is not a valid input. Please try again");
@@ -822,5 +831,32 @@ public class CommandLineMenu {
 			return checkChoice( lowLimit, highLimit);
 		}
 		return choice;
+	}
+	
+	public static void importTableMenu() {
+		Scanner input = new Scanner(System.in);
+		String fileName;
+		boolean correctFile;
+		BufferedReader br = null;
+		do {
+			System.out.print("Please insert the path of the file you want to import: ");
+			fileName = input.nextLine();
+			correctFile = checkCsvFormat(fileName);
+			try {
+				br = new BufferedReader(new FileReader(fileName));
+			} catch (FileNotFoundException e) {
+				System.out.println("Path does not correspond to a file!");
+				correctFile = false;
+			}
+		} while (!correctFile);
+		Table.importTable(br);
+	}
+	
+	public static boolean checkCsvFormat(String fileName) {
+		if (fileName.endsWith(".csv")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
