@@ -320,7 +320,7 @@ public class CommandLineMenu {
 		} else if (choice == 2) {
 			sortMenu(table.getName());
 		} else if (choice == 3) {
-			menuViewAttribute(table.getName());
+			viewOptions(table);
 		} else if (choice == 4) {
 			addAttributeOptions(table);
 		} else if (choice == 5) {
