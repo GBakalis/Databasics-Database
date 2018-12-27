@@ -302,7 +302,7 @@ public class CommandLineMenu {
 		String tableName;
 		System.out.println("Please enter the name of the table that you want to delete");
 		tableName = readTable();
-		readTable(tableName).deleteTable(tableName);
+		readTable(tableName).delete();
 	}
 
 	/*

@@ -173,7 +173,7 @@ public class TableTest {
 
 	@Test
 	public void testDeleteTable() {
-		table.deleteTable(table.getName());
+		table.delete();
 		Assert.assertEquals("Failure : Not deleted Table.", Table.getTables(0).getName(), "Extra");
 	}
 

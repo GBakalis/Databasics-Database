@@ -318,7 +318,7 @@ public class Table {
 		if (exists(namePaste) && tables.get(copyK).getAttributeNumber() == tables.get(pasteK).getAttributeNumber()) {
 			tempTable(nameCopy, copyK, "temp");
 			tables.set(pasteK, tables.get(tables.size() - 1));
-			deleteTable("temp");
+			getTables(Table.position("temp")).delete();
 		}else {
 			tempTable(nameCopy, copyK, namePaste);
 		}
@@ -640,10 +640,9 @@ public class Table {
 		return getAttributes();
 	}
 
-	public static void deleteTable(String tableName) {
-		int pos = position(tableName);
+	public void delete() {
 		for (int i = 0; i <= getT().size(); i++) {
-			if (pos == i) {
+			if (this.equals(tables.get(i))) {
 				tables.set(i, null);
 				tables.remove(i);
 				break;
@@ -752,7 +751,7 @@ public class Table {
 			 }
 		 } catch (IOException e) {
 			 e.printStackTrace();
-			 deleteTable(table.getName());
+			 table.delete();
 		 }
 		 System.out.println("Table succesfully imported!");
 	 }
