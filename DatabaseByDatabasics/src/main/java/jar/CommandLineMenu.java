@@ -394,7 +394,7 @@ public class CommandLineMenu {
 		while (flag) {
 			System.out.println("Please enter the number of the line you want to view");
 			int pos = readLines(tableName);
-			lines.add(pos + 1);
+			lines.add(pos);
 			Scanner input = new Scanner(System.in);
 			System.out.println("Do you want to view another line of this table?");
 			System.out.println("Type 'yes' to add another one or 'no' to view the ones you have already entered");

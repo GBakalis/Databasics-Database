@@ -15,6 +15,7 @@
 Έχει αναπτυχθεί η viewOptions και δε χρησιμοποιείται. Στην παρουσίαση δεδομένων υπάρχει μόνο η επιλογή της προβολής στήλης
 Όμοια για την printDeleteMessages
 ***Είσοδος γραμμής <=0 πετάει ArrayIndexOutOfBounds***
+Να δημιουργηθεί επιλογή για δημιουργία database σε ανώτερο επίπεδο μενού. Το "5. exit" να σε πηγαίνει ένα επίπεδο πάνω αντί να τερματίζει
 
 
 
@@ -23,3 +24,4 @@ readLines
 readValues
 deleteEntryMenu
 deleteElementMenu
+menuViewLines
