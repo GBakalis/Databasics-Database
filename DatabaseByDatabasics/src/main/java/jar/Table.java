@@ -342,7 +342,7 @@ public class Table {
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
 						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste + 1,
-								format.format(date));// το λάθος είναι κάπου εδώ και στην 332 or smth
+								format.format(date));
 					} else {
 						check = false;
 						break;
