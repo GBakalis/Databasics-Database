@@ -644,6 +644,7 @@ public class Table {
 		int pos = position(tableName);
 		for (int i = 0; i <= getT().size(); i++) {
 			if (pos == i) {
+				tables.set(i, null);
 				tables.remove(i);
 				break;
 			}
