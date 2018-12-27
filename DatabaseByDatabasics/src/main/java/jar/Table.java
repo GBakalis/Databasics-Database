@@ -665,9 +665,9 @@ public class Table {
 		for (int j = 0; j < attributes.size(); j++) {
 			tables.get(t_pos).getAttributes().get(j).getArray().remove(lineNumber);
 		}
-		for (int i = 0; i < tables.get(t_pos).getLines() - 1; i++) {
+		for (int i = 0; i < tables.get(t_pos).getLines() -1 ; i++) {
 			String num = String.valueOf(i + 1);
-			tables.get(t_pos).getAttributes().get(0).changeField(i + 1, num);
+			tables.get(t_pos).getAttributes().get(0).changeField(i, num);
 		}
 		lines--;
 	}
