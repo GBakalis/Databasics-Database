@@ -57,7 +57,6 @@ public class Table {
 	private String name;
 	private int attributeNumber;
 	private int lines;
-	private static ArrayList<Table> tables = new ArrayList<Table>();
 	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
 	/**
@@ -73,7 +72,6 @@ public class Table {
 		attributes.add(new Attribute("Last Modified", "date"));
 		attributeNumber = 2;
 		lines = 0;
-		tables.add(this);
 	}
 
 	/**
@@ -180,14 +178,6 @@ public class Table {
 		return attributeNumber;
 	}
 
-	public static Table getTables(int i) {
-		return tables.get(i);
-	}
-
-	public static ArrayList<Table> getT() {
-		return tables;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -257,7 +247,7 @@ public class Table {
 	}
 
 	public static boolean exists(String name) {
-		for (Table table : tables) {
+		for (Table table : ) {
 			if (table.getName().equals(name)) {
 				return true;
 			}
