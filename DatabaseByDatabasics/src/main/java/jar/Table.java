@@ -430,12 +430,12 @@ public class Table {
 		int pasteK = position(namePaste);
 		int attNumP = search_attribute(pasteK,attNameP);
 		try {
-			if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
+			if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP < tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
 				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
-					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP - 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC - 1));
+					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC));
 					Date date = new Date();
 					DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP - 1,format.format(date));
+					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP,format.format(date));
 				} else {
 					System.out.println("Different type of elements");
 				}
@@ -444,6 +444,7 @@ public class Table {
 			System.out.println("Out of Bounds");
 		}
 	}
+
 
 	public int search_attribute(int num, String attName) {
 		int pos = -1;
