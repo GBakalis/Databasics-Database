@@ -328,14 +328,14 @@ public class Table {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
 		boolean check = true;
-		if (entryNumPaste > 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
+		if (entryNumPaste >= 0 && entryNumPaste <= tables.get(pasteK).getLines() - 1) {
 			if (tables.get(pasteK).getAttributeNumber() == tables.get(copyK).getAttributeNumber()) {
 				for (int i = 1; i < tables.get(pasteK).getAttributeNumber() - 1; i++) {
 					if (tables.get(pasteK).getAttributes().get(i).getType().equals(tables.get(copyK).getAttributes().get(i).getType())) {
-						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste - 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy - 1));
+						tables.get(pasteK).getAttributes().get(i).changeField(entryNumPaste + 1,tables.get(copyK).getAttributes().get(i).getArray().get(entryNumCopy));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste - 1,format.format(date));//332&335
+						tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(entryNumPaste + 1,format.format(date));
 					} else {
 						check = false;
 						break;
@@ -343,14 +343,7 @@ public class Table {
 				}
 				if (check == false) {
 					System.out.println("The copy function is not possible");
-				} else {
-					String[] entries = new String[tables.get(copyK).attributeNumber - 2];
-					for (int i = 0; i < entries.length; i++) {
-						entries[i] = tables.get(copyK).getAttributes().get(i + 1).getArray().get(entryNumCopy - 1);
-					}
-					tables.get(pasteK).newEntry(entries);
 				}
-
 			} else {
 				System.out.println("Different number of attributes");
 			}
@@ -374,7 +367,7 @@ public class Table {
 			} else {
 				String[] entries = new String[tables.get(copyK).attributeNumber - 2];
 				for (int i = 0; i < entries.length; i++) {
-					entries[i] = tables.get(copyK).getAttributes().get(i + 1).getArray().get(entryNumCopy - 1);
+					entries[i] = tables.get(copyK).getAttributes().get(i + 1).getArray().get(entryNumCopy);
 				}
 				tables.get(pasteK).newEntry(entries);
 			}
@@ -426,12 +419,12 @@ public class Table {
 		int pasteK = position(namePaste);
 		int attNumP = search_attribute(pasteK,attNameP);
 		try {
-			if (lineC <= tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP <= tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
+			if (lineC < tables.get(copyK).getAttributes().get(attNumC).getArray().size() && lineP < tables.get(pasteK).getAttributes().get(attNumP).getArray().size()) {
 				if (tables.get(pasteK).getAttributes().get(attNumP).getType().equals(tables.get(copyK).getAttributes().get(attNumC).getType()) ) {
-					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP - 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC - 1));
+					tables.get(pasteK).getAttributes().get(attNumP).changeField(lineP + 1,tables.get(copyK).getAttributes().get(attNumC).getArray().get(lineC));
 					Date date = new Date();
 					DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP - 1,format.format(date));
+					tables.get(pasteK).getAttributes().get(attributeNumber - 1).changeField(lineP + 1,format.format(date));
 				} else {
 					System.out.println("Different type of elements");
 				}
@@ -686,14 +679,14 @@ public class Table {
 		for (int i = 0; i < attrNames.size(); i++) {
 			for (int j = 1; j < attributes.size() - 1; j++) {
 				if (attributes.get(j).getName().equals(attrNames.get(i))) {
-					attributes.get(j).changeField(num, newValues.get(i));
+					attributes.get(j).changeField(num + 1, newValues.get(i));
 					changedValues.add(newValues.get(i));
 				}
 			}
 		}
 		Date date = new Date();
 		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
+		attributes.get(attributeNumber - 1).changeField(num + 1, format.format(date));
 		return changedValues;
 	}
 
