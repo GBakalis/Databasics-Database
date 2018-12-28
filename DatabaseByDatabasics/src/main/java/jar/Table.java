@@ -121,6 +121,18 @@ public class Table {
 		}
 	}
 
+	/**
+	 * This method checks whether a set of values matches with the
+	 * length and the types of the table it is called upon. The types check is implemented 
+	 * via the method {@link #checkEntryType(String[])}
+	 * @param entries
+	 * 		An array of <code>String</code> elements, each one of the 
+	 * 		representing an element of the table's new line, excluding the
+	 * 		default attributes' values.
+	 * @return
+	 * 		Returns <code>true</code> if the set of values matches with the
+	 * length and the types of the table, <code>false</code> if not.
+	 */
 	public boolean checkEntry(String[] entries) {
 		boolean correctEntry = true;
 		try {
@@ -168,7 +180,15 @@ public class Table {
 		} while (correctEntry == false);
 		table.newEntry(entries);
 	}
-
+	
+	/**
+	 * This method inserts a line of values in the table it is called upon
+	 * and initializes the Last Modified column of the line.
+	 * @param entries
+	 * 		An array of <code>String</code> elements, each one of the 
+	 * 		representing an element of the table's new line, excluding the
+	 * 		default attributes' values.
+	 */
 	public void newEntry(String[] entries) {
 		Date date = new Date();
 		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
@@ -276,7 +296,13 @@ public class Table {
 		}
 		return pos;
 	}
-
+	
+	/**
+	 * This method presents a set of given lines of the table upon which it is called.
+	 * @param entryPositions
+	 * 			An arraylist of <code>Integer</code> elements, each one representing the
+	 * 			position of a line in the attribute arraylists.
+	 */
 	public void viewLines(ArrayList<Integer> entryPositions) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		for (int i = 0; i < attributeNumber; i++) {
@@ -342,7 +368,22 @@ public class Table {
 		}
 		return positions;
 	}
-
+	
+	/**
+	 * This method searches for lines which contain a set of elements specified by the user and
+	 * returns their positions. The search can be parameterized by one or more attributes.
+	 * There is a 1-1 relation between the values and the attributes given for search.
+	 * @param attributeNames
+	 * 			An arraylist of <code>String</code> elements, containing the names of
+	 * 			the attributes which will be searched for the corresponding elements.
+	 * @param elements
+	 * 			An arraylist of <code>String</code> elements, containing the values that will be
+	 * 			searched in the attribute of the corresponding position of the <code>attributeNames</code>
+	 * 			arraylist.
+	 * @return
+	 * 			An arrraylist of <code>Integer</code> elements, containing the positions of the lines
+	 * 			that match the search criteria.
+	 */
 	public ArrayList<Integer> search(ArrayList<String> attributeNames, ArrayList<String> elements) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
 		ArrayList<Integer> columnIndices = new ArrayList<Integer>();
@@ -460,6 +501,15 @@ public class Table {
 		return changedValues;
 	}
 
+	/**
+	 * This method saves the contents of a Table in the format of a csv file in a
+	 * default location. The default attributes representing the line number
+	 * and the timestamp of last modification are not saved in the file.
+	 * The name and the first line of the file represent the name of the table.
+	 * The second line of the file contains the types of the attributes, separated by commas.
+	 * The third line of the file contains the names of the attributes, separated by commas.
+	 * Each of the following lines contains the elements of a table line, separated by commas.
+	 */
 	public void saveTable() {
 		try {
 			File file = new File(name  + ".csv");
@@ -490,47 +540,71 @@ public class Table {
 		}
 	}
 
-	
-	 public static void importTable(BufferedReader br) {
-		 String line;
-		 Table table = null;
-		 try {
-			 String tableName = br.readLine();
-			 table = new Table(tableName);
-			 int[] types = convertTypes(br.readLine().split(","));
-			 String[] names = br.readLine().split(",");
-			 assert (types.length == names.length);
-			 for (int i = 0 ; i < types.length; i++) {
-				 table.newAttribute(names[i], types[i]);
-			 }
-			 while ((line = br.readLine()) != null) {
-				 String[] entries = line.split(",");
-				 table.newEntry(entries);
-			 }
-		 } catch (IOException e) {
-			 e.printStackTrace();
+	/**
+	 * This method imports a table from a csv, the location of which
+	 * is specified by the user. The format of the file must be as follows:
+	 * <ul>
+	 * <li>Line one: Name of the table</li>
+	 * <li>Line two: Types of the attributes separated by commas</li>
+	 * <li>Line three: Names of the attributes separated by commas</li>
+	 * <li>Each of the remaining lines: Values of each line, separated by commas</li>
+	 * </ul>
+	 * The user is responsible for the contents of each line for no checks will be
+	 * conducted concerning the matching of the attribute types and the element values.
+	 * @param br
+	 * 			A <code>BufferedReader</code> object used to read from the file.
+	 */
+	public static void importTable(BufferedReader br) {
+		String line;
+		Table table = null;
+		try {
+			String tableName = br.readLine();
+			table = new Table(tableName);
+			int[] types = convertTypes(br.readLine().split(","));
+			String[] names = br.readLine().split(",");
+			assert (types.length == names.length);
+			for (int i = 0 ; i < types.length; i++) {
+				table.newAttribute(names[i], types[i]);
+			}
+			while ((line = br.readLine()) != null) {
+				String[] entries = line.split(",");
+				table.newEntry(entries);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 			 table.delete();
-		 }
-		 System.out.println("Table succesfully imported!");
-	 }
-	
-	 public static int[] convertTypes(String[] types) {
-		 int[] typeNums = new int[types.length];
-		 for (int i = 0 ; i < types.length; i++) {
-			 if (types[i].equals("string")) {
-				 typeNums[i] = 1;
-			 } else if (types[i].equals("char")) {
-				 typeNums[i] = 2;
-			 } else if (types[i].equals("int")) {
-				 typeNums[i] = 3;
-			 } else if (types[i].equals("double")) {
-				 typeNums[i] = 4;
-			 } else if (types[i].equals("date")) {
-				 typeNums[i] = 5;
-			 } else {
-				 typeNums[i] = 6;
-			 }
-		 }
-		 return typeNums;
-	 }
+		}
+		System.out.println("Table succesfully imported!");
+	}
+	/**
+	 * A method that matches the types of an attribute with a specific number
+	 * so that a method can make use of the {@link #newAttribute(String, int)}
+	 * method.
+	 * @param types
+	 * 		An array of <code>String</code> elements among "string", "char",
+	 * 		"int", "double", "date" and any other type (to be matched with the object
+	 * 		case), representing a type in a String format
+	 * @return
+	 * 		An array of <code>int</code> elements, each one representing a choice
+	 * 		of type in compliance with the {@link #newAttribute(String, int)} method.
+	 */
+	public static int[] convertTypes(String[] types) {
+		int[] typeNums = new int[types.length];
+		for (int i = 0 ; i < types.length; i++) {
+			if (types[i].equals("string")) {
+				typeNums[i] = 1;
+			} else if (types[i].equals("char")) {
+				typeNums[i] = 2;
+			} else if (types[i].equals("int")) {
+				typeNums[i] = 3;
+			} else if (types[i].equals("double")) {
+				typeNums[i] = 4;
+			} else if (types[i].equals("date")) {
+				typeNums[i] = 5;
+			} else {
+				typeNums[i] = 6;
+			}
+		}
+		return typeNums;
+	}
 }

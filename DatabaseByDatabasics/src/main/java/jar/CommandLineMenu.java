@@ -54,7 +54,6 @@ public class CommandLineMenu {
 	 */
 	public static void databaseCreationMenu() {
 		String flag = null;
-		
 		String databaseName = null;
 		do {
 			Scanner input = new Scanner(System.in);
@@ -364,8 +363,14 @@ public class CommandLineMenu {
 		tableMenu();
 	}
 
-	/*
-	 * Menu for search function. Read attribute to search by.
+	/**
+	 * This method enables the user to make use of the search function.
+	 * The user can insert a set of attribute names(up to the attributes existing in the table)
+	 * and a value for each one of them.
+	 * Then the method {@link jar.Table.search(ArrayList<String> attributeNames, ArrayList<String> elements)}
+	 * is called, returning the positions of the matching lines, which will feed the
+	 * {@link jar.Table.viewLines(ArrayList<Integer> entryPositions)} method, presenting the set of lines
+	 * that match the search criteria.
 	 */
 	public static void searchMenu() {
 		Scanner input = new Scanner(System.in);
