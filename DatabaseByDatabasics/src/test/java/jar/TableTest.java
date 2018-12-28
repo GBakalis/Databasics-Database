@@ -29,28 +29,28 @@ public class TableTest {
 		table.newEntry(entries2);
 		table.newEntry(entries3);
 		table.newEntry(entries4);
-		timeStamp[0] = table.getAttributes().get(5).getArray().get(0);
-		timeStamp[1] = table.getAttributes().get(5).getArray().get(1);
-		timeStamp[2] = table.getAttributes().get(5).getArray().get(2);
-		timeStamp[3] = table.getAttributes().get(5).getArray().get(3);
+		timeStamp[0] = table.getAttributes(5).getArray().get(0);
+		timeStamp[1] = table.getAttributes(5).getArray().get(1);
+		timeStamp[2] = table.getAttributes(5).getArray().get(2);
+		timeStamp[3] = table.getAttributes(5).getArray().get(3);
 	}
 
 	@Test
 	public void testAscendingGeneralSort() throws ParseException {
 		table.sortTable("Name", 1);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(0), "Andreas");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(1), "George");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(2), "Kostas");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(3), "Martha");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(0), "Andreas");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(1), "George");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(2), "Kostas");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(3), "Martha");
 	}
 
 	@Test
 	public void testDescendingGeneralSort() throws ParseException {
 		table.sortTable("Name", -1);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(0), "Martha");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(1), "Kostas");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(2), "George");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(1).getArray().get(3), "Andreas");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(0), "Martha");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(1), "Kostas");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(2), "George");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(1).getArray().get(3), "Andreas");
 	}
 
 	@Test
@@ -64,60 +64,60 @@ public class TableTest {
 	@Test
 	public void testTimeStampSort() throws ParseException {
 		table.sortTable("Last Modified", -1);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(5).getArray().get(0), timeStamp[3]);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(5).getArray().get(1), timeStamp[2]);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(5).getArray().get(2), timeStamp[1]);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(5).getArray().get(3), timeStamp[0]);
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(5).getArray().get(0), timeStamp[3]);
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(5).getArray().get(1), timeStamp[2]);
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(5).getArray().get(2), timeStamp[1]);
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(5).getArray().get(3), timeStamp[0]);
 	}
 
 	@Test
 	public void testAscendingDateSort() throws ParseException {
 		table.sortTable("Date", 1);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(0), "01/01/1999");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(1), "01/01/2009");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01/01/2019");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(3), "01/01/2029");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(0), "01/01/1999");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(1), "01/01/2009");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(2), "01/01/2019");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(3), "01/01/2029");
 	}
 
 	@Test
 	public void testDescendingDateSort() throws ParseException {
 		table.sortTable("Date", -1);
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(0), "01/01/2029");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(1), "01/01/2019");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(2), "01/01/2009");
-		Assert.assertEquals("Failure: Not sorted", table.getAttributes().get(4).getArray().get(3), "01/01/1999");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(0), "01/01/2029");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(1), "01/01/2019");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(2), "01/01/2009");
+		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(3), "01/01/1999");
 	}
 
 	@Test
 	public void testExistsString() {
-		Assert.assertTrue("Failure : Table not found.", Table.exists("Student"));
-		Assert.assertFalse("Failure : Table found without existing.", Table.exists("aa"));
+		Assert.assertTrue("Failure : Table not found.", CommandLineMenu.getActiveDatabase().exists("Student"));
+		Assert.assertFalse("Failure : Table found without existing.", CommandLineMenu.getActiveDatabase().exists("aa"));
 	}
 
 	@Test
 	public void testExistsStringString() {
-		Assert.assertTrue("Failure : Attribute not found.", Table.exists("Student", "Sex"));
-		Assert.assertFalse("Failure : Attribute found without existing.", Table.exists("Student", "Uhm, no"));
+		Assert.assertTrue("Failure : Attribute not found.", table.exists("Sex"));
+		Assert.assertFalse("Failure : Attribute found without existing.", table.exists("Uhm, no"));
 	}
 
 	@Test
 	public void testMaxLength() {
 		Assert.assertEquals("Failure : Wrong column width."
-				, Table.maxLength(table.getAttributes().get(1)), 7);
+				, table.getAttributes(1).maxLength(), 7);
 		Assert.assertEquals("Failure : Wrong column width."
-				, Table.maxLength(table.getAttributes().get(2)), 3);
+				, table.getAttributes(2).maxLength(), 3);
 		Assert.assertEquals("Failure : Wrong column width."
-				, Table.maxLength(table.getAttributes().get(3)), 3);
+				, table.getAttributes(3).maxLength(), 3);
 		Assert.assertEquals("Failure : Wrong column width."
-				, Table.maxLength(table.getAttributes().get(3)), 3);
+				, table.getAttributes(3).maxLength(), 3);
 	}
 
 	@Test
 	public void testPositionStringArrayListOfString() {
 		ArrayList<String> atts = new ArrayList<String>();
-		atts.add(table.getAttributes().get(3).getName());
-		atts.add(table.getAttributes().get(1).getName());
-		ArrayList<Integer> attPos = Table.position("Student", atts);
+		atts.add(table.getAttributes(3).getName());
+		atts.add(table.getAttributes(1).getName());
+		ArrayList<Integer> attPos = table.attPositions(atts);
 		Assert.assertEquals("Failure : Wrong first column position.",
 				attPos.get(0).intValue(), 3);
 		Assert.assertEquals("Failure : Wrong first column position.", 
@@ -125,8 +125,9 @@ public class TableTest {
 	}
 
 	@Test
+	//MUST CREATE DATABASE TO MAKE TESTS AFTER I FINISH THE ARHITECTURE
 	public void testPositionString() {
-		for (int i = 0; i < Table.getT().size(); i++) {
+		for (int i = 0; i < CommandLineMenu.getActiveDatabase().getTableNumber(); i++) {
 			System.out.println(Table.getTables(i).toString());
 		}
 		Assert.assertEquals("Failure : Wrong table position.", Table.position("Student"), 0);
@@ -179,8 +180,8 @@ public class TableTest {
 
 	@Test
 	public void testDeleteAttribute() {
-		table.deleteAttribute(table.getName(), table.getAttributes().get(2).getName());
-		Assert.assertEquals("Failure : Not deleted Attribute.", Table.getTables(0).getAttributes().get(2).getName(),
+		table.deleteAttribute(table.getName(), table.getAttributes(2).getName());
+		Assert.assertEquals("Failure : Not deleted Attribute.", Table.getTables(0).getAttributes(2).getName(),
 				"Age");
 
 	}
@@ -188,16 +189,16 @@ public class TableTest {
 	@Test
 	public void testDeleteEntry() {
 		table.deleteEntry(table.getName(), 3);
-		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes().get(2).getArray().get(2),
+		Assert.assertEquals("Failure : Not deleted Entry.", Table.getTables(0).getAttributes(2).getArray().get(2),
 				"f");
 
 	}
 
 	@Test
 	public void testDeleteElement() {
-		table.deleteElement(table.getName(), 1, table.getAttributes().get(3).getName());
+		table.deleteElement(table.getName(), 1, table.getAttributes(3).getName());
 		Assert.assertEquals("Failure : Not deleted Element.", "--",
-				Table.getTables(0).getAttributes().get(3).getArray().get(1));
+				Table.getTables(0).getAttributes(3).getArray().get(1));
 	}
 
 	@Test

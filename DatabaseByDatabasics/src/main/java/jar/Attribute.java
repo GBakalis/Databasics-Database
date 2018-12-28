@@ -49,4 +49,25 @@ public class Attribute {
         array.set(lineNum - 1, newVal);
 	}
 
+	public int maxLength() {
+		int max = this.getName().length();
+		for (int i = 0; i < this.getArray().size(); i++) {
+			if (this.getArray().get(i).length() > max) {
+				max = this.getArray().get(i).length();
+			}
+		}
+		return max;
+	}
+
+	public void deleteAttribute() {
+		Table t = CommandLineMenu.getActiveTable();
+		for (int i = 0; i <= t.getAttributeNumber(); i++) {
+			if (this.equals(t.getAttributes(i))) {
+				t.getAllAttributes().set(i, null);
+				t.getAllAttributes().remove(i);
+				t.setAttributeNumber(-1);
+				break;
+			}
+		}
+	}
 }
