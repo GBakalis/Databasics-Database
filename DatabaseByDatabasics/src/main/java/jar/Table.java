@@ -55,9 +55,9 @@ import java.util.InputMismatchException;
 public class Table {
 
 	private String name;
+	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 	private int attributeNumber;
 	private int lines;
-	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
 	/**
 	 * A simple constructor that only expects a name to initialize a table
@@ -72,6 +72,8 @@ public class Table {
 		attributes.add(new Attribute("Last Modified", "date"));
 		attributeNumber = 2;
 		lines = 0;
+		CommandLineMenu.getActiveDatabase().setTableNumber(1);
+		CommandLineMenu.setActiveTable(this);
 		CommandLineMenu.getActiveDatabase().getAllTables().add(this);
 	}
 	
@@ -462,7 +464,19 @@ public class Table {
 			if (this.equals(db.getTables(i))) {
 				db.getAllTables().set(i, null);
 				db.getAllTables().remove(i);
-				db.setTableNumber(-1);
+				CommandLineMenu.getActiveDatabase().setTableNumber(-1);
+				CommandLineMenu.setActiveTable(null);
+				break;
+			}
+		}
+	}
+	
+	public void deleteAttribute(String att) {
+		for (int i = 0; i <= this.getAttributeNumber(); i++) {
+			if (this.getAttributes(i).getName().equals(att)) {
+				this.getAllAttributes().set(i, null);
+				this.getAllAttributes().remove(i);
+				this.setAttributeNumber(-1);
 				break;
 			}
 		}
@@ -472,33 +486,33 @@ public class Table {
 		for (int j = 0; j < attributes.size(); j++) {
 			this.getAttributes(j).getArray().remove(linePosition);
 		}
-		for (int i = 0; i < this.getLines() - 1 ; i++) {
+		for (int i = linePosition; i < this.getLines() - 1 ; i++) {
 			String num = String.valueOf(i + 1);
 			this.getAttributes(0).changeField(i, num);
 		}
 		lines--;
 	}
 
-	public void deleteElement(int line_number, String attributeName) {
+	public void deleteElement(int lineNumber, String attributeName) {
 		ArrayList<String> atts = new ArrayList<String>();
 		atts.add(attributeName);
 		int number = this.attPositions(atts).get(0);
-		this.getAttributes(number).getArray().set(line_number,"--");
+		this.getAttributes(number).getArray().set(lineNumber,"--");
 	}
 
-	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
+	public ArrayList<String> dataChange(int num, ArrayList<String> attNames, ArrayList<String> newValues) {
 		ArrayList<String> changedValues = new ArrayList<String>();
-		for (int i = 0; i < attrNames.size(); i++) {
+		for (int i = 0; i < attNames.size(); i++) {
 			for (int j = 1; j < attributes.size() - 1; j++) {
-				if (attributes.get(j).getName().equals(attrNames.get(i))) {
-					attributes.get(j).changeField(num + 1, newValues.get(i));
+				if (attributes.get(j).getName().equals(attNames.get(i))) {
+					attributes.get(j).changeField(num, newValues.get(i));
 					changedValues.add(newValues.get(i));
 				}
 			}
 		}
 		Date date = new Date();
 		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-		attributes.get(attributeNumber - 1).changeField(num + 1, format.format(date));
+		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
 		return changedValues;
 	}
 
@@ -544,4 +558,71 @@ public class Table {
 		}
 	}
 
+	/**
+	 * This method imports a table from a csv, the location of which
+	 * is specified by the user. The format of the file must be as follows:
+	 * <ul>
+	 * <li>Line one: Name of the table</li>
+	 * <li>Line two: Types of the attributes separated by commas</li>
+	 * <li>Line three: Names of the attributes separated by commas</li>
+	 * <li>Each of the remaining lines: Values of each line, separated by commas</li>
+	 * </ul>
+	 * The user is responsible for the contents of each line for no checks will be
+	 * conducted concerning the matching of the attribute types and the element values.
+	 * @param br
+	 * 			A <code>BufferedReader</code> object used to read from the file.
+	 */
+	public static void importTable(BufferedReader br) {
+		String line;
+		Table table = null;
+		try {
+			String tableName = br.readLine();
+			table = new Table(tableName);
+			int[] types = convertTypes(br.readLine().split(","));
+			String[] names = br.readLine().split(",");
+			assert (types.length == names.length);
+			for (int i = 0 ; i < types.length; i++) {
+				table.newAttribute(names[i], types[i]);
+			}
+			while ((line = br.readLine()) != null) {
+				String[] entries = line.split(",");
+				table.newEntry(entries);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			 table.delete();
+		}
+		System.out.println("Table succesfully imported!");
+	}
+	/**
+	 * A method that matches the types of an attribute with a specific number
+	 * so that a method can make use of the {@link #newAttribute(String, int)}
+	 * method.
+	 * @param types
+	 * 		An array of <code>String</code> elements among "string", "char",
+	 * 		"int", "double", "date" and any other type (to be matched with the object
+	 * 		case), representing a type in a String format
+	 * @return
+	 * 		An array of <code>int</code> elements, each one representing a choice
+	 * 		of type in compliance with the {@link #newAttribute(String, int)} method.
+	 */
+	public static int[] convertTypes(String[] types) {
+		int[] typeNums = new int[types.length];
+		for (int i = 0 ; i < types.length; i++) {
+			if (types[i].equals("string")) {
+				typeNums[i] = 1;
+			} else if (types[i].equals("char")) {
+				typeNums[i] = 2;
+			} else if (types[i].equals("int")) {
+				typeNums[i] = 3;
+			} else if (types[i].equals("double")) {
+				typeNums[i] = 4;
+			} else if (types[i].equals("date")) {
+				typeNums[i] = 5;
+			} else {
+				typeNums[i] = 6;
+			}
+		}
+		return typeNums;
+	}
 }

@@ -1,32 +1,23 @@
 package jar;
 
-import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.Scanner;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.InputMismatchException;
 
 public class Database {
 
 	private String name;
-	private int tableNumber;
 	private ArrayList<Table> tables = new ArrayList<Table>();
-	
+	private int tableNumber;
+
 	public Database(String name) {
 		this.name = name;
-		tableNumber = 0;
 		DatabaseUniverse.getAllDatabases().add(this);
+		CommandLineMenu.setActiveDatabase(this);
 	}
 
 	public String getName() {
@@ -334,4 +325,13 @@ public class Database {
 		return typeNums;
 	}
 
+	public void delete() {
+		for (int i = 0; i <= DatabaseUniverse.getDatabaseNumber(); i++) {
+			if (this.equals(DatabaseUniverse.getDatabases(i))) {
+				DatabaseUniverse.getAllDatabases().set(i, null);
+				DatabaseUniverse.getAllDatabases().remove(i);
+				break;
+			}
+		}
+	}
 }
