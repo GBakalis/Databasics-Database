@@ -827,9 +827,7 @@ public class CommandLineMenu {
 	public static void deleteAttributeMenu(String tableName) {
 		System.out.println("Please enter the name of the attribute that you want to delete");
 		String attName = readAttributeRestrictedPermission(tableName);
-		ArrayList<String> atts = new ArrayList<String>();
-		atts.add(attName);
-		activeTable.getAttributes(activeTable.attPositions(atts).get(0)).deleteAttribute();
+		activeTable.deleteAttribute(attName);
 	}
 
 	/*

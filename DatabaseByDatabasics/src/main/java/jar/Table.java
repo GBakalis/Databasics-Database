@@ -55,9 +55,9 @@ import java.util.InputMismatchException;
 public class Table {
 
 	private String name;
+	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 	private int attributeNumber;
 	private int lines;
-	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
 	/**
 	 * A simple constructor that only expects a name to initialize a table
@@ -72,6 +72,8 @@ public class Table {
 		attributes.add(new Attribute("Last Modified", "date"));
 		attributeNumber = 2;
 		lines = 0;
+		CommandLineMenu.getActiveDatabase().setTableNumber(1);
+		CommandLineMenu.setActiveTable(this);
 		CommandLineMenu.getActiveDatabase().getAllTables().add(this);
 	}
 	
@@ -462,7 +464,19 @@ public class Table {
 			if (this.equals(db.getTables(i))) {
 				db.getAllTables().set(i, null);
 				db.getAllTables().remove(i);
-				db.setTableNumber(-1);
+				CommandLineMenu.getActiveDatabase().setTableNumber(-1);
+				CommandLineMenu.setActiveTable(null);
+				break;
+			}
+		}
+	}
+	
+	public void deleteAttribute(String att) {
+		for (int i = 0; i <= this.getAttributeNumber(); i++) {
+			if (this.getAttributes(i).getName().equals(att)) {
+				this.getAllAttributes().set(i, null);
+				this.getAllAttributes().remove(i);
+				this.setAttributeNumber(-1);
 				break;
 			}
 		}
@@ -472,33 +486,33 @@ public class Table {
 		for (int j = 0; j < attributes.size(); j++) {
 			this.getAttributes(j).getArray().remove(linePosition);
 		}
-		for (int i = 0; i < this.getLines() - 1 ; i++) {
+		for (int i = linePosition; i < this.getLines() - 1 ; i++) {
 			String num = String.valueOf(i + 1);
 			this.getAttributes(0).changeField(i, num);
 		}
 		lines--;
 	}
 
-	public void deleteElement(int line_number, String attributeName) {
+	public void deleteElement(int lineNumber, String attributeName) {
 		ArrayList<String> atts = new ArrayList<String>();
 		atts.add(attributeName);
 		int number = this.attPositions(atts).get(0);
-		this.getAttributes(number).getArray().set(line_number,"--");
+		this.getAttributes(number).getArray().set(lineNumber,"--");
 	}
 
-	public ArrayList<String> dataChange(int num, ArrayList<String> attrNames, ArrayList<String> newValues) {
+	public ArrayList<String> dataChange(int num, ArrayList<String> attNames, ArrayList<String> newValues) {
 		ArrayList<String> changedValues = new ArrayList<String>();
-		for (int i = 0; i < attrNames.size(); i++) {
+		for (int i = 0; i < attNames.size(); i++) {
 			for (int j = 1; j < attributes.size() - 1; j++) {
-				if (attributes.get(j).getName().equals(attrNames.get(i))) {
-					attributes.get(j).changeField(num + 1, newValues.get(i));
+				if (attributes.get(j).getName().equals(attNames.get(i))) {
+					attributes.get(j).changeField(num, newValues.get(i));
 					changedValues.add(newValues.get(i));
 				}
 			}
 		}
 		Date date = new Date();
 		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-		attributes.get(attributeNumber - 1).changeField(num + 1, format.format(date));
+		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
 		return changedValues;
 	}
 
