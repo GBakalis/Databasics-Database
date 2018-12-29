@@ -27,4 +27,92 @@ public class DatabaseUniverse {
 		}
 		return false;
 	}
+	
+	/**
+	 * This methods creates a directory in the user's Documents folder
+	 * within which the databases will be saved
+	 */
+	public void makeDatabaseUniverseDir() {
+		try {
+			File databasesFolder = new File (System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator + "DatabaseUniverse");
+			if (!databasesFolder.exists()) {
+				databasesFolder.mkdirs();
+			}
+		} catch (SecurityException e) {
+			System.out.println("Access Denied in Documents folder. Please check your security settings"
+					+ "to enable file saving");
+		} catch (NullPointerException e) {
+			System.err.println(e.getCause());
+		} catch (IllegalArgumentException e) {
+			System.err.print(e);
+		}
+	}
+	
+	/**
+	 * This method is used to import all the databases and their contents, that are saved
+	 * in the user's DatabaseUniverse directory within his Documents folder.
+	 */
+	public static void importDatabaseUniverseTree() {
+		try {
+			File databasesFolder = new File (System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator + "DatabaseUniverse");
+			String[] databases = databasesFolder.list();
+			for (String databaseName : databases) {
+				importDatabase(databaseName);
+			}
+		} catch (SecurityException e) {
+			System.out.println("Access Denied in Documents folder. Please check your security settings"
+					+ "to enable file saving");
+		} catch (NullPointerException e) {
+			System.err.println(e.getCause());
+		} catch (IllegalArgumentException e) {
+			System.err.print(e);
+		}
+	}
+	
+	public static FilenameFilter csvFilter = new FilenameFilter() {
+		public boolean accept(File dir, String name) {
+			String lowercaseName = name.toLowerCase();
+			if (lowercaseName.endsWith(".csv")) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
+	
+	/**
+	 * This method is used to import a single database and is called by
+	 * {@link #importDatabaseUniverseTree()} 
+	 * @param databaseName
+	 * 			The name of database directory to name the database itself.
+	 */
+	public static void importDatabase(String databaseName) {
+		try {
+			File databaseDirectory = new File (System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator + "DatabaseUniverse"
+					+ File.separator + databaseName);
+			if (!databaseDirectory.exists()) {
+				throw new FileNotFoundException();
+			}
+			Database database = new Database(databaseName);
+			databases.add(database);
+			databaseNumber++;
+			File[] tableFiles = databaseDirectory.listFiles(csvFilter);
+			for (File tableFile : tableFiles) {
+				BufferedReader br = new BufferedReader(new FileReader(tableFile));
+				database.importTable(br);
+			}
+		} catch (SecurityException e) {
+			System.out.println("Access Denied in Documents folder. Please check your security settings"
+					+ "to enable file saving.");
+		} catch (FileNotFoundException e) {
+			System.out.println("Database " + databaseName + " does not exist");
+		} catch (NullPointerException e) {
+			System.err.println(e.getCause());
+		} catch (IllegalArgumentException e) {
+			System.err.print(e);
+		}
+	}
 }
