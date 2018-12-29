@@ -72,6 +72,7 @@ public class Table {
 		attributes.add(new Attribute("Last Modified", "date"));
 		attributeNumber = 2;
 		lines = 0;
+		CommandLineMenu.getActiveDatabase().getAllTables().add(this);
 	}
 	
 	public boolean exists(String name) {
@@ -283,7 +284,7 @@ public class Table {
 		}
 	}
 
-	public int searchAttribute(int num, String attName) {
+	public int searchAttribute(String attName) {
 		int pos = -1;
 		int i = 0;
 		boolean check = true;

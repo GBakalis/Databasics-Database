@@ -18,22 +18,22 @@ import java.util.InputMismatchException;
 
 public class DatabaseUniverse {
 
-	private int databaseNumber;
-	private ArrayList<Database> databases = new ArrayList<Database>();
+	private static int databaseNumber;
+	private static ArrayList<Database> databases = new ArrayList<Database>();
 
-	public int getDatabaseNumber() {
+	public static int getDatabaseNumber() {
 		return databaseNumber;
 	}
 
-	public ArrayList<Database> getAllDatabases() {
+	public static ArrayList<Database> getAllDatabases() {
 		return databases;
 	}
 	
-	public Database getDatabases(int i) {
+	public static Database getDatabases(int i) {
 		return databases.get(i);
 	}
 
-	public boolean exists(String name) {
+	public static boolean exists(String name) {
 		for (Database db : getAllDatabases()) {
 			if (db.getName().equals(name)) {
 				return true;

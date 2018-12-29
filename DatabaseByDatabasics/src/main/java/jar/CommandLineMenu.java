@@ -59,11 +59,11 @@ public class CommandLineMenu {
 			Scanner input = new Scanner(System.in);
 			System.out.print("Please type in the name of the new database: ");
 			databaseName = input.nextLine();
-			if (Table.exists(databaseName) == true)
+			if (DatabaseUniverse.exists(databaseName) == true)
 				System.out.println("This table already exists.");
-		} while (Table.exists(databaseName) == true);
+		} while (DatabaseUniverse.exists(databaseName) == true);
 		Database database = new Database(databaseName);
-		
+		setActiveDatabase(database);
 		createTable();
 		Scanner input = new Scanner(System.in);
 		do {
@@ -122,6 +122,7 @@ public class CommandLineMenu {
 	 */
 	public static void createTable() {
 		Table table = tableCreation();
+		setActiveTable(table);
 		attributeCreationMenu();
 		entryCreationMenu();
 	}
@@ -137,8 +138,9 @@ public class CommandLineMenu {
 			System.out.print("Please type in the name of the new table: ");
 
 			tableName = input.nextLine();
-			if (activeDatabase.exists(tableName) == true)
+			if (activeDatabase.exists(tableName) == true) {
 				System.out.println("This table already exists.");
+			}
 		} while (activeDatabase.exists(tableName) == true);
 		Table table = new Table(tableName);
 		return table;
@@ -273,7 +275,9 @@ public class CommandLineMenu {
 	 * Return Table type by recognizing an existing table name.
 	 */
 	public static Table readTable(String tableName) {
-		return activeDatabase.getTables(activeDatabase.position(tableName));
+		Table temp = activeDatabase.getTables(activeDatabase.position(tableName));
+		setActiveTable(temp);
+		return temp;
 	}
 
 	/*
@@ -315,8 +319,7 @@ public class CommandLineMenu {
 	 */
 	public static void viewTableMenu() {
 		System.out.println("Please enter the name of the table that you want to view");
-		String name = readTable();
-		activeTable.view();
+		readTable(readTable()).view();
 	}
 
 	/*
@@ -492,7 +495,7 @@ public class CommandLineMenu {
 			String attNameC = readAttribute(nameCopy);
 			System.out.println("Please enter the name of the attribute where you want to paste");
 			String attNameP = input.nextLine();
-			activeDatabase.getTables(0).copyAttribute(nameCopy, attNameC, namePaste, attNameP);
+			activeDatabase.copyAttribute(nameCopy, attNameC, namePaste, attNameP);
 			System.out.println("Do you want to copy another attribute?");
 			answer = input.next().toLowerCase();
 		} while (answer.equalsIgnoreCase("yes"));
@@ -547,7 +550,7 @@ public class CommandLineMenu {
 	 * Copy and adding an entry
 	 */
 	public static void copyAddEntry(String nameCopy, int entryNumCopy) {
-		activeDatabase.getTables(0).copyNewEntry(nameCopy, entryNumCopy, activeTable.getName());
+		activeDatabase.copyNewEntry(nameCopy, entryNumCopy, activeTable.getName());
 	}
 
 	/*
@@ -556,7 +559,7 @@ public class CommandLineMenu {
 	public static void copyReplaceEntry(String nameCopy, int entryNumCopy) {
 		System.out.println("Please enter the number of the entry that you want to replace");
 		int entryNumPaste = readLines(activeTable.getName());
-		activeDatabase.getTables(0).copyExistingEntry(nameCopy, entryNumCopy, activeTable.getName(), entryNumPaste);
+		activeDatabase.copyExistingEntry(nameCopy, entryNumCopy, activeTable.getName(), entryNumPaste);
 
 	}
 
@@ -625,7 +628,7 @@ public class CommandLineMenu {
 		String attNameP = readAttributeRestrictedPermission(tableName);
 		System.out.println("Please enter the number of the " + "line where you want to paste the element");
 		int lineP = readLines(tableName);
-		activeDatabase.getTables(0).copyElement(nameCopy, attNameC, lineC, tableName, attNameP, lineP);
+		activeDatabase.copyElement(nameCopy, attNameC, lineC, tableName, attNameP, lineP);
 	}
 
 	/*
