@@ -558,4 +558,71 @@ public class Table {
 		}
 	}
 
+	/**
+	 * This method imports a table from a csv, the location of which
+	 * is specified by the user. The format of the file must be as follows:
+	 * <ul>
+	 * <li>Line one: Name of the table</li>
+	 * <li>Line two: Types of the attributes separated by commas</li>
+	 * <li>Line three: Names of the attributes separated by commas</li>
+	 * <li>Each of the remaining lines: Values of each line, separated by commas</li>
+	 * </ul>
+	 * The user is responsible for the contents of each line for no checks will be
+	 * conducted concerning the matching of the attribute types and the element values.
+	 * @param br
+	 * 			A <code>BufferedReader</code> object used to read from the file.
+	 */
+	public static void importTable(BufferedReader br) {
+		String line;
+		Table table = null;
+		try {
+			String tableName = br.readLine();
+			table = new Table(tableName);
+			int[] types = convertTypes(br.readLine().split(","));
+			String[] names = br.readLine().split(",");
+			assert (types.length == names.length);
+			for (int i = 0 ; i < types.length; i++) {
+				table.newAttribute(names[i], types[i]);
+			}
+			while ((line = br.readLine()) != null) {
+				String[] entries = line.split(",");
+				table.newEntry(entries);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			 table.delete();
+		}
+		System.out.println("Table succesfully imported!");
+	}
+	/**
+	 * A method that matches the types of an attribute with a specific number
+	 * so that a method can make use of the {@link #newAttribute(String, int)}
+	 * method.
+	 * @param types
+	 * 		An array of <code>String</code> elements among "string", "char",
+	 * 		"int", "double", "date" and any other type (to be matched with the object
+	 * 		case), representing a type in a String format
+	 * @return
+	 * 		An array of <code>int</code> elements, each one representing a choice
+	 * 		of type in compliance with the {@link #newAttribute(String, int)} method.
+	 */
+	public static int[] convertTypes(String[] types) {
+		int[] typeNums = new int[types.length];
+		for (int i = 0 ; i < types.length; i++) {
+			if (types[i].equals("string")) {
+				typeNums[i] = 1;
+			} else if (types[i].equals("char")) {
+				typeNums[i] = 2;
+			} else if (types[i].equals("int")) {
+				typeNums[i] = 3;
+			} else if (types[i].equals("double")) {
+				typeNums[i] = 4;
+			} else if (types[i].equals("date")) {
+				typeNums[i] = 5;
+			} else {
+				typeNums[i] = 6;
+			}
+		}
+		return typeNums;
+	}
 }
