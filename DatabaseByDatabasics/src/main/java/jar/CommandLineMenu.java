@@ -37,15 +37,24 @@ public class CommandLineMenu {
 	public static void databaseChoiceMenu() {
 		int choice = 0;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Choose one of the following:" + "\n1.Create new database.\n2.Load existing database");
-		choice = checkChoice(1, 2);
-		if (choice == 1) {
-			databaseCreationMenu();
+		for (;;) {
+			System.out.println("Choose one of the following:" + "\n1.Create new database.\n2.Select Database"
+					+ "\n3.Exit");
+			choice = checkChoice(1, 2);
+			if (choice == 1) {
+				databaseCreationMenu();
+			}
+			if (choice == 2) {
+				System.out.println("Type in the name of the database of your choice.");
+				setActiveDatabase(readDatabase(readDatabase()));
+				databaseMenu();
+				viewDatabase();
+			}
+			if (choice == 3) {
+				System.out.println("Terminating");
+				System.exit(0);
+			}
 		}
-		if (choice == 2) {
-			// not yet created
-		}
-		return;
 	}
 
 	/*
@@ -270,6 +279,16 @@ public class CommandLineMenu {
 		}
 		return tableName;
 	}
+	
+	public static String readDatabase() {
+		Scanner input = new Scanner(System.in);
+		String databaseName = input.nextLine();
+		while (DatabaseUniverse.exists(databaseName) == false) {
+			System.out.println("This table does not exist. Please type an existing name.");
+			databaseName = input.nextLine();
+		}
+		return databaseName;
+	}
 
 	/*
 	 * Return Table type by recognizing an existing table name.
@@ -277,6 +296,12 @@ public class CommandLineMenu {
 	public static Table readTable(String tableName) {
 		Table temp = activeDatabase.getTables(activeDatabase.position(tableName));
 		setActiveTable(temp);
+		return temp;
+	}
+	
+	public static Database readDatabase(String databaseName) {
+		Database temp = DatabaseUniverse.getDatabases(DatabaseUniverse.position(databaseName));
+		setActiveDatabase(temp);
 		return temp;
 	}
 
@@ -289,8 +314,9 @@ public class CommandLineMenu {
 		int choice = 0;
 		do {
 			System.out.println("Choose one of the following:\n1.Add a new table\n2.View a table\n"
-					+ "3.Delete a table\n4.Choose a table (obtain access to more options)" + "\n5.exit");
-			choice = checkChoice(1, 5);
+					+ "3.Delete a table\n4.Choose a table (obtain access to more options)"
+					+"\n5.Save database\n6.Exit");
+			choice = checkChoice(1, 6);
 			if (choice == 1) {
 				addTable();
 				viewDatabase();
@@ -305,13 +331,15 @@ public class CommandLineMenu {
 				tableMenu();
 				viewDatabase();
 			} else if (choice == 5) {
-				viewDatabase();
+				activeDatabase.saveDatabase();
+			} else if (choice == 6) {
+				setActiveDatabase(null);
 				return;
 			} else {
 				System.out.println("This is not a valid intput.");
 				databaseMenu();
 			}
-		} while (choice != 5);
+		} while (choice != 6);
 	}
 
 	/*
@@ -339,7 +367,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		System.out.println("Choose one of the following:\n1.Search in this table\n2.Sort this table\n"
 				+ "3.Present data\n4.Add an attribute\n" + "5.New entry\n6.Change data\n7.Delete data"
-				+ "\n8.Save table \n9.Exit" );
+				+ "\n8.Exit" );
 		int choice = checkChoice(1, 9);
 		if (choice == 1) {
 			searchMenu();
@@ -356,8 +384,6 @@ public class CommandLineMenu {
 		} else if (choice == 7) {
 			deleteMenu();
 		} else if (choice == 8) {
-			activeTable.saveTable();
-		} else if (choice == 9) {
 			setActiveTable(null);
 			return;
 		} else {
@@ -893,7 +919,7 @@ public class CommandLineMenu {
 				correctFile = false;
 			}
 		} while (!correctFile);
-		Table.importTable(br);
+		activeDatabase.importTable(br);
 	}
 	
 	public static boolean checkCsvFormat(String fileName) {

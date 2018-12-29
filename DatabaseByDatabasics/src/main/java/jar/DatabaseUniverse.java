@@ -47,7 +47,7 @@ public class DatabaseUniverse {
 	 * This methods creates a directory in the user's Documents folder
 	 * within which the databases will be saved
 	 */
-	public void makeDatabaseUniverseDir() {
+	public static void createDatabaseUniverseDir() {
 		try {
 			File databasesFolder = new File (System.getProperty("user.home")
 					+ File.separator + "Documents" + File.separator + "DatabaseUniverse");
@@ -112,8 +112,7 @@ public class DatabaseUniverse {
 				throw new FileNotFoundException();
 			}
 			Database database = new Database(databaseName);
-			databases.add(database);
-			databaseNumber++;
+			CommandLineMenu.setActiveDatabase(database);
 			File[] tableFiles = databaseDirectory.listFiles(csvFilter);
 			for (File tableFile : tableFiles) {
 				BufferedReader br = new BufferedReader(new FileReader(tableFile));
@@ -125,9 +124,22 @@ public class DatabaseUniverse {
 		} catch (FileNotFoundException e) {
 			System.out.println("Database " + databaseName + " does not exist");
 		} catch (NullPointerException e) {
-			System.err.println(e.getCause());
+			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			System.err.print(e);
+		} finally {
+			CommandLineMenu.setActiveDatabase(null);
 		}
+	}
+	
+	public static int position(String databaseName) {
+		int position = 0;
+		for (int i = 0; i < databaseNumber; i++) {
+			if (databaseName.equals(databases.get(i))) {
+				position = i;
+				continue;
+			}
+		}
+		return position;
 	}
 }

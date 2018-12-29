@@ -251,7 +251,7 @@ public class Database {
 		try {
 			File databaseDirectory = new File (System.getProperty("user.home")
 					+ File.separator + "Documents" + File.separator + "DatabaseUniverse"
-					+ name);
+					+ File.separator + name);
 			databaseDirectory.mkdirs();
 			for (Table table : tables) {
 				table.saveTable(databaseDirectory.getPath());
@@ -260,7 +260,7 @@ public class Database {
 			System.out.println("Access Denied in Documents folder. Please check your security settings"
 					+ "to enable file saving");
 		} catch (NullPointerException e) {
-			System.err.println(e.getCause());
+			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			System.err.print(e);
 		}
@@ -286,8 +286,6 @@ public class Database {
 		try {
 			String tableName = br.readLine();
 			table = new Table(tableName);
-			tables.add(table);
-			tableNumber++;
 			int[] types = convertTypes(br.readLine().split(","));
 			String[] names = br.readLine().split(",");
 			assert (types.length == names.length);
