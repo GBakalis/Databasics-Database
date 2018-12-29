@@ -1,6 +1,7 @@
 package jar;
 
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -238,6 +239,100 @@ public class Database {
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Out of Bounds");
 		}
+	}
+	
+	/**
+	 * This methods is used to save a database in the DatabaseUniverse Directory.
+	 * Each database is saved as a directory with the name of the database, containing a 
+	 * csv file for each table of the database.
+	 */
+	public void saveDatabase() {
+		try {
+			File databaseDirectory = new File (System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator + "DatabaseUniverse"
+					+ name);
+			databaseDirectory.mkdirs();
+			for (Table table : tables) {
+				table.saveTable(databaseDirectory.getPath());
+			}
+		} catch (SecurityException e) {
+			System.out.println("Access Denied in Documents folder. Please check your security settings"
+					+ "to enable file saving");
+		} catch (NullPointerException e) {
+			System.err.println(e.getCause());
+		} catch (IllegalArgumentException e) {
+			System.err.print(e);
+		}
+	}
+	
+	/**
+	 * This method imports a table from a csv file, the location of which
+	 * is specified by the user. The format of the file must be as follows:
+	 * <ul>
+	 * <li>Line one: Name of the table</li>
+	 * <li>Line two: Types of the attributes separated by commas</li>
+	 * <li>Line three: Names of the attributes separated by commas</li>
+	 * <li>Each of the remaining lines: Values of each line, separated by commas</li>
+	 * </ul>
+	 * The user is responsible for the contents of each line for no checks will be
+	 * conducted concerning the matching of the attribute types and the element values.
+	 * @param br
+	 * 			A <code>BufferedReader</code> object used to read from the file.
+	 */
+	public void importTable(BufferedReader br) {
+		String line;
+		Table table = null;
+		try {
+			String tableName = br.readLine();
+			table = new Table(tableName);
+			tables.add(table);
+			tableNumber++;
+			int[] types = convertTypes(br.readLine().split(","));
+			String[] names = br.readLine().split(",");
+			assert (types.length == names.length);
+			for (int i = 0 ; i < types.length; i++) {
+				table.newAttribute(names[i], types[i]);
+			}
+			while ((line = br.readLine()) != null) {
+				String[] entries = line.split(",");
+				table.newEntry(entries);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			 table.delete();
+		}
+		System.out.println("Table succesfully imported!");
+	}
+	/**
+	 * A method that matches the types of an attribute with a specific number
+	 * so that a method can make use of the {@link #jar.Table.newAttribute(String, int)}
+	 * method.
+	 * @param types
+	 * 		An array of <code>String</code> elements among "string", "char",
+	 * 		"int", "double", "date" and any other type (to be matched with the object
+	 * 		case), representing a type in a String format
+	 * @return
+	 * 		An array of <code>int</code> elements, each one representing a choice
+	 * 		of type in compliance with the {@link #jar.Table.newAttribute(String, int)} method.
+	 */
+	public static int[] convertTypes(String[] types) {
+		int[] typeNums = new int[types.length];
+		for (int i = 0 ; i < types.length; i++) {
+			if (types[i].equals("string")) {
+				typeNums[i] = 1;
+			} else if (types[i].equals("char")) {
+				typeNums[i] = 2;
+			} else if (types[i].equals("int")) {
+				typeNums[i] = 3;
+			} else if (types[i].equals("double")) {
+				typeNums[i] = 4;
+			} else if (types[i].equals("date")) {
+				typeNums[i] = 5;
+			} else {
+				typeNums[i] = 6;
+			}
+		}
+		return typeNums;
 	}
 
 }
