@@ -17,6 +17,7 @@ public class Database {
 	public Database(String name) {
 		this.name = name;
 		DatabaseUniverse.getAllDatabases().add(this);
+		DatabaseUniverse.incrementDatabaseNumber();
 		CommandLineMenu.setActiveDatabase(this);
 	}
 

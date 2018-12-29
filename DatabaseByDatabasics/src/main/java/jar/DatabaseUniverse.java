@@ -15,6 +15,10 @@ public class DatabaseUniverse {
 	public static int getDatabaseNumber() {
 		return databaseNumber;
 	}
+	
+	public static void incrementDatabaseNumber() {
+		databaseNumber++;
+	}
 
 	public static ArrayList<Database> getAllDatabases() {
 		return databases;
