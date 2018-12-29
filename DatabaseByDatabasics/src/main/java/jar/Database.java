@@ -26,6 +26,7 @@ public class Database {
 	public Database(String name) {
 		this.name = name;
 		tableNumber = 0;
+		DatabaseUniverse.getAllDatabases().add(this);
 	}
 
 	public String getName() {
@@ -142,7 +143,7 @@ public class Database {
 						tables.get(pasteK).getAttributes(i).changeField(entryNumPaste + 1,tables.get(copyK).getAttributes(i).getArray().get(entryNumCopy));
 						Date date = new Date();
 						DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-						tables.get(pasteK).getAttributes(attributeNumber - 1).changeField(entryNumPaste + 1,format.format(date));
+						tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 1).changeField(entryNumPaste + 1,format.format(date));
 					} else {
 						check = false;
 						break;
@@ -172,7 +173,7 @@ public class Database {
 			if (check == false) {
 				System.out.println("The copy function is not possible");
 			} else {
-				String[] entries = new String[tables.get(copyK).attributeNumber - 2];
+				String[] entries = new String[tables.get(copyK).getAttributeNumber() - 2];
 				for (int i = 0; i < entries.length; i++) {
 					entries[i] = tables.get(copyK).getAttributes(i + 1).getArray().get(entryNumCopy);
 				}
@@ -186,10 +187,10 @@ public class Database {
 
 	public void copyAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
 			int copyK = position(nameCopy);
-			int attNumC = searchAttribute(copyK,attNameC);
+			int attNumC = tables.get(copyK).searchAttribute(attNameC);
 			int pasteK = position(namePaste);
 			if (this.exists(attNameP)) {
-				int attNumP = searchAttribute(pasteK,attNameP);
+				int attNumP = tables.get(pasteK).searchAttribute(attNameP);
 				if (tables.get(pasteK).getAttributes(attNumP).getType().equals( tables.get(copyK).getAttributes(attNumC).getType())) {
 					tables.get(pasteK).getAttributes(attNumP).setArray(tables.get(copyK).getAttributes(attNumC).getArray());
 				} else {
@@ -198,7 +199,7 @@ public class Database {
 			} else {
 				int choice = findChoice(copyK,attNumC);
 				tables.get(pasteK).newAttribute(attNameP, choice);
-				tables.get(pasteK).getAttributes(tables.get(pasteK).attributeNumber - 2).setArray(tables.get(copyK).getAttributes(attNumC).getArray());
+				tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 2).setArray(tables.get(copyK).getAttributes(attNumC).getArray());
 			}
 		}
 
@@ -222,16 +223,16 @@ public class Database {
 
 	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
 		int copyK = position(nameCopy);
-		int attNumC = searchAttribute(copyK,attNameC);
+		int attNumC = tables.get(copyK).searchAttribute(attNameC);
 		int pasteK = position(namePaste);
-		int attNumP = searchAttribute(pasteK,attNameP);
+		int attNumP = tables.get(pasteK).searchAttribute(attNameP);
 		try {
 			if (lineC < tables.get(copyK).getAttributes(attNumC).getArray().size() && lineP < tables.get(pasteK).getAttributes(attNumP).getArray().size()) {
 				if (tables.get(pasteK).getAttributes(attNumP).getType().equals(tables.get(copyK).getAttributes(attNumC).getType()) ) {
 					tables.get(pasteK).getAttributes(attNumP).changeField(lineP + 1,tables.get(copyK).getAttributes(attNumC).getArray().get(lineC));
 					Date date = new Date();
 					DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
-					tables.get(pasteK).getAttributes(attributeNumber - 1).changeField(lineP + 1,format.format(date));
+					tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 1).changeField(lineP + 1,format.format(date));
 				} else {
 					System.out.println("Different type of elements");
 				}
