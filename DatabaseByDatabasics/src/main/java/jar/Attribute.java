@@ -44,7 +44,15 @@ public class Attribute {
 		array.add(entry);
 	}
 
-
+  /**
+	 * This method changes the value of the specified element using the method
+	 * {@link set} of class {@link ArrayList}.
+	 * @param linePos
+	 *      An <code>int</code> which contains the line number of the element whose
+	 *      value will be changed.
+	 * @param newVal
+	 *      A <code>String</code> which contains the new value used for the change.
+	 */
 	public void changeField(int linePos, String newVal) {
         array.set(linePos, newVal);
 	}

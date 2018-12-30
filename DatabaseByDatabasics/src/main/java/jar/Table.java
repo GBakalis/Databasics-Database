@@ -76,7 +76,7 @@ public class Table {
 		CommandLineMenu.setActiveTable(this);
 		CommandLineMenu.getActiveDatabase().getAllTables().add(this);
 	}
-	
+
 	public boolean exists(String name) {
 		for (Attribute attribute : getAllAttributes()) {
 			if (attribute.getName().equals(name)) {
@@ -126,10 +126,10 @@ public class Table {
 
 	/**
 	 * This method checks whether a set of values matches with the
-	 * length and the types of the table it is called upon. The types check is implemented 
+	 * length and the types of the table it is called upon. The types check is implemented
 	 * via the method {@link #checkEntryType(String[])}
 	 * @param entries
-	 * 		An array of <code>String</code> elements, each one of the 
+	 * 		An array of <code>String</code> elements, each one of the
 	 * 		representing an element of the table's new line, excluding the
 	 * 		default attributes' values.
 	 * @return
@@ -183,12 +183,12 @@ public class Table {
 		} while (correctEntry == false);
 		table.newEntry(entries);
 	}
-	
+
 	/**
 	 * This method inserts a line of values in the table it is called upon
 	 * and initializes the Last Modified column of the line.
 	 * @param entries
-	 * 		An array of <code>String</code> elements, each one of the 
+	 * 		An array of <code>String</code> elements, each one of the
 	 * 		representing an element of the table's new line, excluding the
 	 * 		default attributes' values.
 	 */
@@ -205,7 +205,7 @@ public class Table {
 	public ArrayList<Attribute> getAllAttributes() {
 		return attributes;
 	}
-	
+
 	public Attribute getAttributes(int i) {
 		return attributes.get(i);
 	}
@@ -213,7 +213,7 @@ public class Table {
 	public int getAttributeNumber() {
 		return attributeNumber;
 	}
-	
+
 	public void setAttributeNumber(int margin) {
 		attributeNumber += margin;
 	}
@@ -299,7 +299,7 @@ public class Table {
 		}
 		return pos;
 	}
-	
+
 	/**
 	 * This method presents a set of given lines of the table upon which it is called.
 	 * @param entryPositions
@@ -371,7 +371,7 @@ public class Table {
 		}
 		return positions;
 	}
-	
+
 	/**
 	 * This method searches for lines which contain a set of elements specified by the user and
 	 * returns their positions. The search can be parameterized by one or more attributes.
@@ -470,7 +470,7 @@ public class Table {
 			}
 		}
 	}
-	
+
 	public void deleteAttribute(String att) {
 		for (int i = 0; i <= this.getAttributeNumber(); i++) {
 			if (this.getAttributes(i).getName().equals(att)) {
@@ -500,6 +500,23 @@ public class Table {
 		this.getAttributes(number).getArray().set(lineNumber,"--");
 	}
 
+	/**
+	 * This method changes data which belong to one or more attributes and in one
+	 * specific line using the method {@link changeField} of class {@link Attribute}
+	 * and it gives the opportunity of multiple elements change with one run.
+	 * @param num
+	 * 			An <code>int</code> which contains the line number of the data to be
+	 *      changed.
+	 * @param attNames
+	 * 			An arraylist of <code>String</code> elements, containing the names of
+	 * 			the attributes where the data to be changed belong to.
+	 * @param newValues
+	 *      An arraylist of <code>String</code> elements, containing the new values
+	 *      of the data to be changed.
+	 * @return
+	 * 			An arrraylist of <code>String</code> elements, containing the changed
+	 *      values.
+	 */
 	public ArrayList<String> dataChange(int num, ArrayList<String> attNames, ArrayList<String> newValues) {
 		ArrayList<String> changedValues = new ArrayList<String>();
 		for (int i = 0; i < attNames.size(); i++) {
@@ -525,7 +542,7 @@ public class Table {
 	 * The third line of the file contains the names of the attributes, separated by commas.
 	 * Each of the following lines contains the elements of a table line, separated by commas.
 	 * @param databasePath
-	 * 			A <code>String</code> representing the path of the database directory 
+	 * 			A <code>String</code> representing the path of the database directory
 	 * 			in which the table will be saved
 	 */
 	public void saveTable(String databasePath) {
