@@ -40,7 +40,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		for (;;) {
 			System.out.println("Choose one of the following:" 
-					+ "\n1.Create new database.\n2.Select Database\n3.Exit");
+					+ "\n1.Create new database\n2.Select Database\n3.Exit");
 			choice = checkChoice(1, 3);
 			if (choice == 1) {
 				databaseCreationMenu();
@@ -50,7 +50,6 @@ public class CommandLineMenu {
 						+ " of your choice.");
 				setActiveDatabase(readDatabase(readDatabase()));
 				databaseMenu();
-				viewDatabase();
 			}
 			if (choice == 3) {
 				System.out.println("Terminating...");
