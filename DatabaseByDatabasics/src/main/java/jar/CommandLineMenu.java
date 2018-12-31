@@ -284,6 +284,9 @@ public class CommandLineMenu {
 	public static String readTable() {
 		Scanner input = new Scanner(System.in);
 		String tableName = input.nextLine();
+		if (tableName.equals("all")) {
+			return tableName;
+		}
 		while (activeDatabase.exists(tableName) == false) {
 			System.out.println("This table does not exist."
 					+ " Please type an existing name.");
@@ -365,7 +368,14 @@ public class CommandLineMenu {
 	public static void viewTableMenu() {
 		System.out.println(
 				"Please enter the name of the table that you want to view");
-		readTable(readTable()).view();
+		String s = readTable();
+		if (s.equals("all")) {
+			for (int i = 0; i < activeDatabase.getTableNumber(); i++) {
+				activeDatabase.getTables(i).view();
+			}
+		} else {
+			readTable(s).view();
+		}
 	}
 
 	/*
