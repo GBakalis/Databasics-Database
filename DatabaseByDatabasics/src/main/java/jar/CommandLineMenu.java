@@ -299,7 +299,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		String databaseName = input.nextLine();
 		while (DatabaseUniverse.exists(databaseName) == false) {
-			System.out.println("This table does not exist."
+			System.out.println("This database does not exist."
 					+ " Please type an existing name.");
 			databaseName = input.nextLine();
 		}
@@ -849,7 +849,9 @@ public class CommandLineMenu {
 						+ ".\n Type in the new value.");
 				ch = input.nextLine();
 				values.add(ch);
-				j += 1;
+				if (++j == atts.size()) {
+					break;
+				}
 			}
 		}
 		return values;

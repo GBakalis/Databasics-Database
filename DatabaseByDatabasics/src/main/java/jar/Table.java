@@ -149,7 +149,7 @@ public class Table {
 			System.err.println("Wrong entry on an Integer or Decimal column!");
 			correctEntry = false;
 		} catch (ParseException e) {
-			System.err.println("Invalid date format in a date column!");
+			System.err.println("Invalid date format on a date column!");
 			correctEntry = false;
 		} catch (NotCharacterException e) {
 			System.err.println("Large entry on a single letter column!");
@@ -195,7 +195,7 @@ public class Table {
 	 */
 	public void newEntry(String[] entries) {
 		Date date = new Date();
-		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+		DateFormat format = new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
 		attributes.get(attributeNumber - 1).setEntryField(format.format(date));
 		attributes.get(0).setEntryField(String.valueOf(++lines));
 		for (int i = 1; i <= entries.length; i++) {
@@ -439,7 +439,7 @@ public class Table {
 
 	protected SimpleDateFormat returnFormater(int index) {
 		if (index == attributeNumber - 1)
-			return new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+			return new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
 		else
 			return new SimpleDateFormat("dd/MM/yyyy");
 	}
@@ -529,7 +529,7 @@ public class Table {
 			}
 		}
 		Date date = new Date();
-		DateFormat format = new SimpleDateFormat("HH:mm:ss dd:MM:yyyy");
+		DateFormat format = new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
 		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
 		return changedValues;
 	}
