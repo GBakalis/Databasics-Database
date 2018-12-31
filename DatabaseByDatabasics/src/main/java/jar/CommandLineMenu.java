@@ -370,9 +370,7 @@ public class CommandLineMenu {
 				"Please enter the name of the table that you want to view");
 		String s = readTable();
 		if (s.equals("all")) {
-			for (int i = 0; i < activeDatabase.getTableNumber(); i++) {
-				activeDatabase.getTables(i).view();
-			}
+			viewDatabase();
 		} else {
 			readTable(s).view();
 		}
