@@ -59,6 +59,17 @@ public class CommandLineMenu {
 		}
 	}
 
+	/*Check if an answer is acceptable*/
+	public static String checkAnswer() {
+		Scanner input = new Scanner(System.in);
+		String answer = input.next().toLowerCase();
+		if ((answer != "yes") || (answer != "no")) {
+			System.out.println("Not a valid answer. Please try again.");
+			return checkAnswer();
+		}
+		return answer;
+	}
+	
 	/*
 	 * Create the first table. Give the user 
 	 * the option to add more tables to the
@@ -78,11 +89,9 @@ public class CommandLineMenu {
 		Database database = new Database(databaseName);
 		setActiveDatabase(database);
 		createTable();
-		Scanner input = new Scanner(System.in);
 		do {
-
 			System.out.println("Do you want to add a table?");
-			flag = input.next().toLowerCase();
+			flag = checkAnswer();
 			if (flag.equals("yes")) {
 				addTable();
 			}
@@ -183,10 +192,9 @@ public class CommandLineMenu {
 
 		do {
 			String attributeName = attributeCreation();
-			Scanner input = new Scanner(System.in);
 			addAttributeMenu(attributeName);
 			System.out.println("Do you want to create another attribute?");
-			answer = input.next().toLowerCase();
+			answer = checkAnswer();
 		} while ((answer.equalsIgnoreCase("yes")) 
 				|| (!answer.equalsIgnoreCase("no")));
 	}
@@ -217,11 +225,10 @@ public class CommandLineMenu {
 	 */
 	public static void entryCreationMenu() {
 		String answer = null;
-		Scanner input = new Scanner(System.in);
 		do {
 			addEntryMenu();
 			System.out.println("Do you want to add anoter entry?");
-			answer = input.next().toLowerCase();
+			answer = checkAnswer();
 		} while ((answer.equalsIgnoreCase("yes")) 
 				|| (!answer.equalsIgnoreCase("no")));
 	}
@@ -444,8 +451,8 @@ public class CommandLineMenu {
 			String element = input.nextLine().trim();
 			elements.add(element);
 			System.out.println("Would you like to add another attribute for"
-					+ " search? (Yes / Any other key\n");
-			String addAttribute = input.nextLine().trim();
+					+ " search? ");
+			String addAttribute = checkAnswer();
 			if (addAttribute.equalsIgnoreCase("yes")) {
 				continue;
 			} else {
@@ -467,12 +474,11 @@ public class CommandLineMenu {
 			System.out.println("Please enter an attribute of this table"
 					+ " you want to view");
 			atts.add(readAttribute(tableName));
-			Scanner input = new Scanner(System.in);
 			System.out.println("Do you want to view another attribute"
 					+ " of this table?");
 			System.out.println("Type 'yes' to add another one or "
 					+ "'no' to view the ones you have already entered");
-			String ch = input.nextLine();
+			String ch = checkAnswer();
 			if (!(ch.equalsIgnoreCase("yes"))) {
 				flag = false;
 			}
@@ -491,12 +497,11 @@ public class CommandLineMenu {
 					+ "you want to view");
 			int pos = readLines(tableName);
 			lines.add(pos);
-			Scanner input = new Scanner(System.in);
 			System.out.println("Do you want to view another line "
 					+ "of this table?");
 			System.out.println("Type 'yes' to add another one or "
 					+ "'no' to view the ones you have already entered");
-			String ch = input.nextLine();
+			String ch = checkAnswer();
 			if (!(ch.equalsIgnoreCase("yes"))) {
 				flag = false;
 			}
@@ -571,7 +576,7 @@ public class CommandLineMenu {
 			activeDatabase.copyAttribute(
 					nameCopy, attNameC, namePaste, attNameP);
 			System.out.println("Do you want to copy another attribute?");
-			answer = input.next().toLowerCase();
+			answer = checkAnswer();
 		} while (answer.equalsIgnoreCase("yes"));
 	}
 
@@ -607,7 +612,6 @@ public class CommandLineMenu {
 		String answer = null;
 		do {
 			String nameCopy;
-			Scanner input = new Scanner(System.in);
 			System.out.println("Please enter the name of the table "
 					+ "that contains the entry");
 			nameCopy = readTable();
@@ -620,7 +624,7 @@ public class CommandLineMenu {
 			if (choice == 2)
 				copyReplaceEntry(nameCopy, entryNumCopy);
 			System.out.println("Do you want to copy another entry?");
-			answer = input.next();
+			answer = checkAnswer();
 		} while (answer.toLowerCase().equals("yes"));
 	}
 
@@ -668,7 +672,6 @@ public class CommandLineMenu {
 	 */
 	public static void changeDataOptions() {
 		int choice = 0;
-		Scanner input = new Scanner(System.in);
 		System.out.println("Choose one of the following:"
 				+ "\n1.Change an entry manually"
 				+ "\n2.Replace elements of a line "
@@ -682,7 +685,7 @@ public class CommandLineMenu {
 			do {
 				copyElementMenu(activeTable.getName());
 				System.out.println("Do you want to replace another element?");
-				answer = input.next().toLowerCase();
+				answer = checkAnswer();
 			} while (answer.equalsIgnoreCase("yes"));
 		} else if (choice == 3) {
 			copyEntryMenu(2);
@@ -796,7 +799,6 @@ public class CommandLineMenu {
 		ArrayList<String> attributes;
 		ArrayList<String> values;
 		do {
-			Scanner input = new Scanner(System.in);
 			System.out.println("Type in the number of the line"
 					+ " you want to change");
 			num = readLines(activeTable.getName());
@@ -805,7 +807,7 @@ public class CommandLineMenu {
 			activeTable.dataChange(num, attributes, values);
 			activeTable.view();
 			System.out.println("Do you want to change another line?");
-			done = input.next();
+			done = checkAnswer();
 		} while (done.equals("yes"));
 	}
 
@@ -814,13 +816,12 @@ public class CommandLineMenu {
 	 */
 	public static ArrayList<String> readAttributes() {
 		ArrayList<String> atts = new ArrayList<String>();
-		Scanner input = new Scanner(System.in);
 		boolean flag = false;
 		do {
 			for (int i = 1; i < activeTable.getAttributeNumber() - 1; i++) {
 				System.out.println("Do you want to change attribute "
 						+ activeTable.getAttributes(i).getName() + "?");
-				String choice = input.nextLine();
+				String choice = checkAnswer();
 				if (choice.equals("yes")) {
 					atts.add(activeTable.getAttributes(i).getName());
 					flag = true;
@@ -887,7 +888,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		System.out.println("Are you sure you want to delete this?");
 		System.out.println("Press 'yes' to continue or 'no' to go back");
-		String d = input.nextLine();
+		String d = checkAnswer();
 		if (!(d.equalsIgnoreCase("yes"))) {
 			delete(choice);
 			System.out.println("Do you want to delete anything else?");
