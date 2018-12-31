@@ -2,17 +2,10 @@ package jar;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 
@@ -47,7 +40,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		for (;;) {
 			System.out.println("Choose one of the following:" 
-		+ "\n1.Create new database.\n2.Select Database\n3.Exit");
+					+ "\n1.Create new database.\n2.Select Database\n3.Exit");
 			choice = checkChoice(1, 3);
 			if (choice == 1) {
 				databaseCreationMenu();
@@ -60,7 +53,7 @@ public class CommandLineMenu {
 				viewDatabase();
 			}
 			if (choice == 3) {
-				System.out.println("Terminating");
+				System.out.println("Terminating...");
 				System.exit(0);
 			}
 		}
@@ -117,7 +110,7 @@ public class CommandLineMenu {
 		Scanner input = new Scanner(System.in);
 		System.out.println(
 				"Choose one of the following:\n1.Create a new table"
-				+ "\n2.Use an existing table from the database."
+				+ "\n2.Copy an existing table from the database."
 				+ "\n3.Import a table from a csv file");
 		choice = checkChoice(1, 3);
 		if (choice == 1) {
@@ -329,7 +322,7 @@ public class CommandLineMenu {
 
 	/*
 	 * Present options to edit database 
-	 * (add table, view table, delete table, choosetable).
+	 * (add table, view table, delete table, select table).
 	 */
 	public static void databaseMenu() {
 		Scanner input = new Scanner(System.in);
@@ -337,7 +330,7 @@ public class CommandLineMenu {
 		do {
 			System.out.println("Choose one of the following:"
 					+ "\n1.Add a new table\n2.View a table\n3.Delete a table"
-					+ "\n4.Choose a table (obtain access to more options)"
+					+ "\n4.Select a table to work on"
 					+ "\n5.Save database\n6.Exit");
 			choice = checkChoice(1, 6);
 			if (choice == 1) {

@@ -233,9 +233,9 @@ public class TableTest {
 	public void testTempTable() {
 		activeDatabase.tempTable("Student", 0, "temp");
 		for ( int i = 0; i < table.getAttributeNumber() - 1; i ++ ) {
-			Assert.assertEquals("Wrong copy results", table.getAttributes(i).getName() , activeDatabase.getTables(1).getAttributes(i).getName());
+			Assert.assertEquals("Wrong copy results", table.getAttributes(i).getName() , activeDatabase.getTables(0).getAttributes(i).getName());
 			for ( int j = 0; j < table.getAttributes(0).getArray().size(); j ++) {
-				Assert.assertEquals("Wrong copy results",table.getAttributes(i).getArray().get(j), activeDatabase.getTables(1).getAttributes(i).getArray().get(j));
+				Assert.assertEquals("Wrong copy results",table.getAttributes(i).getArray().get(j), activeDatabase.getTables(0).getAttributes(i).getArray().get(j));
 			}
 		}
 	}
