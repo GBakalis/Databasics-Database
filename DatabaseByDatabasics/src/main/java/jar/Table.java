@@ -141,6 +141,7 @@ public class Table {
 		try {
 			if (entries.length != attributeNumber - 2) {
 				correctEntry = false;
+				System.err.println("Wrong entry size");
 			} else {
 				checkEntryType(entries);
 			}

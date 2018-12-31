@@ -48,10 +48,12 @@ public class TableTest {
 		table2.newEntry(entries6);
 		table2.newEntry(entries7);
 		table2.newEntry(entries8);
+		/*
 		timeStamp[4] = table.getAttributes(4).getArray().get(0);
 		timeStamp[5] = table.getAttributes(4).getArray().get(1);
 		timeStamp[6] = table.getAttributes(4).getArray().get(2);
 		timeStamp[7] = table.getAttributes(4).getArray().get(3);
+		*/
 	}
 
 	@Test
@@ -229,11 +231,11 @@ public class TableTest {
 
 	@Test
 	public void testTempTable() {
-		activeDatabase.tempTable("Student",0, "temp");
+		activeDatabase.tempTable("Student", 0, "temp");
 		for ( int i = 0; i < table.getAttributeNumber() - 1; i ++ ) {
-			Assert.assertEquals("Wrong copy results", table.getAttributes(i).getName() , activeDatabase.getTables(2).getAttributes(i).getName());
+			Assert.assertEquals("Wrong copy results", table.getAttributes(i).getName() , activeDatabase.getTables(1).getAttributes(i).getName());
 			for ( int j = 0; j < table.getAttributes(0).getArray().size(); j ++) {
-				Assert.assertEquals("Wrong copy results",table.getAttributes(i).getArray().get(j), activeDatabase.getTables(2).getAttributes(i).getArray().get(j));
+				Assert.assertEquals("Wrong copy results",table.getAttributes(i).getArray().get(j), activeDatabase.getTables(1).getAttributes(i).getArray().get(j));
 			}
 		}
 	}

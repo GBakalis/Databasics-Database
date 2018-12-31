@@ -47,7 +47,7 @@ public class CommandLineMenu {
 		for (;;) {
 			System.out.println("Choose one of the following:" + "\n1.Create new database.\n2.Select Database"
 					+ "\n3.Exit");
-			choice = checkChoice(1, 2);
+			choice = checkChoice(1, 3);
 			if (choice == 1) {
 				databaseCreationMenu();
 			}
