@@ -26,7 +26,8 @@ public class Attribute {
 		return type;
 	}
 
-	//The user shouldn't have the ability to change a column's type before deleting the data
+	//The user shouldn't have the ability to change 
+	//a column's type before deleting the data
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -48,10 +49,11 @@ public class Attribute {
 	 * This method changes the value of the specified element using the method
 	 * {@link set} of class {@link ArrayList}.
 	 * @param linePos
-	 *      An <code>int</code> which contains the line number of the element whose
-	 *      value will be changed.
+	 *      An <code>int</code> which contains the line 
+	 *      number of the element whose value will be changed.
 	 * @param newVal
-	 *      A <code>String</code> which contains the new value used for the change.
+	 *      A <code>String</code> which contains 
+	 *      the new value used for the change.
 	 */
 	public void changeField(int linePos, String newVal) {
         array.set(linePos, newVal);
