@@ -606,9 +606,10 @@ public class Table {
 				String[] entries = line.split(",");
 				table.newEntry(entries);
 			}
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			 table.delete();
+			table.delete();
 		}
 		System.out.println("Table succesfully imported!");
 	}

@@ -1,6 +1,7 @@
 package jar;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -62,8 +63,9 @@ public class CommandLineMenu {
 	public static String checkAnswer() {
 		Scanner input = new Scanner(System.in);
 		String answer = input.next().toLowerCase();
-		if ((answer != "yes") || (answer != "no")) {
+		if ((!answer.equals("yes")) && (!answer.equals("no"))) {
 			System.out.println("Not a valid answer. Please try again.");
+			input.reset();
 			return checkAnswer();
 		}
 		return answer;
@@ -997,12 +999,17 @@ public class CommandLineMenu {
 			correctFile = checkCsvFormat(fileName);
 			try {
 				br = new BufferedReader(new FileReader(fileName));
+				activeDatabase.importTable(br);
+				br.close();
 			} catch (FileNotFoundException e) {
 				System.out.println("Path does not correspond to a file!");
 				correctFile = false;
+			} catch (IOException e) {
+				System.err.println(e);
+				correctFile = false;
 			}
 		} while (!correctFile);
-		activeDatabase.importTable(br);
+		
 	}
 	
 	public static boolean checkCsvFormat(String fileName) {

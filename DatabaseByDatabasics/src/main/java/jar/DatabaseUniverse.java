@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 public class DatabaseUniverse {
 
@@ -109,8 +110,11 @@ public class DatabaseUniverse {
 			CommandLineMenu.setActiveDatabase(database);
 			File[] tableFiles = databaseDirectory.listFiles(csvFilter);
 			for (File tableFile : tableFiles) {
+				FileReader fr =new FileReader(tableFile);
 				BufferedReader br = new BufferedReader(new FileReader(tableFile));
 				database.importTable(br);
+				fr.close();
+				br.close();
 			}
 		} catch (SecurityException e) {
 			System.out.println("Access Denied in Documents folder. Please check your security settings"
@@ -120,7 +124,9 @@ public class DatabaseUniverse {
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			System.err.print(e);
+			System.err.println(e);
+		} catch (IOException e) {
+			System.err.println(e);
 		} finally {
 			CommandLineMenu.setActiveDatabase(null);
 		}
