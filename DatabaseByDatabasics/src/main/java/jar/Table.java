@@ -410,6 +410,13 @@ public class Table {
 		return positions;
 	}
 
+	/**
+	 * Check if the column can be sorted and if yes call the appropriate method.
+	 * @param keyAttribute
+	 * @param choice
+	 * @return
+	 * @throws ParseException
+	 */
 	public ArrayList<Attribute> sortTable(String keyAttribute, int choice) throws ParseException {
 		int index = this.attPositions(new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
 		if ((getAttributes(index).getType().equals("date"))
@@ -423,7 +430,12 @@ public class Table {
 		}
 	}
 
-	// sorts table according to int, float, String or char type attribute//
+	/**
+	 * Sort table according to int, double, String or char type attribute.
+	 * @param index
+	 * @param order
+	 * @return
+	 */
 	protected ArrayList<Attribute> generalSort(int index, int order) {
 		for (int i = 0; i < getAttributes(index).getArray().size(); i++)
 			for (int j = 1; j < getAttributes(index).getArray().size() - i; j++) {
@@ -437,6 +449,11 @@ public class Table {
 		return getAllAttributes();
 	}
 
+	/**
+	 * Return the appropriate date format (simple date or time stamp).
+	 * @param index
+	 * @return
+	 */
 	protected SimpleDateFormat returnFormater(int index) {
 		if (index == attributeNumber - 1)
 			return new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
@@ -444,7 +461,14 @@ public class Table {
 			return new SimpleDateFormat("dd/MM/yyyy");
 	}
 
-	// sort table according to timeStamp or type date attribute//
+	/**
+	 * Sort table according to time stamp (last column) or date type attribute.
+	 * @param index
+	 * @param order
+	 * @param formatter
+	 * @return
+	 * @throws ParseException
+	 */
 	protected ArrayList<Attribute> dateSort(int index, int order, SimpleDateFormat formatter) throws ParseException {
 		for (int i = 0; i < getAttributes(index).getArray().size(); i++) {
 			for (int j = 1; j < getAttributes(index).getArray().size() - i; j++) {
