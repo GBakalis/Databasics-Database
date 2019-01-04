@@ -1,4 +1,4 @@
-package jar;
+package gr.aueb.databasics;
 
 import java.io.FileReader;
 import java.io.BufferedReader;

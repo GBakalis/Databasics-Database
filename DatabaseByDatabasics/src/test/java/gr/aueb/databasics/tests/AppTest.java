@@ -1,4 +1,4 @@
-package jar;
+package gr.aueb.databasics.tests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
