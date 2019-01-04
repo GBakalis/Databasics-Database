@@ -1,4 +1,4 @@
-package jar;
+package gr.aueb.databasics;
 //Create better tests for Main and then commit
 public class Main {
 

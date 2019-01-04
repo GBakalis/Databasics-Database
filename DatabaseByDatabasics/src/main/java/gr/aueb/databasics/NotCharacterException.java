@@ -1,4 +1,4 @@
-package jar;
+package gr.aueb.databasics;
 
 public class NotCharacterException extends Exception {
 	public NotCharacterException() { }

@@ -1,4 +1,4 @@
-package jar;
+package gr.aueb.databasics.tests;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,6 +6,12 @@ import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.Test;
+
+import gr.aueb.databasics.CommandLineMenu;
+import gr.aueb.databasics.Database;
+import gr.aueb.databasics.DatabaseUniverse;
+import gr.aueb.databasics.Table;
+
 import org.junit.Before;
 import org.junit.Assert;
 

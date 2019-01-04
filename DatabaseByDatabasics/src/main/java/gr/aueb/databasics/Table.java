@@ -1,4 +1,4 @@
-package jar;
+package gr.aueb.databasics;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
@@ -454,7 +454,7 @@ public class Table {
 	 * @param index
 	 * @return
 	 */
-	protected SimpleDateFormat returnFormater(int index) {
+	public SimpleDateFormat returnFormater(int index) {
 		if (index == attributeNumber - 1)
 			return new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
 		else

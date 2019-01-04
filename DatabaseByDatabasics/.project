@@ -20,11 +20,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/main/java/jar/Main.java</name>
-			<type>1</type>
-			<location>C:/Users/georg/Documents/University Record/Java Programming II/Databasics-Database/DatabaseByDatabasics/src/main/java/jar/Main.java</location>
-		</link>
-	</linkedResources>
 </projectDescription>

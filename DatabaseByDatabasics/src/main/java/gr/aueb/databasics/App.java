@@ -1,4 +1,4 @@
-package jar;
+package gr.aueb.databasics;
 
 /**
  * Hello world!
