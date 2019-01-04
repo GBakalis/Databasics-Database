@@ -595,8 +595,8 @@ public class Table {
 
 	/**
 	 * This method saves the contents of a Table in the format of a csv file in a
-	 * default location. The default attributes representing the line number
-	 * and the timestamp of last modification are not saved in the file.
+	 * default location. The default attribute representing the line number
+	 * is not saved in the file.
 	 * The name and the first line of the file represent the name of the table.
 	 * The second line of the file contains the types of the attributes, separated by commas.
 	 * The third line of the file contains the names of the attributes, separated by commas.
@@ -612,19 +612,19 @@ public class Table {
 			StringBuilder sb = new StringBuilder();
 			sb.append(name);
 			sb.append('\n');
-			for (int i = 1; i < attributeNumber - 2; i++) {
+			for (int i = 1; i < attributeNumber - 1; i++) {
 				sb.append(attributes.get(i).getType() + ',');
 			}
-			sb.append(attributes.get(attributeNumber - 2).getType() + '\n');
-			for (int i = 1; i < attributeNumber - 2; i++) {
+			sb.append(attributes.get(attributeNumber - 1).getType() + '\n');
+			for (int i = 1; i < attributeNumber - 1; i++) {
 				sb.append(attributes.get(i).getName() + ',');
 			}
-			sb.append(attributes.get(attributeNumber - 2).getName() + '\n');
+			sb.append(attributes.get(attributeNumber - 1).getName() + '\n');
 			for (int i = 0; i < lines; i++) {
-				for (int j = 1; j < attributeNumber - 2; j++) {
+				for (int j = 1; j < attributeNumber - 1; j++) {
 					sb.append(attributes.get(j).getArray().get(i) + ",");
 				}
-				sb.append(attributes.get(attributeNumber - 2).getArray().get(i));
+				sb.append(attributes.get(attributeNumber - 1).getArray().get(i));
 				sb.append('\n');
 			}
 			pw.write(sb.toString());
@@ -635,43 +635,6 @@ public class Table {
 		}
 	}
 
-	/**
-	 * This method imports a table from a csv, the location of which
-	 * is specified by the user. The format of the file must be as follows:
-	 * <ul>
-	 * <li>Line one: Name of the table</li>
-	 * <li>Line two: Types of the attributes separated by commas</li>
-	 * <li>Line three: Names of the attributes separated by commas</li>
-	 * <li>Each of the remaining lines: Values of each line, separated by commas</li>
-	 * </ul>
-	 * The user is responsible for the contents of each line for no checks will be
-	 * conducted concerning the matching of the attribute types and the element values.
-	 * @param br
-	 * 			A <code>BufferedReader</code> object used to read from the file.
-	 */
-	public static void importTable(BufferedReader br) {
-		String line;
-		Table table = null;
-		try {
-			String tableName = br.readLine();
-			table = new Table(tableName);
-			int[] types = convertTypes(br.readLine().split(","));
-			String[] names = br.readLine().split(",");
-			assert (types.length == names.length);
-			for (int i = 0 ; i < types.length; i++) {
-				table.newAttribute(names[i], types[i]);
-			}
-			while ((line = br.readLine()) != null) {
-				String[] entries = line.split(",");
-				table.newEntry(entries);
-			}
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			table.delete();
-		}
-		System.out.println("Table succesfully imported!");
-	}
 	/**
 	 * A method that matches the types of an attribute with a specific number
 	 * so that a method can make use of the {@link #newAttribute(String, int)}

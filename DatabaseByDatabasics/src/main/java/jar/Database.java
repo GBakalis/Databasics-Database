@@ -290,12 +290,19 @@ public class Database {
 			int[] types = convertTypes(br.readLine().split(","));
 			String[] names = br.readLine().split(",");
 			assert (types.length == names.length);
-			for (int i = 0 ; i < types.length; i++) {
+			for (int i = 0 ; i < types.length - 1; i++) {
 				table.newAttribute(names[i], types[i]);
 			}
 			while ((line = br.readLine()) != null) {
 				String[] entries = line.split(",");
-				table.newEntry(entries);
+				String[] entriesMinusLastModified = new String[entries.length - 2];
+				for (int i = 0; i < entriesMinusLastModified.length; i++) {
+					entriesMinusLastModified[i] = entries[i];
+				}
+				table.newEntry(entriesMinusLastModified);
+				table.getAttributes(table.getAttributeNumber() - 1).
+				changeField(table.getLines() - 1, entries[entries.length - 2] 
+						+ "," + entries[entries.length - 1]);
 			}
 			br.close();
 		} catch (IOException e) {

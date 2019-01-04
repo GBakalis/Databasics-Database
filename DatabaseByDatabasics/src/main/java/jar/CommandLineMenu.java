@@ -51,7 +51,6 @@ public class CommandLineMenu {
 						+ " of your choice.");
 				setActiveDatabase(readDatabase(readDatabase()));
 				databaseMenu();
-				viewDatabase();
 			}
 			if (choice == 3) {
 				System.out.println("Terminating...");
@@ -68,7 +67,7 @@ public class CommandLineMenu {
 	public static String checkAnswer() {
 		Scanner input = new Scanner(System.in);
 		String answer = input.next().toLowerCase();
-		if ((answer != "yes") || (answer != "no")) {
+		if ((!answer.equals("yes")) && (!answer.equals("no"))) {
 			System.out.println("Not a valid answer. Please try again.");
 			return checkAnswer();
 		}
