@@ -410,6 +410,13 @@ public class Table {
 		return positions;
 	}
 
+	/**
+	 * Check if the column can be sorted and if yes call the appropriate method.
+	 * @param keyAttribute
+	 * @param choice
+	 * @return
+	 * @throws ParseException
+	 */
 	public ArrayList<Attribute> sortTable(String keyAttribute, int choice) throws ParseException {
 		int index = this.attPositions(new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
 		if ((getAttributes(index).getType().equals("date"))
@@ -423,7 +430,12 @@ public class Table {
 		}
 	}
 
-	// sorts table according to int, float, String or char type attribute//
+	/**
+	 * Sort table according to int, double, String or char type attribute.
+	 * @param index
+	 * @param order
+	 * @return
+	 */
 	protected ArrayList<Attribute> generalSort(int index, int order) {
 		for (int i = 0; i < getAttributes(index).getArray().size(); i++)
 			for (int j = 1; j < getAttributes(index).getArray().size() - i; j++) {
@@ -437,6 +449,11 @@ public class Table {
 		return getAllAttributes();
 	}
 
+	/**
+	 * Return the appropriate date format (simple date or time stamp).
+	 * @param index
+	 * @return
+	 */
 	protected SimpleDateFormat returnFormater(int index) {
 		if (index == attributeNumber - 1)
 			return new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
@@ -444,7 +461,14 @@ public class Table {
 			return new SimpleDateFormat("dd/MM/yyyy");
 	}
 
-	// sort table according to timeStamp or type date attribute//
+	/**
+	 * Sort table according to time stamp (last column) or date type attribute.
+	 * @param index
+	 * @param order
+	 * @param formatter
+	 * @return
+	 * @throws ParseException
+	 */
 	protected ArrayList<Attribute> dateSort(int index, int order, SimpleDateFormat formatter) throws ParseException {
 		for (int i = 0; i < getAttributes(index).getArray().size(); i++) {
 			for (int j = 1; j < getAttributes(index).getArray().size() - i; j++) {
@@ -458,7 +482,11 @@ public class Table {
 		}
 		return getAllAttributes();
 	}
-
+	
+	/**
+	 * This method deletes a whole table specified by the user and
+	 * sets the table's content to "null" after delete.
+	 */
 	public void delete() {
 		Database db = CommandLineMenu.getActiveDatabase();
 		for (int i = 0; i <= db.getTableNumber(); i++) {
@@ -471,7 +499,15 @@ public class Table {
 			}
 		}
 	}
-
+        
+	/**
+	 * This method deletes an attribute specified by the user and
+	 * reduces the table's number of attributes after deleting the specified attribute.
+	 * The delete is parameterized by the name of the attribute the user wants to delete.
+	 * @param att
+	 *         An <code>String</code> element, containing the name of
+	 *         the attribute which will be deleted.
+	 */
 	public void deleteAttribute(String att) {
 		for (int i = 0; i <= this.getAttributeNumber(); i++) {
 			if (this.getAttributes(i).getName().equals(att)) {
@@ -482,7 +518,16 @@ public class Table {
 			}
 		}
 	}
-
+ 	
+	/**
+    	 * This method deletes a whole entry specified by the user and
+	 * reduces the table's number of lines after deleting the specified entry.
+	 * The delete is parameterized by the number that indicates the position of 
+	 * the entry the user wants to delete.
+	 * @param linePosition
+	 * 		An <code>int</code> element, containing the number that
+	 * 		indicates the position of entry which will be deleted.
+	 */
 	public void deleteEntry(int linePosition) {
 		for (int j = 0; j < attributes.size(); j++) {
 			this.getAttributes(j).getArray().remove(linePosition);
@@ -493,7 +538,21 @@ public class Table {
 		}
 		lines--;
 	}
-
+	
+	/**
+	 * This method deletes an element specified by the user and
+	 * sets the element's content to "--" after deleting the 
+	 * specified element.
+	 * The delete is parameterized by the number that indicates the elelement's  
+	 * line position and the the element's name of attribute the user wants to delete.
+	 * @param linePosition
+	 * 			An <code>int</code> element, containing the number that
+	 * 			indicates the line of the element which will be deleted.
+	 * @param attributeName
+	 * 			An <code>String</code> element, containing the name of
+	 * 			the element's attribute which will be deleted.
+	 * 
+	 */
 	public void deleteElement(int lineNumber, String attributeName) {
 		ArrayList<String> atts = new ArrayList<String>();
 		atts.add(attributeName);
@@ -606,9 +665,10 @@ public class Table {
 				String[] entries = line.split(",");
 				table.newEntry(entries);
 			}
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			 table.delete();
+			table.delete();
 		}
 		System.out.println("Table succesfully imported!");
 	}

@@ -3,6 +3,7 @@ package jar;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -237,7 +238,8 @@ public class Database {
 	/**
 	 * This methods is used to save a database in the DatabaseUniverse Directory.
 	 * Each database is saved as a directory with the name of the database, containing a 
-	 * csv file for each table of the database.
+	 * csv file for each table of the database. If a database already existed, all table 
+	 * files are deleted, and new ones are created.
 	 */
 	public void saveDatabase() {
 		try {
@@ -245,6 +247,11 @@ public class Database {
 					+ File.separator + "Documents" + File.separator + "DatabaseUniverse"
 					+ File.separator + name);
 			databaseDirectory.mkdirs();
+			File[] files = databaseDirectory.listFiles();
+			System.gc();
+			for (File file : files) {
+				Files.delete(file.toPath());
+			}
 			for (Table table : tables) {
 				table.saveTable(databaseDirectory.getPath());
 			}
@@ -255,6 +262,8 @@ public class Database {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			System.err.print(e);
+		} catch (IOException e) {
+			System.err.println(e);
 		}
 	}
 	
@@ -288,11 +297,12 @@ public class Database {
 				String[] entries = line.split(",");
 				table.newEntry(entries);
 			}
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			 table.delete();
+			table.delete();
 		}
-		System.out.println("Table succesfully imported!");
+		System.out.println("Table " + table.getName() + " succesfully imported!");
 	}
 	/**
 	 * A method that matches the types of an attribute with a specific number
