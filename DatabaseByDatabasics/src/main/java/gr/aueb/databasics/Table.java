@@ -123,6 +123,8 @@ public class Table {
 			}
 		}
 	}
+	
+	
 
 	/**
 	 * This method checks whether a set of values matches with the
@@ -195,7 +197,7 @@ public class Table {
 	 */
 	public void newEntry(String[] entries) {
 		Date date = new Date();
-		DateFormat format = new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
+		DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
 		attributes.get(attributeNumber - 1).setEntryField(format.format(date));
 		attributes.get(0).setEntryField(String.valueOf(++lines));
 		for (int i = 1; i <= entries.length; i++) {
@@ -285,6 +287,13 @@ public class Table {
 			attributes.add(attributeNumber - 2, new Attribute(name, "obj"));
 			break;
 		}
+	/*	if (getLines()>0) {
+			Date date = new Date();
+			DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
+			for (int i = 0 ; i < this.getLines();i++)
+				this.getAttributes(attributeNumber-1).changeField(i, format.format(date));  */
+		
+		
 	}
 
 	public int searchAttribute(String attName) {
@@ -456,7 +465,7 @@ public class Table {
 	 */
 	public SimpleDateFormat returnFormater(int index) {
 		if (index == attributeNumber - 1)
-			return new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
+			return new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
 		else
 			return new SimpleDateFormat("dd/MM/yyyy");
 	}
@@ -508,7 +517,7 @@ public class Table {
 	 *         An <code>String</code> element, containing the name of
 	 *         the attribute which will be deleted.
 	 */
-	public void deleteAttribute(String att) {
+	public void deleteAttribute(String att) {	
 		for (int i = 0; i <= this.getAttributeNumber(); i++) {
 			if (this.getAttributes(i).getName().equals(att)) {
 				this.getAllAttributes().set(i, null);
@@ -532,6 +541,8 @@ public class Table {
 		for (int j = 0; j < attributes.size(); j++) {
 			this.getAttributes(j).getArray().remove(linePosition);
 		}
+		
+		
 		for (int i = linePosition; i < this.getLines() - 1 ; i++) {
 			String num = String.valueOf(i + 1);
 			this.getAttributes(0).changeField(i, num);
@@ -588,7 +599,7 @@ public class Table {
 			}
 		}
 		Date date = new Date();
-		DateFormat format = new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
+		DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
 		attributes.get(attributeNumber - 1).changeField(num, format.format(date));
 		return changedValues;
 	}
