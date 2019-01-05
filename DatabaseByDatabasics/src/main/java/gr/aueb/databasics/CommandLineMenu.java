@@ -756,7 +756,14 @@ public class CommandLineMenu {
 				addEntry(attributeName);
 			}
 		} else if (choice == 2) {
-			copyAttributeMenu(activeTable.getName(),1);
+			System.out.println("Choose one of the following:" 
+					+"\n1.Copy an attribute" + "\n2.Cut an attribute");
+			int ch = checkChoice(1,2);
+			if (ch == 1) {
+				copyAttributeMenu(activeTable.getName(),1);
+			} else {
+				cutAttributeMenu(activeTable.getName(),1);
+			}
 		} else if (choice == 3) {
 			return;
 		} else {
@@ -794,6 +801,31 @@ public class CommandLineMenu {
 		} while (answer.equalsIgnoreCase("yes"));
 	}
 	
+	public static void cutAttributeMenu(String namePaste,int choice) {
+		Scanner input = new Scanner(System.in);
+		String answer = null;
+		do {
+			System.out.println("Please enter the name of the table that contains the attribute");
+			String nameCopy = readTable();
+			int pos = activeDatabase.position(nameCopy);
+			activeDatabase.getTables(pos).view();
+			System.out.println("Please enter the name of the attribute that you want to cut");
+			String attNameC = readAttribute(nameCopy);
+			activeTable.view();
+			if (choice == 1) {
+				System.out.println("Please enter the name of the new attribute");
+				String attNameP = input.nextLine();
+				activeDatabase.cutNewAttribute(nameCopy, attNameC, namePaste, attNameP);
+			} else {
+				System.out.println("Please enter the name of the attribute where you want to paste");
+				String attNameP = input.nextLine();
+				activeDatabase.cutExistingAttribute(nameCopy, attNameC, namePaste, attNameP);
+			}	
+			System.out.println("Do you want to copy another attribute?");
+			answer = input.next().toLowerCase();
+		} while (answer.equalsIgnoreCase("yes"));
+	}
+	
 	/**
 	 * Offer the user the option to add an entry manually,
 	 * or by coping an existing one
@@ -811,7 +843,14 @@ public class CommandLineMenu {
 		if (choice == 1) {
 			entryCreationMenu();
 		} else if (choice == 2) {
-			copyEntryMenu(1);
+			System.out.println("Choose one of the following:"
+					+ "\n1.Copy an entry" + "\n2.Cut an entry");
+			int ch = checkChoice(1,2);
+			if (ch == 1) {
+				copyEntryMenu(1);
+			} else {
+				cutEntryMenu(1);
+			}
 		} else if (choice == 3) {
 			return;
 		} else {
@@ -851,6 +890,26 @@ public class CommandLineMenu {
 			answer = checkAnswer();
 		} while (answer.toLowerCase().equals("yes"));
 	}
+	
+	public static void cutEntryMenu(int choice) {
+		String answer = null;
+		do {
+			String nameCopy;
+			Scanner input = new Scanner(System.in);
+			System.out.println("Please enter the name of the table that contains the entry");
+			nameCopy = readTable();
+			int pos = activeDatabase.position(nameCopy);
+			activeDatabase.getTables(pos).view();
+			System.out.println("Please enter the number of the entry that you want to cut");
+			int entryNumCopy = readLines(nameCopy);
+			if (choice == 1)
+				cutAddEntry(nameCopy, entryNumCopy);
+			if (choice == 2)
+				cutReplaceEntry(nameCopy, entryNumCopy);
+			System.out.println("Do you want to copy another entry?");
+			answer = input.next();
+		} while (answer.toLowerCase().equals("yes"));
+	}
 
 	/**
 	 * opy and add an entry
@@ -859,6 +918,11 @@ public class CommandLineMenu {
 	 */
 	public static void copyAddEntry(String nameCopy, int entryNumCopy) {
 		activeDatabase.copyNewEntry(
+				nameCopy, entryNumCopy, activeTable.getName());
+	}
+	
+	public static void cutAddEntry(String nameCopy, int entryNumCopy) {
+		activeDatabase.cutNewEntry(
 				nameCopy, entryNumCopy, activeTable.getName());
 	}
 
@@ -877,6 +941,14 @@ public class CommandLineMenu {
 		}
 		activeDatabase.copyExistingEntry(
 				nameCopy, entryNumCopy, activeTable.getName(), entryNumPaste);
+
+	}
+	
+	public static void cutReplaceEntry(String nameCopy, int entryNumCopy) {
+		activeTable.view();
+		System.out.println("Please enter the number of the entry that you want to replace");
+		int entryNumPaste = readLines(activeTable.getName());
+		activeDatabase.cutExistingEntry(nameCopy, entryNumCopy, activeTable.getName(), entryNumPaste);
 
 	}
 
@@ -925,14 +997,35 @@ public class CommandLineMenu {
 		} else if (choice == 2) {
 			String answer = null;
 			do {
-				copyElementMenu(activeTable.getName());
+				System.out.println("Choose one of the following:" +"\n1.Copy an element"
+									+"\n2.Cut an element");
+				int ch = checkChoice(1,2);
+				if (ch == 1) {
+					copyElementMenu(activeTable.getName(),ch);
+				} else {
+					copyElementMenu(activeTable.getName(),ch);
+				}
 				System.out.println("Do you want to replace another element?");
-				answer = checkAnswer();
+				answer = input.next().toLowerCase();
 			} while (answer.equalsIgnoreCase("yes"));
 		} else if (choice == 3) {
-			copyEntryMenu(2);
+			System.out.println("Choose one of the following:" +"\n1.Copy an entry"
+					+"\n2.Cut an entry");
+			int ch = checkChoice(1,2);
+			if (ch == 1) {
+				copyEntryMenu(2);
+			} else {
+				cutEntryMenu(2);
+			}
 		} else if (choice == 4) {
-			copyAttributeMenu(activeTable.getName(), 2);
+			System.out.println("Choose one of the following:" +"\n1.Copy an attribute"
+					+"\n2.Cut an attribute");
+			int ch = checkChoice(1,2);
+			if (ch == 1) {
+				copyAttributeMenu(activeTable.getName(), 2);
+			} else {
+				cutAttributeMenu(activeTable.getName(), 2);
+			}
 		} else if (choice == 5) {
 			return;
 		} else {

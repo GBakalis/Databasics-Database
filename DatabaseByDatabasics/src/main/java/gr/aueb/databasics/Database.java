@@ -264,6 +264,36 @@ public class Database {
 		}
 	}
 	
+	public void cutExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) {
+		copyExistingEntry(nameCopy,entryNumCopy,namePaste,entryNumPaste);
+		int pos = position(nameCopy);
+		tables.get(pos).deleteEntry(entryNumCopy);
+	}
+	
+	public void cutNewEntry(String nameCopy, int entryNumCopy, String namePaste) {
+		copyNewEntry(nameCopy,entryNumCopy,namePaste);
+		int pos = position(nameCopy);
+		tables.get(pos).deleteEntry(entryNumCopy);
+	}
+	
+	public void cutExistingAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
+		copyExistingAttribute(nameCopy,attNameC,namePaste,attNameP);
+		int pos = position(nameCopy);
+		tables.get(pos).deleteAttribute(attNameC);
+	}
+	
+	public void cutNewAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
+		copyNewAttribute(nameCopy,attNameC,namePaste,attNameP);
+		int pos = position(nameCopy);
+		tables.get(pos).deleteAttribute(attNameC);
+	}
+	
+	public void cutElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) {
+		copyElement(nameCopy,attNameC,lineC,namePaste,attNameP,lineP);
+		int pos = position(nameCopy);
+		tables.get(pos).deleteElement(lineC, attNameC);
+	}
+	
 	/**
 	 * This methods is used to save a database in the DatabaseUniverse Directory.
 	 * Each database is saved as a directory with the name of the database, containing a 
