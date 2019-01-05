@@ -52,13 +52,54 @@ public class CommandLineMenu {
 				setActiveDatabase(readDatabase(readDatabase()));
 				databaseMenu();
 			}
-			if (choice == 3) {
-				System.out.println("Terminating...");
-				System.exit(0);
+			if (choice == 3) {	
+					programTermination();
 			}
 		}
 	}
-
+	
+	/**
+	 * This method's purpose is to terminate the program if no unsaved data
+	 * exist or ask the user (yes/no) whether he wants to terminate
+	 * the program if unsaved data exist in one of the loaded databases.
+	 */
+	public static void programTermination() {
+		if (!checkUnsaved()) {
+			System.out.println("Terminating");
+			System.exit(0);
+		}
+		System.out.println("You have unsaved data. Are you sure you wish to "
+				+ "proceed with termination?");
+		String answer = checkAnswer();
+		if (answer.equals("yes")) {
+			System.out.println("Terminating");
+			System.exit(0);
+		} else {
+			return;
+		}
+	}
+	
+	/**
+	 * This method checks if unsaved data exist in any of the databases,
+	 * prints a message for each database that contains unsaved data
+	 * and returns a <code>boolean</code> to indicate whether unsaved
+	 * data exist in DatabaseUniverse
+	 * @return
+	 * 			a <code>boolean</code> variable that is returned as 
+	 * 			true if unsaved data exist within at least one database,
+	 * 			and false if not.
+	 */
+	public static boolean checkUnsaved() {
+		boolean unsavedData = false;
+		for (Database database : DatabaseUniverse.getAllDatabases()) {
+			if (!database.getIsSaved()) {
+				System.out.println("Unsaved data in database "
+			+ database.getName() + "!");
+			unsavedData = true;
+			}
+		}
+		return unsavedData;
+	}
 	
 	/**
 	 * Check if an answer is acceptable
@@ -371,11 +412,13 @@ public class CommandLineMenu {
 			choice = checkChoice(1, 6);
 			if (choice == 1) {
 				addTable();
+				activeDatabase.setIsSaved(false);
 				viewDatabase();
 			} else if (choice == 2) {
 				viewTableMenu();
 			} else if (choice == 3) {
 				deleteTableMenu();
+				activeDatabase.setIsSaved(false);
 				viewDatabase();
 			} else if (choice == 4) {
 				System.out.println(
@@ -385,6 +428,7 @@ public class CommandLineMenu {
 				viewDatabase();
 			} else if (choice == 5) {
 				activeDatabase.saveDatabase();
+				activeDatabase.setIsSaved(true);
 			} else if (choice == 6) {
 				setActiveDatabase(null);
 				return;
@@ -434,16 +478,21 @@ public class CommandLineMenu {
 			searchMenu();
 		} else if (choice == 2) {
 			sortMenu(activeTable.getName());
+			activeDatabase.setIsSaved(false);
 		} else if (choice == 3) {
 			viewOptions();
 		} else if (choice == 4) {
 			addAttributeOptions();
+			activeDatabase.setIsSaved(false);
 		} else if (choice == 5) {
 			addEntryOptions();
+			activeDatabase.setIsSaved(false);
 		} else if (choice == 6) {
 			changeDataOptions();
+			activeDatabase.setIsSaved(false);
 		} else if (choice == 7) {
 			deleteMenu();
+			activeDatabase.setIsSaved(false);
 		} else if (choice == 8) {
 			setActiveTable(null);
 			return;

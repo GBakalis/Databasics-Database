@@ -14,12 +14,21 @@ public class Database {
 	private String name;
 	private ArrayList<Table> tables = new ArrayList<Table>();
 	private int tableNumber;
+	private boolean isSaved;
 
 	public Database(String name) {
 		this.name = name;
 		DatabaseUniverse.getAllDatabases().add(this);
 		DatabaseUniverse.incrementDatabaseNumber();
 		CommandLineMenu.setActiveDatabase(this);
+	}
+	
+	public boolean getIsSaved() {
+		return isSaved;
+	}
+	
+	public void setIsSaved(boolean isSaved) {
+		this.isSaved = isSaved;
 	}
 
 	public String getName() {
@@ -295,14 +304,13 @@ public class Database {
 			}
 			while ((line = br.readLine()) != null) {
 				String[] entries = line.split(",");
-				String[] entriesMinusLastModified = new String[entries.length - 2];
+				String[] entriesMinusLastModified = new String[entries.length - 1];
 				for (int i = 0; i < entriesMinusLastModified.length; i++) {
 					entriesMinusLastModified[i] = entries[i];
 				}
 				table.newEntry(entriesMinusLastModified);
 				table.getAttributes(table.getAttributeNumber() - 1).
-				changeField(table.getLines() - 1, entries[entries.length - 2] 
-						+ "," + entries[entries.length - 1]);
+				changeField(table.getLines() - 1, entries[entries.length - 1]);
 			}
 			br.close();
 		} catch (IOException e) {
