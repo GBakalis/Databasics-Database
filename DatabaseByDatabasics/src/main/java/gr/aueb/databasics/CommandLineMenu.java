@@ -756,7 +756,7 @@ public class CommandLineMenu {
 				addEntry(attributeName);
 			}
 		} else if (choice == 2) {
-			menuCopyAttribute(activeTable.getName());
+			copyAttributeMenu(activeTable.getName(),1);
 		} else if (choice == 3) {
 			return;
 		} else {
@@ -769,37 +769,31 @@ public class CommandLineMenu {
 	 * Menu needed in order to copy an attribute.
 	 * @param namePaste
 	 */
-	public static void menuCopyAttribute(String namePaste) {
+	public static void copyAttributeMenu(String namePaste,int choice) {
 		Scanner input = new Scanner(System.in);
 		String answer = null;
 		do {
-			System.out.println("Please enter the name of the table"
-					+ " that contains the attribute");
+			System.out.println("Please enter the name of the table that contains the attribute");
 			String nameCopy = readTable();
-			if (nameCopy == null) {
-				return;
-			}
-			activeTable.view();
-			activeTable.view();
-			System.out.println("Please enter the name of the attribute"
-					+ " that you want to copy");
+			int pos = activeDatabase.position(nameCopy);
+			activeDatabase.getTables(pos).view();
+			System.out.println("Please enter the name of the attribute that you want to copy");
 			String attNameC = readAttribute(nameCopy);
-			if (attNameC == null) {
-				return;
-			}
-			System.out.println("Please enter the name of the attribute"
-					+ " where you want to paste");
-			String attNameP = input.nextLine();
-			if (attNameP == null) {
-				return;
-			}
-			activeDatabase.copyAttribute(
-					nameCopy, attNameC, namePaste, attNameP);
+			activeTable.view();
+			if (choice == 1) {
+				System.out.println("Please enter the name of the new attribute");
+				String attNameP = input.nextLine();
+				activeDatabase.copyNewAttribute(nameCopy, attNameC, namePaste, attNameP);
+			} else {
+				System.out.println("Please enter the name of the attribute where you want to paste");
+				String attNameP = input.nextLine();
+				activeDatabase.copyExistingAttribute(nameCopy, attNameC, namePaste, attNameP);
+			}	
 			System.out.println("Do you want to copy another attribute?");
-			answer = checkAnswer();
+			answer = input.next().toLowerCase();
 		} while (answer.equalsIgnoreCase("yes"));
 	}
-
+	
 	/**
 	 * Offer the user the option to add an entry manually,
 	 * or by coping an existing one
@@ -841,7 +835,8 @@ public class CommandLineMenu {
 			if (nameCopy == null) {
 				return;
 			}
-			activeTable.view();
+			int pos = activeDatabase.position(nameCopy);
+			activeDatabase.getTables(pos).view();
 			System.out.println("Please enter the number of the entry "
 					+ "that you want to copy");
 			int entryNumCopy = readLines(nameCopy);
@@ -873,6 +868,7 @@ public class CommandLineMenu {
 	 * @param entryNumCopy
 	 */
 	public static void copyReplaceEntry(String nameCopy, int entryNumCopy) {
+		activeTable.view();
 		System.out.println("Please enter the number of the entry "
 				+ "that you want to replace");
 		int entryNumPaste = readLines(activeTable.getName());
@@ -918,8 +914,9 @@ public class CommandLineMenu {
 				+ "\n1.Change an entry manually"
 				+ "\n2.Replace elements of a line "
 				+ "with elements from another line."
-				+ "\n3.Replace entry.\n4.Exit");
-		choice = checkChoice(1, 4);
+				+ "\n3.Replace entry."
+				+ "\n4.Replace attribute.\n5.Exit");
+		choice = checkChoice(1, 5);
 		if (choice == -1) {
 			return;
 		}
@@ -935,6 +932,8 @@ public class CommandLineMenu {
 		} else if (choice == 3) {
 			copyEntryMenu(2);
 		} else if (choice == 4) {
+			copyAttributeMenu(activeTable.getName(), 2);
+		} else if (choice == 5) {
 			return;
 		} else {
 			System.out.println("This is not a valid choice.");
@@ -953,7 +952,8 @@ public class CommandLineMenu {
 		if (nameCopy == null) {
 			return;
 		}
-		activeTable.view();
+		int pos = activeDatabase.position(nameCopy);
+		activeDatabase.getTables(pos).view();
 		System.out.println("Please enter the name of the attribute that "
 				+ "contains the element that you want to copy");
 		String attNameC = readAttribute(nameCopy);
