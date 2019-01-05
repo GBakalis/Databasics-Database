@@ -1,8 +1,5 @@
 package gr.aueb.databasics;
-import java.io.FileReader;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,10 +7,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.Scanner;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.InputMismatchException;
 
 /**
  * Table is the class that allows the creation and editing of tables inside a
@@ -62,8 +57,7 @@ public class Table {
 	/**
 	 * A simple constructor that only expects a name to initialize a table
 	 *
-	 * @param name
-	 *            the name to be used as a title for the table
+	 * @param name the name to be used as a title for the table
 	 */
 
 	public Table(String name) {
@@ -123,8 +117,6 @@ public class Table {
 			}
 		}
 	}
-	
-	
 
 	/**
 	 * This method checks whether a set of values matches with the
@@ -248,7 +240,6 @@ public class Table {
 	 * @return <code>true</code> if no mistake was found; <code>false</code> if
 	 *         there's a wrong input.
 	 */
-
 	public static boolean checkInput(int choice, boolean correctEntry) {
 		try {
 			if (choice < 1 || choice > 6)
@@ -264,7 +255,6 @@ public class Table {
 	 * This method creates an attribute (column) using a name and an integer which
 	 * corresponds to the data type the attribute will hold
 	 */
-
 	public void newAttribute(String name, int choice) {
 		attributeNumber++;
 		switch (choice) {
@@ -585,7 +575,7 @@ public class Table {
 	 *      An arraylist of <code>String</code> elements, containing the new values
 	 *      of the data to be changed.
 	 * @return
-	 * 			An arrraylist of <code>String</code> elements, containing the changed
+	 * 			An arraylist of <code>String</code> elements, containing the changed
 	 *      values.
 	 */
 	public ArrayList<String> dataChange(int num, ArrayList<String> attNames, ArrayList<String> newValues) {

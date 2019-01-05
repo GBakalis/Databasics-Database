@@ -19,7 +19,7 @@ public class Database {
 	public Database(String name) {
 		this.name = name;
 		DatabaseUniverse.getAllDatabases().add(this);
-		DatabaseUniverse.incrementDatabaseNumber();
+		DatabaseUniverse.setDatabaseNumber(1);
 		CommandLineMenu.setActiveDatabase(this);
 	}
 	
@@ -356,6 +356,7 @@ public class Database {
 			if (this.equals(DatabaseUniverse.getDatabases(i))) {
 				DatabaseUniverse.getAllDatabases().set(i, null);
 				DatabaseUniverse.getAllDatabases().remove(i);
+				DatabaseUniverse.setDatabaseNumber(-1);
 				break;
 			}
 		}

@@ -17,8 +17,8 @@ public class DatabaseUniverse {
 		return databaseNumber;
 	}
 	
-	public static void incrementDatabaseNumber() {
-		databaseNumber++;
+	public static void setDatabaseNumber(int margin) {
+		databaseNumber += margin;
 	}
 
 	public static ArrayList<Database> getAllDatabases() {

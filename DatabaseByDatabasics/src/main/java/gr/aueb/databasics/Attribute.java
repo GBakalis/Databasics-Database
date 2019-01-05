@@ -46,8 +46,8 @@ public class Attribute {
 	}
 
   /**
-	 * This method changes the value of the specified element using the method
-	 * {@link set} of class {@link ArrayList}.
+	 * This method changes the value of the specified element using the 
+	 * method {@link set} of class {@link ArrayList}.
 	 * @param linePos
 	 *      An <code>int</code> which contains the line 
 	 *      number of the element whose value will be changed.
