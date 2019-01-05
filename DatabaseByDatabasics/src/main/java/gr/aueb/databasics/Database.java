@@ -63,7 +63,20 @@ public class Database {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * This method copies a whole table to a new table that is created.
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the name of the table the user wants to copy. 
+	 * @param copyK
+	 * 					An <code>int</code> element which contains the position of 
+	 * 					the table to be copied in the arrayList that contains all tables in this
+	 * 					specific database.
+	 * @param newName
+	 * 					An <code>String</code> element, containing the name of the table that
+	 * 					will be created.
+	 */
 	public void tempTable(String nameCopy, int copyK, String newName) {
 		Table tempTab = new Table(newName);
 		for (int i = 1; i < tables.get(copyK).getAttributeNumber() - 1; i++) {
@@ -98,6 +111,22 @@ public class Database {
 		}
 	}
 	
+	/**
+	 * This method copies a table to an other, either this table exists or not,
+	 * using the method {@link tempTable} of class {@link Database} in order to the 
+	 * copied elements of the table not to be affected by changes in the original table.
+	 * If the table the user wants to paste the original table to does not exists, a new table
+	 * is created, named by the name the user gave.
+	 * 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the name of the table the user wants to copy. 
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of
+	 * 					the table the user wants to paste the original table. If
+	 * 					this table does not exist in the database, this is the name
+	 * 					of the table which will be created.
+	 */
 	public void copyTable(String nameCopy, String namePaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
@@ -134,6 +163,24 @@ public class Database {
 		return positions;
 	}
 	
+	/**
+	 * This method copies a whole entry of a table, specified by the user, replacing another entry of a table,
+	 * specified by the user. 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table the user wants to copy. 
+	 * @param entryNumCopy
+	 * 					An <code>int</code> element, containing the number that
+	 * 					indicates the position of the entry which will be copied.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table the user wants to paste. 
+	 * @param entryNumPaste
+	 * 					An <code>int</code> element, containing the number that
+	 * 					indicates the position of the entry where the other entry
+	 * 					will be pasted. 
+	 * @throws IndexOutOfBoundsException
+	 */
 	public void copyExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
@@ -164,7 +211,20 @@ public class Database {
 
 		}
 	}
-
+	
+	/**
+	 * This method creates a new entry of a table specified by the user by copying
+	 * another entry of a table.
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the entry the user wants to copy. 
+	 * @param entryNumCopy
+	 * 					An <code>int</code> element, containing the position of
+	 * 					the entry which will be copied
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the entry. 
+	 */
 	public void copyNewEntry(String nameCopy, int entryNumCopy, String namePaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
@@ -193,6 +253,23 @@ public class Database {
 			System.out.println("Different number of attributes");
 		}
 	}
+	
+	/**
+	 * This method creates a new attribute in a table specified by the user, using the method {@link findChoice}
+	 * by copying an other attribute of a table.
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the attribute the user wants to copy. 
+	 * @param attNameC
+	 * 					An <code>String</code> element containing the name of the 
+	 * 					attribute which will be copied.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the attribute. 
+	 * @param attNameP
+	 * 					An <code>String</code> element, containing the name of
+	 * 					the attribute which will be created.
+	 */
 
 	public void copyNewAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
 		int copyK = position(nameCopy);
@@ -206,6 +283,23 @@ public class Database {
 		.setArray(tables.get(copyK).getAttributes(attNumC).getArray());
 	}
 	
+	/**
+	 * This method copies an attribute of a table specified by the user to
+	 * an other attribute of a table, only if they have the same type of elements. 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the attribute the user wants to copy. 
+	 * @param attNameC
+	 * 					An <code>String</code>element, containing the name of the attribute
+	 * 					which will be copied.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the attribute. 
+	 * @param attNameP
+	 * 					An <code>String></code> element, containing the name of the attribute
+	 * 					where the user wants to paste the original attribute.
+	 * 			
+	 */
 	public void copyExistingAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
 		int copyK = position(nameCopy);
 		int attNumC = tables.get(copyK).searchAttribute(attNameC);
@@ -220,7 +314,21 @@ public class Database {
 			System.out.println("Different type of attributes or different number of lines");
 		}
 	}
-
+	
+	/**
+	 * This method finds the number of the choice the user made when he
+	 * created an attribute based on which is the type of the elements of 
+	 * this specific attribute.
+	 * @param copyK
+	 * 				An <code>int</code> element, containing the position of the
+	 * 				table that contains the attribute.
+	 * @param attNumC
+	 * 				An <code>int</code> element, containing the position of the 
+	 * 				attribute in the table.
+	 * @return
+	 * 			An <code>int<code> element, containing the number of the choice
+	 * 			the user made when he created this attribute.
+	 */
 	public int findChoice(int copyK,int attNumC) {
 		int choice = 0;
 		if (tables.get(copyK).getAttributes(attNumC).getType().equals("string") ) {
@@ -238,7 +346,31 @@ public class Database {
 		}
 		return choice;
 	}
-
+	
+	/**
+	 * This method copies an element of a table specified by the user to 
+	 * another element of a table specified by the user, only if they 
+	 * have the same type.
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the element the user wants to copy. 
+	 * @param attNameC
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the attribute that contains the element the user wants to copy. 
+	 * @param lineC
+	 * 					An <code>int</code> element, containing the position of the 
+	 * 					entry that contains the element the user wants to copy.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the element. 
+	 * @param attNameP
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the attribute where the user wants to paste the element.
+	 * @param lineP
+	 * 					An <code>int</code> element, containing the position of the
+	 * 					entry where the user wants to paste the element.
+	 * @throws IndexOutOfBoundsException
+	 */
 	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
 		int copyK = position(nameCopy);
 		int attNumC = tables.get(copyK).searchAttribute(attNameC);
@@ -264,30 +396,120 @@ public class Database {
 		}
 	}
 	
+	/**
+	 * This method implements the function of cut - paste of an entry
+	 * using the methods {@link copyExistingEntry} of class {@link Database}
+	 * and {@link deleteEntry} of class {@link Table} 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table the user wants to copy. 
+	 * @param entryNumCopy
+	 * 					An <code>int</code> element, containing the number that
+	 * 					indicates the position of the entry which will be copied.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table the user wants to paste. 
+	 * @param entryNumPaste
+	 * 					An <code>int</code> element, containing the number that
+	 * 					indicates the position of the entry where the other entry
+	 * 					will be pasted. 
+	 */
 	public void cutExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) {
 		copyExistingEntry(nameCopy,entryNumCopy,namePaste,entryNumPaste);
 		int pos = position(nameCopy);
 		tables.get(pos).deleteEntry(entryNumCopy);
 	}
 	
+	/**
+	 * This method implements the function of cut an entry and creating
+	 * a new one based on the first using the methods {@link copyNewEntry} of class {@link Database}
+	 * and {@link deleteEntry} of class {@link Table} 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the entry the user wants to cut. 
+	 * @param entryNumCopy
+	 * 					An <code>int</code> element, containing the position of
+	 * 					the entry which will be cut.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the entry. 
+	 */
 	public void cutNewEntry(String nameCopy, int entryNumCopy, String namePaste) {
 		copyNewEntry(nameCopy,entryNumCopy,namePaste);
 		int pos = position(nameCopy);
 		tables.get(pos).deleteEntry(entryNumCopy);
 	}
 	
+	/**
+	 * This method implements the function cut-paste of an attribute
+	 * using the methods {@link copyExistingAttribute} of class {@link Database}
+	 * and {@link deleteAttribute} of class {@link Table} 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the attribute the user wants to copy. 
+	 * @param attNameC
+	 * 					An <code>String</code>element, containing the name of the attribute
+	 * 					which will be copied.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the attribute. 
+	 * @param attNameP
+	 * 					An <code>String></code> element, containing the name of the attribute
+	 * 					where the user wants to paste the original attribute.
+	 */
 	public void cutExistingAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
 		copyExistingAttribute(nameCopy,attNameC,namePaste,attNameP);
 		int pos = position(nameCopy);
 		tables.get(pos).deleteAttribute(attNameC);
 	}
 	
+	/**
+	 * This method implements the function cut of an attribute kaicreates
+	 * a new attribute based on the original attribute 
+	 * using the methods {@link copyNewAttribute} of class {@link Database}
+	 * and {@link deleteAttribute} of class {@link Table} 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the attribute the user wants to copy. 
+	 * @param attNameC
+	 * 					An <code>String</code>element, containing the name of the attribute
+	 * 					which will be copied.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the attribute. 
+	 * @param attNameP
+	 * 					An <code>String></code> element, containing the name of the attribute
+	 * 					where the user wants to paste the original attribute.
+	 */
 	public void cutNewAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
 		copyNewAttribute(nameCopy,attNameC,namePaste,attNameP);
 		int pos = position(nameCopy);
 		tables.get(pos).deleteAttribute(attNameC);
 	}
 	
+	/**
+	 * This method implements the function cut-paste of an element 
+	 * using the methods {@link copyElement} of class {@link Database}
+	 * and {@link deleteElement} of class {@link Table} 
+	 * @param nameCopy
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table that contains the element the user wants to copy. 
+	 * @param attNameC
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the attribute that contains the element the user wants to copy. 
+	 * @param lineC
+	 * 					An <code>int</code> element, containing the position of the 
+	 * 					entry that contains the element the user wants to copy.
+	 * @param namePaste
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the table where the user wants to paste the element. 
+	 * @param attNameP
+	 * 					An <code>String</code> element, containing the name of 
+	 * 					the attribute where the user wants to paste the element.
+	 * @param lineP
+	 * 					An <code>int</code> element, containing the position of the
+	 * 					entry where the user wants to paste the element.
+	 */
 	public void cutElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) {
 		copyElement(nameCopy,attNameC,lineC,namePaste,attNameP,lineP);
 		int pos = position(nameCopy);
