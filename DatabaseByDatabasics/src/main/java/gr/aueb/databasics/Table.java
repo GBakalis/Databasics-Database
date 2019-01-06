@@ -82,41 +82,25 @@ public class Table {
 	}
 
 	/**
-	 * This method implements a simple check on the entry that the user has given on
-	 * demand, in order to decide if it has the correct number and types of input.
-	 * It uses existing and custom exceptions to guide the user into a correct
-	 * entry, if needed. If the user does not want to insert an element to a column
-	 * he should type <code>--</code> instead
-	 *
+	 * This method implements a check on each element of an entry line
+	 * by utilizing method #{@link Attribute.checkType(String value)}
 	 * @param entries
-	 *            an array of <code>String</code> elements, which is the user's
-	 *            input
-	 * @param correctEntry
-	 *            a <code>boolean</code> initialized as <code>true</code>, prone to
-	 *            switching to <code>false</code> if there's a wrong input
-	 *
-	 * @return <code>true</code> if no mistake was found; <code>false</code> if
-	 *         there's a wrong input.
+	 * 			An array of <code>String</code> elements that represents
+	 * 			an entry line,
+	 * @return
+	 * 			Returns <code>true</code> if all elements match the 
+	 * 			corresponding types and <code>false</code> if at least 
+	 * 			one does not.
 	 */
 
-	public void checkEntryType(String[] entries) throws ParseException, NumberFormatException, NotCharacterException {
+	public boolean checkEntryType(String[] entries) {
+		boolean correctEntryType = true;
 		for (int i = 1; i < attributeNumber - 1; i++) {
-			if (attributes.get(i).getType() == "int" && !entries[i - 1].equals("--")) {
-				Integer.parseInt(entries[i - 1]);
-			}
-			if (attributes.get(i).getType() == "double" && !entries[i - 1].equals("--")) {
-				Double.parseDouble(entries[i - 1]);
-			}
-			if (attributes.get(i).getType() == "date" && !entries[i - 1].equals("--")) {
-				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-				format.setLenient(false);
-				format.parse(entries[i - 1]);
-			}
-			if ((attributes.get(i).getType() == (String) "char") && (entries[i - 1].length() != 1)
-					&& !entries[i - 1].equals("--")) {
-				throw new NotCharacterException();
+			if (!attributes.get(i).checkType(entries[i - 1])) {
+				correctEntryType = false;
 			}
 		}
+		return correctEntryType;
 	}
 	
 	
@@ -135,21 +119,10 @@ public class Table {
 	 */
 	public boolean checkEntry(String[] entries) {
 		boolean correctEntry = true;
-		try {
-			if (entries.length != attributeNumber - 2) {
-				correctEntry = false;
-				System.err.println("Wrong entry size");
-			} else {
-				checkEntryType(entries);
-			}
-		} catch (NumberFormatException e) {
-			System.err.println("Wrong entry on an Integer or Decimal column!");
+		if (entries.length != attributeNumber - 2) {
 			correctEntry = false;
-		} catch (ParseException e) {
-			System.err.println("Invalid date format on a date column!");
-			correctEntry = false;
-		} catch (NotCharacterException e) {
-			System.err.println("Large entry on a single letter column!");
+			System.err.println("Wrong entry size");
+		} else if (!checkEntryType(entries)) {
 			correctEntry = false;
 		}
 		return correctEntry;
