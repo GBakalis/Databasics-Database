@@ -42,19 +42,7 @@ public class TableTest {
 		timeStamp[1] = table.getAttributes(5).getArray().get(1);
 		timeStamp[2] = table.getAttributes(5).getArray().get(2);
 		timeStamp[3] = table.getAttributes(5).getArray().get(3);
-		
-		table2.newAttribute("Names", 1);
-		table2.newAttribute("Sex", 2);
-		table2.newAttribute("Age", 3);
-		String[] entries5 = {"Evi", "m", "19"};
-		String[] entries6 = {"George", "m", "19"};
-		String[] entries7 = {"Martha", "f", "21"};
-		String[] entries8 = {"Kostas", "m", "20"};
-		table2.newEntry(entries5);
-		table2.newEntry(entries6);
-		table2.newEntry(entries7);
-		table2.newEntry(entries8);
-		}
+	}
 
 	@Test
 	public void testAscendingGeneralSort() throws ParseException {
@@ -109,12 +97,7 @@ public class TableTest {
 		Assert.assertEquals("Failure: Not sorted", table.getAttributes(4).getArray().get(3), "01/01/1999");
 	}
 
-	@Test
-	public void testExistsString() {
-		Assert.assertTrue("Failure : Table not found.", CommandLineMenu.getActiveDatabase().exists("Student"));
-		Assert.assertFalse("Failure : Table found without existing.", CommandLineMenu.getActiveDatabase().exists("aa"));
-	}
-
+	
 	@Test
 	public void testExistsStringString() {
 		Assert.assertTrue("Failure : Attribute not found.", table.exists("Sex"));
@@ -143,11 +126,6 @@ public class TableTest {
 				attPos.get(0).intValue(), 3);
 		Assert.assertEquals("Failure : Wrong first column position.", 
 				attPos.get(1).intValue(), 1);
-	}
-
-	@Test
-	public void testPositionString() {
-		Assert.assertEquals("Failure : Wrong table position.", activeDatabase.position("Student"), 0);
 	}
 
 	@Test
@@ -190,7 +168,7 @@ public class TableTest {
 	}
 
 	@Test
-	public void testDeleteTable() {
+	public void testDelete() {
 		table.delete();
 		Assert.assertEquals("Failure : Not deleted Table.", activeDatabase.getTables(0).getName(), "Extra");
 	}
@@ -228,72 +206,12 @@ public class TableTest {
 		Assert.assertEquals("Failure : Wrong data change", newValues.get(0), table.getAttributes(1).getArray().get(2));
 		Assert.assertEquals("Failure : Wrong data change", newValues.get(1), table.getAttributes(2).getArray().get(2));
 	}
-
-	@Test
-	public void testTempTable() {
-		activeDatabase.tempTable("Student", 0, "temp");
-		for ( int i = 0; i < table.getAttributeNumber() - 1; i ++ ) {
-			Assert.assertEquals("Wrong copy results", table.getAttributes(i).getName() , activeDatabase.getTables(0).getAttributes(i).getName());
-			for ( int j = 0; j < table.getAttributes(0).getArray().size(); j ++) {
-				Assert.assertEquals("Wrong copy results",table.getAttributes(i).getArray().get(j), activeDatabase.getTables(0).getAttributes(i).getArray().get(j));
-			}
-		}
-	}
-
-	@Test
-	public void testCopyTable() {
-		activeDatabase.copyTable("Student", "Extra");
-		for ( int i = 0; i < table.getAttributeNumber(); i ++ ) {
-			Assert.assertEquals("Wrong copy results", table.getAttributes(i).getName() , activeDatabase.getTables(0).getAttributes(i).getName());
-			for ( int j = 0; j < table.getAttributes(0).getArray().size(); j ++) {
-				Assert.assertEquals("Wrong copy results",table.getAttributes(i).getArray().get(j), activeDatabase.getTables(0).getAttributes(i).getArray().get(j));
-			}
-		}
-	}
-
-	@Test
-	public void testCopyAttribute() {
-		String nameCopy = table.getName();
-		String namePaste = table2.getName();
-		String attNameC = "Name";
-		String attNameP = "Names";
-		activeDatabase.copyAttribute(nameCopy,attNameC,namePaste,attNameP);
-		for (int i = 0; i < table.getAttributes(0).getArray().size(); i++) {
-			Assert.assertEquals("Wrong copy results",table.getAttributes(0).getArray().get(i), table2.getAttributes(0).getArray().get(i));
-		}
-	}
-
-	@Test
-	public void testCopyElement() {
-		String nameCopy = table.getName();
-		String namePaste = table2.getName();
-		String attNameC = "Name";
-		String attNameP = "Names";
-		int lineC = 1;
-		int lineP = 1;
-		activeDatabase.copyElement(nameCopy, attNameC, lineC, namePaste, attNameP, lineP);
-		Assert.assertEquals("Wrong copy results", table.getAttributes(0).getArray().get(lineC) ,table.getAttributes(0).getArray().get(lineP));
-				
-	}
-
+	
 	@Test
 	public void testSearchAttribute() {
 		int pos = table.searchAttribute("Name");
 		Assert.assertEquals("Wrong search results", 1, pos);
 	}
-
-	/*
-	@Test
-	public void testCopyEntry() {
-		String nameC = table.getName();
-		String nameP = table2.getName();
-		table.copyEntry(nameC, 1, nameP, 1);
-		for (int i = 0; i < table.getAttributeNumber() - 1; i++) {
-			Assert.assertEquals("Wrong copy results", table.getAttributes(i).getArray().get(0), table2.getAttributes().get(i).getArray().get(0));
-			
-		}
-	}
-	*/
 
 	@After
 	public void tearDown() {

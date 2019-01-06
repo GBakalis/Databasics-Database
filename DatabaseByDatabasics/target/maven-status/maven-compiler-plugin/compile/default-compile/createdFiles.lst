@@ -1,0 +1,9 @@
+gr\aueb\databasics\Database.class
+gr\aueb\databasics\DatabaseUniverse$1.class
+gr\aueb\databasics\Attribute.class
+gr\aueb\databasics\DatabaseUniverse.class
+gr\aueb\databasics\NotCharacterException.class
+gr\aueb\databasics\Table.class
+gr\aueb\databasics\Main.class
+gr\aueb\databasics\CommandLineMenu.class
+gr\aueb\databasics\WrongEntryException.class

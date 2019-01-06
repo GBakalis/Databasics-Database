@@ -261,7 +261,16 @@ public class Table {
 		
 		
 	}
-
+	
+	/**
+	 * This method finds the position of an attribute specified by the user in a table.
+	 * @param attName
+	 * 				An <code>String</code> element, containing the name of the attribute
+	 * 				which position must be found.
+	 * @return
+	 * 			An <code>int</code> element, containing the position of this attribute
+	 * 			in the table
+	 */
 	public int searchAttribute(String attName) {
 		int pos = -1;
 		int i = 0;

@@ -784,7 +784,7 @@ public class CommandLineMenu {
 				activeDatabase.copyNewAttribute(nameCopy, attNameC, namePaste, attNameP);
 			} else {
 				System.out.println("Please enter the name of the attribute where you want to paste");
-				String attNameP = input.nextLine();
+				String attNameP = readAttribute(namePaste);
 				activeDatabase.copyExistingAttribute(nameCopy, attNameC, namePaste, attNameP);
 			}	
 			System.out.println("Do you want to copy another attribute?");
@@ -889,16 +889,22 @@ public class CommandLineMenu {
 			Scanner input = new Scanner(System.in);
 			System.out.println("Please enter the name of the table that contains the entry");
 			nameCopy = readTable();
-			int pos = activeDatabase.position(nameCopy);
-			activeDatabase.getTables(pos).view();
-			System.out.println("Please enter the number of the entry that you want to cut");
-			int entryNumCopy = readLines(nameCopy);
-			if (choice == 1)
-				cutAddEntry(nameCopy, entryNumCopy);
-			if (choice == 2)
-				cutReplaceEntry(nameCopy, entryNumCopy);
-			System.out.println("Do you want to copy another entry?");
-			answer = checkAnswer();
+			if (activeTable.getName().equals(nameCopy)) {
+				System.out.println("It' s not possible to cut and"
+						+" paste in the same table\n");
+				return;
+			} else {
+				int pos = activeDatabase.position(nameCopy);
+				activeDatabase.getTables(pos).view();
+				System.out.println("Please enter the number of the entry that you want to cut");
+				int entryNumCopy = readLines(nameCopy);
+				if (choice == 1)
+					cutAddEntry(nameCopy, entryNumCopy);
+				if (choice == 2)
+					cutReplaceEntry(nameCopy, entryNumCopy);
+				System.out.println("Do you want to copy another entry?");
+				answer = checkAnswer();
+			}
 		} while (answer.equals("yes"));
 	}
 
@@ -1103,10 +1109,11 @@ public class CommandLineMenu {
 	public static String readAttribute(String tableName) {
 		Scanner input = new Scanner(System.in);
 		String attName = input.nextLine();
+		int pos = activeDatabase.position(tableName);
 		if (cancel(attName)) {
 			return null;
 		}
-		while (activeTable.exists(attName) == false) {
+		while (activeDatabase.getTables(pos).exists(attName) == false) {
 				System.out.println("This attribute does not exist."
 						+ " Please type an existing name.");
 				attName = input.nextLine();

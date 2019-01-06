@@ -190,11 +190,11 @@ public class Database {
 					if (tables.get(pasteK).getAttributes(i).getType()
 							.equals(tables.get(copyK).getAttributes(i).getType())) {
 						tables.get(pasteK).getAttributes(i)
-							.changeField(entryNumPaste + 1,tables.get(copyK).getAttributes(i).getArray().get(entryNumCopy));
+							.changeField(entryNumPaste, tables.get(copyK).getAttributes(i).getArray().get(entryNumCopy));
 						Date date = new Date();
-						DateFormat format = new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
+						DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
 						tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 1)
-							.changeField(entryNumPaste + 1,format.format(date));
+							.changeField(entryNumPaste, format.format(date));
 					} else {
 						check = false;
 						break;
@@ -276,9 +276,15 @@ public class Database {
 		int choice = findChoice(copyK,attNumC);
 		tables.get(pasteK).newAttribute(attNameP, choice);
 		ArrayList tempArray = new ArrayList();
-		tempArray = tables.get(copyK).getAttributes(attNumC).getArray();
-		tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 2)
-		.setArray(tables.get(copyK).getAttributes(attNumC).getArray());
+		for (int i = 0; i < tables.get(copyK).getLines(); i ++) {
+			tempArray.add(tables.get(copyK).getAttributes(attNumC).getArray().get(i));
+			Date date = new Date();
+			DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
+			tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 1)
+				.changeField(i, format.format(date));
+		}
+		tables.get(pasteK).getAttributes(tables.get(pasteK)
+				.getAttributeNumber() - 2).setArray(tempArray);
 	}
 	
 	/**
@@ -306,7 +312,13 @@ public class Database {
 		if (tables.get(pasteK).getAttributes(attNumP).getType()
 				.equals( tables.get(copyK).getAttributes(attNumC).getType()) && tables.get(pasteK).getLines() == tables.get(copyK).getLines()) {
 			ArrayList tempArray = new ArrayList();
-			tempArray = tables.get(copyK).getAttributes(attNumC).getArray();
+			for (int i = 0; i < tables.get(copyK).getLines(); i ++) {
+				tempArray.add(tables.get(copyK).getAttributes(attNumC).getArray().get(i));
+				Date date = new Date();
+				DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
+				tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 1)
+					.changeField(i, format.format(date));
+			}
 			tables.get(pasteK).getAttributes(attNumP).setArray(tempArray);
 		} else {
 			System.out.println("Different type of attributes or different number of lines");
@@ -378,11 +390,11 @@ public class Database {
 				if (tables.get(pasteK).getAttributes(attNumP).getType()
 						.equals(tables.get(copyK).getAttributes(attNumC).getType()) ) {
 					tables.get(pasteK).getAttributes(attNumP)
-						.changeField(lineP + 1,tables.get(copyK).getAttributes(attNumC).getArray().get(lineC));
+						.changeField(lineP, tables.get(copyK).getAttributes(attNumC).getArray().get(lineC));
 					Date date = new Date();
-					DateFormat format = new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy");
+					DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
 					tables.get(pasteK).getAttributes(tables.get(pasteK).getAttributeNumber() - 1)
-						.changeField(lineP + 1,format.format(date));
+						.changeField(lineP, format.format(date));
 				} else {
 					System.out.println("Different type of elements");
 				}
