@@ -101,13 +101,13 @@ public class Attribute {
 				throw new NotCharacterException();
 			}
 		} catch (NumberFormatException e) {
-			System.err.println("Wrong entry on an Integer or Decimal column!");
+			System.out.println("Wrong entry on an Integer or Decimal column!");
 			correctType = false;
 		} catch (ParseException e) {
-			System.err.println("Invalid date format on a date column!");
+			System.out.println("Invalid date format on a date column!");
 			correctType = false;
 		} catch (NotCharacterException e) {
-			System.err.println("Large entry on a single letter column!");
+			System.out.println("Large entry on a single letter column!");
 			correctType = false;
 		}
 		return correctType;

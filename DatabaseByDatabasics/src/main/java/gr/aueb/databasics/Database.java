@@ -585,7 +585,6 @@ public class Database {
 			e.printStackTrace();
 			table.delete();
 		}
-		System.out.println("Table " + table.getName() + " succesfully imported!");
 	}
 	
 	/**

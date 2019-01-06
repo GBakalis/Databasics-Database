@@ -116,6 +116,8 @@ public class DatabaseUniverse {
 				fr.close();
 				br.close();
 			}
+			database.setIsSaved(true);
+			System.out.println("Database " + database.getName() + " imported succesfully!");
 		} catch (SecurityException e) {
 			System.out.println("Access Denied in Documents folder. Please check your security settings"
 					+ "to enable file saving.");
