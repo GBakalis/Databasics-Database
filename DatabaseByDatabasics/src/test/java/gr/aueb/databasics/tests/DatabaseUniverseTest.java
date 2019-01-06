@@ -6,9 +6,10 @@ import org.junit.Test;
 
 import gr.aueb.databasics.Database;
 import gr.aueb.databasics.Table;
+import gr.aueb.databasics.DatabaseUniverse;
 
-public class AttributeTest {
-	
+public class DatabaseUniverseTest {
+	private DatabaseUniverse du = new DatabaseUniverse();
 	private Database db = new Database("DB1");
 	private Table table = new Table("Student");
 	private String[] timeStamp = { null, null, null, null };
@@ -33,25 +34,14 @@ public class AttributeTest {
 	}
 	
 	@Test
-	public void testMaxLength() {
-		Assert.assertEquals("Failure : Wrong column width."
-				, table.getAttributes(1).maxLength(), 7);
-		Assert.assertEquals("Failure : Wrong column width."
-				, table.getAttributes(2).maxLength(), 3);
-		Assert.assertEquals("Failure : Wrong column width."
-				, table.getAttributes(3).maxLength(), 3);
-		Assert.assertEquals("Failure : Wrong column width."
-				, table.getAttributes(3).maxLength(), 3);
+	public void testExistsStringString() {
+		Assert.assertTrue("Failure : Database not found.", du.exists("DB1"));
+		Assert.assertFalse("Failure : Database found without existing.", du.exists("Uhm, no"));
 	}
 	
 	@Test
-	public void testCheckType() {
-		boolean value = table.getAttributes(4).checkType("student");
-		Assert.assertFalse("Failure : Wrong type was accepted.", value);
-		value = table.getAttributes(4).checkType("06/01/2019");
-		Assert.assertTrue("Failure : Correct type was not accepted.", value);
-		value = table.getAttributes(2).checkType("male");
-		Assert.assertFalse("Failure :  Wrong type was accepted.", value);
+	public void testPositionString() {
+		Assert.assertEquals("Failure : Wrong database position.", du.position("DB1"), 0);
 	}
 
 }
