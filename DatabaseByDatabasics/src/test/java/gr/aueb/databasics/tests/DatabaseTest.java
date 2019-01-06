@@ -150,6 +150,20 @@ public class DatabaseTest {
 			Assert.assertEquals("Wrong results",choice, 1);
 		}
 		
+		@Test
+		public void testConvertTypes() {
+			String [] types = new String[4];
+			for (int i = 0; i < table.getAttributeNumber() - 1; i++) {
+				types[0] = table.getAttributes(i+1).getType();
+			}
+			int [] typesNum = new int[4];
+			typesNum = activeDatabase.convertTypes(types);
+			Assert.assertEquals("Wrong converting results", types[0],1);
+			Assert.assertEquals("Wrong converting results", types[1],2);
+			Assert.assertEquals("Wrong converting results", types[2],3);
+			Assert.assertEquals("Wrong converting results", types[3],5);
+		}
+		
 		@After
 		public void tearDown() {
 			db.getAllTables().clear();
