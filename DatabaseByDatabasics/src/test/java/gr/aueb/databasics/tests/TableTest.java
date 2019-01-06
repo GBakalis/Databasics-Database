@@ -54,13 +54,7 @@ public class TableTest {
 		table2.newEntry(entries6);
 		table2.newEntry(entries7);
 		table2.newEntry(entries8);
-		/*
-		timeStamp[4] = table.getAttributes(4).getArray().get(0);
-		timeStamp[5] = table.getAttributes(4).getArray().get(1);
-		timeStamp[6] = table.getAttributes(4).getArray().get(2);
-		timeStamp[7] = table.getAttributes(4).getArray().get(3);
-		*/
-	}
+		}
 
 	@Test
 	public void testAscendingGeneralSort() throws ParseException {
@@ -85,7 +79,7 @@ public class TableTest {
 		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormater(4),
 				new SimpleDateFormat("dd/MM/yyyy"));
 		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormater(5),
-				new SimpleDateFormat("HH:mm:ss, dd/MM/yyyy"));
+				new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy"));
 	}
 
 	@Test
