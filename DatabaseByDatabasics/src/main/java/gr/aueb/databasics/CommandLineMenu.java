@@ -383,24 +383,17 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Add entry (for added attribute because the previous method refuses to work in
-	 * that case).
+	 * Fill attribute with "--"
 	 */
-	public static void addEntry(String attName) {
-		Scanner input = new Scanner(System.in);
-		String str;
+	public static void addVoidEntry(String attName) {
 		int index = activeTable.attPositions
 				(new ArrayList<String>(Arrays.asList(attName))).get(0);
 		for (int i = 0; i < activeTable.getLines(); i++) {
-			System.out.printf("New input:");
-			str = input.nextLine();
-			if (cancel(str)) {
-				return;
-			}
-			activeTable.getAttributes(index).setEntryField(str);
+			activeTable.getAttributes(index).setEntryField("--");
 		}
+			
+		
 	}
-
 	/**
 	 * Menu to copy a table. Reads an existing table name 
 	 * and copies the respective table to a new one.
@@ -751,7 +744,7 @@ public class CommandLineMenu {
 			String attributeName = attributeCreation();
 			if (attributeName != null) {
 				addAttributeMenu(attributeName);
-				addEntry(attributeName);
+				addVoidEntry(attributeName);
 			}
 		} else if (choice == 2) {
 			System.out.println("Choose one of the following:" 
