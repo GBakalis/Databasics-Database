@@ -57,7 +57,8 @@ public class Table {
 	/**
 	 * A simple constructor that only expects a name to initialize a table
 	 *
-	 * @param name the name to be used as a title for the table
+	 * @param name
+	 *            the name to be used as a title for the table
 	 */
 
 	public Table(String name) {
@@ -117,6 +118,8 @@ public class Table {
 			}
 		}
 	}
+	
+	
 
 	/**
 	 * This method checks whether a set of values matches with the
@@ -240,9 +243,10 @@ public class Table {
 	 * @return <code>true</code> if no mistake was found; <code>false</code> if
 	 *         there's a wrong input.
 	 */
+
 	public static boolean checkInput(int choice, boolean correctEntry) {
 		try {
-			if (choice < 1 || choice > 6)
+			if (choice < 1 || choice > 5)
 				throw new WrongEntryException();
 		} catch (WrongEntryException e) {
 			System.out.println(choice + " is not a valid input.");
@@ -255,6 +259,7 @@ public class Table {
 	 * This method creates an attribute (column) using a name and an integer which
 	 * corresponds to the data type the attribute will hold
 	 */
+
 	public void newAttribute(String name, int choice) {
 		attributeNumber++;
 		switch (choice) {
@@ -273,9 +278,7 @@ public class Table {
 		case 5:
 			attributes.add(attributeNumber - 2, new Attribute(name, "date"));
 			break;
-		case 6:
-			attributes.add(attributeNumber - 2, new Attribute(name, "obj"));
-			break;
+		
 		}
 	/*	if (getLines()>0) {
 			Date date = new Date();
@@ -285,16 +288,7 @@ public class Table {
 		
 		
 	}
-	
-	/**
-	 * This method finds the position of an attribute specified by the user in a table.
-	 * @param attName
-	 * 				An <code>String</code> element, containing the name of the attribute
-	 * 				which position must be found.
-	 * @return
-	 * 			An <code>int</code> element, containing the position of this attribute
-	 * 			in the table
-	 */
+
 	public int searchAttribute(String attName) {
 		int pos = -1;
 		int i = 0;
@@ -430,7 +424,7 @@ public class Table {
 		if ((getAttributes(index).getType().equals("date"))
 				|| (getAttributes(index).getType().equals("Time of last edit"))) {
 			return dateSort(index, choice, returnFormater(index));
-		} else if (getAttributes(index).getType().equals("obj") || (index == 0)) {
+		} else if ((index == 0)) {
 			System.out.println("This column contains elements that cannot be sorted");
 			return null;
 		} else {
@@ -516,15 +510,23 @@ public class Table {
 	 *         An <code>String</code> element, containing the name of
 	 *         the attribute which will be deleted.
 	 */
-	public void deleteAttribute(String att) {	
+	public void deleteAttribute(String att) {
+		boolean flag = false;
+		Date date = new Date();
+				DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");	
 		for (int i = 0; i <= this.getAttributeNumber(); i++) {
 			if (this.getAttributes(i).getName().equals(att)) {
 				this.getAllAttributes().set(i, null);
 				this.getAllAttributes().remove(i);
 				this.setAttributeNumber(-1);
+				
+				flag = true;
 				break;
 			}
 		}
+		if (flag = true)
+			for (int i = 0 ; i < this.getLines();i++)
+				this.getAttributes(attributeNumber-1).changeField(i, format.format(date));
 	}
  	
 	/**
@@ -584,7 +586,7 @@ public class Table {
 	 *      An arraylist of <code>String</code> elements, containing the new values
 	 *      of the data to be changed.
 	 * @return
-	 * 			An arraylist of <code>String</code> elements, containing the changed
+	 * 			An arrraylist of <code>String</code> elements, containing the changed
 	 *      values.
 	 */
 	public ArrayList<String> dataChange(int num, ArrayList<String> attNames, ArrayList<String> newValues) {
@@ -645,35 +647,6 @@ public class Table {
 		}
 	}
 
-	/**
-	 * A method that matches the types of an attribute with a specific number
-	 * so that a method can make use of the {@link #newAttribute(String, int)}
-	 * method.
-	 * @param types
-	 * 		An array of <code>String</code> elements among "string", "char",
-	 * 		"int", "double", "date" and any other type (to be matched with the object
-	 * 		case), representing a type in a String format
-	 * @return
-	 * 		An array of <code>int</code> elements, each one representing a choice
-	 * 		of type in compliance with the {@link #newAttribute(String, int)} method.
-	 */
-	public static int[] convertTypes(String[] types) {
-		int[] typeNums = new int[types.length];
-		for (int i = 0 ; i < types.length; i++) {
-			if (types[i].equals("string")) {
-				typeNums[i] = 1;
-			} else if (types[i].equals("char")) {
-				typeNums[i] = 2;
-			} else if (types[i].equals("int")) {
-				typeNums[i] = 3;
-			} else if (types[i].equals("double")) {
-				typeNums[i] = 4;
-			} else if (types[i].equals("date")) {
-				typeNums[i] = 5;
-			} else {
-				typeNums[i] = 6;
-			}
-		}
-		return typeNums;
-	}
+
 }
+

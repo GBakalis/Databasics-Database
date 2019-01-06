@@ -91,9 +91,7 @@ public class Database {
 				choice = 4;
 			} else if (tables.get(copyK).getAttributes(i).getType().equals("date")) {
 				choice = 5;
-			} else {
-				choice = 6;
-			}
+			} 
 			String name = tables.get(copyK).getAttributes(i).getName();
 			tempTab.newAttribute(name, choice);
 			for (int j = 0; j < tables.get(copyK).getLines(); j++) {
@@ -341,9 +339,7 @@ public class Database {
 			choice = 4;
 		} else if (tables.get(copyK).getAttributes(attNumC).getType().equals("date")) {
 			choice = 5;
-		} else {
-			choice = 6;
-		}
+		} 
 		return choice;
 	}
 	
@@ -591,9 +587,10 @@ public class Database {
 		}
 		System.out.println("Table " + table.getName() + " succesfully imported!");
 	}
+	
 	/**
 	 * A method that matches the types of an attribute with a specific number
-	 * so that a method can make use of the {@link #jar.Table.newAttribute(String, int)}
+	 * so that a method can make use of the {@link #newAttribute(String, int)}
 	 * method.
 	 * @param types
 	 * 		An array of <code>String</code> elements among "string", "char",
@@ -601,7 +598,7 @@ public class Database {
 	 * 		case), representing a type in a String format
 	 * @return
 	 * 		An array of <code>int</code> elements, each one representing a choice
-	 * 		of type in compliance with the {@link #jar.Table.newAttribute(String, int)} method.
+	 * 		of type in compliance with the {@link #newAttribute(String, int)} method.
 	 */
 	public static int[] convertTypes(String[] types) {
 		int[] typeNums = new int[types.length];
@@ -616,12 +613,24 @@ public class Database {
 				typeNums[i] = 4;
 			} else if (types[i].equals("date")) {
 				typeNums[i] = 5;
-			} else {
-				typeNums[i] = 6;
 			}
 		}
 		return typeNums;
 	}
+	
+	/**
+	 * A method that matches the types of an attribute with a specific number
+	 * so that a method can make use of the {@link #jar.Table.newAttribute(String, int)}
+	 * method.
+	 * @param types
+	 * 		An array of <code>String</code> elements among "string", "char",
+	 * 		"int", "double", "date" and any other type (to be matched with the object
+	 * 		case), representing a type in a String format
+	 * @return
+	 * 		An array of <code>int</code> elements, each one representing a choice
+	 * 		of type in compliance with the {@link #jar.Table.newAttribute(String, int)} method.
+	 */
+	
 
 	public void delete() {
 		for (int i = 0; i <= DatabaseUniverse.getDatabaseNumber(); i++) {

@@ -149,15 +149,11 @@ public class CommandLineMenu {
 	public static boolean areYouSure() {
 		System.out.println("Are you sure?");
 		Scanner input = new Scanner(System.in);
-		String answer = input.next().toLowerCase();
-		if ((!answer.equals("yes")) && (!answer.equals("no"))) {
-			System.out.println("Not a valid answer. Please try again.");
-			return areYouSure();
-		} else if (answer.equals("yes")) {
+		String answer = checkAnswer();
+		if (answer.equals("yes"))
 			return true;
-		} else {
+		else
 			return false;
-		}
 	}
 	
 	/**
@@ -313,9 +309,12 @@ public class CommandLineMenu {
 		String attributeName = attributeCreation();
 		if (attributeName != null) {
 			do {
+				
 				addAttributeMenu(attributeName);
 				System.out.println("Do you want to create another attribute?");
 				answer = checkAnswer();
+				if (answer.equals("yes"))	
+					attributeName = attributeCreation();
 			} while ((answer.equalsIgnoreCase("yes")) 
 				|| (!answer.equalsIgnoreCase("no")));
 		}
@@ -333,7 +332,6 @@ public class CommandLineMenu {
 			System.out.println("Your attribute can be of any of the "
 					+ "following types:\n1. Text\n2. Single letter\n"
 					+ "3. Integer\n" + "4. Decimal\n" + "5. Date\n"
-					+ "6. Other (e.g. Image)\n\nInsert "
 					+ "the number that corresponds to the type you want.");
 			choice = checkChoice(1, 8);
 			if (choice == -1) {
@@ -797,7 +795,7 @@ public class CommandLineMenu {
 				activeDatabase.copyExistingAttribute(nameCopy, attNameC, namePaste, attNameP);
 			}	
 			System.out.println("Do you want to copy another attribute?");
-			answer = input.next().toLowerCase();
+			answer = checkAnswer();
 		} while (answer.equalsIgnoreCase("yes"));
 	}
 	
@@ -822,7 +820,7 @@ public class CommandLineMenu {
 				activeDatabase.cutExistingAttribute(nameCopy, attNameC, namePaste, attNameP);
 			}	
 			System.out.println("Do you want to copy another attribute?");
-			answer = input.next().toLowerCase();
+			answer = checkAnswer();
 		} while (answer.equalsIgnoreCase("yes"));
 	}
 	
@@ -907,8 +905,8 @@ public class CommandLineMenu {
 			if (choice == 2)
 				cutReplaceEntry(nameCopy, entryNumCopy);
 			System.out.println("Do you want to copy another entry?");
-			answer = input.next();
-		} while (answer.toLowerCase().equals("yes"));
+			answer = checkAnswer();
+		} while (answer.equals("yes"));
 	}
 
 	/**
@@ -1001,12 +999,12 @@ public class CommandLineMenu {
 									+"\n2.Cut an element");
 				int ch = checkChoice(1,2);
 				if (ch == 1) {
-					copyElementMenu(activeTable.getName(),ch);
+					copyElementMenu(activeTable.getName());
 				} else {
-					copyElementMenu(activeTable.getName(),ch);
+					copyElementMenu(activeTable.getName());
 				}
 				System.out.println("Do you want to replace another element?");
-				answer = input.next().toLowerCase();
+				answer = checkAnswer();
 			} while (answer.equalsIgnoreCase("yes"));
 		} else if (choice == 3) {
 			System.out.println("Choose one of the following:" +"\n1.Copy an entry"
