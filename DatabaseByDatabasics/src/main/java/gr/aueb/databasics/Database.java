@@ -701,4 +701,14 @@ public class Database {
 			System.out.println(table.getName());
 		}
 	}
+
+	/**
+	 * View all the tables in the database
+	 */
+	public void view() {
+		for (int i = 0; i < this.getTableNumber(); i++) {
+			this.getTables(i).view();
+			System.out.println();
+		}
+	}
 }

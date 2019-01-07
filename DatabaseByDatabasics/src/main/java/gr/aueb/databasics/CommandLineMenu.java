@@ -179,8 +179,9 @@ public class CommandLineMenu {
 
 	/**
 	 * Cancels a whole procedure (e.g. Database creation) and returns
-	 * to the previous menu at any time the word "cancel" is given as 
-	 * input by the user
+	 * to the previous menu if the word "cancel" or "yes" is given as 
+	 * input by the user, when asked if they want to completely cancel
+	 * procedure in menu
 	 * 
 	 * @param str	The user's input
 	 * @return		Returns <code>true</code> if the user has typed
@@ -199,7 +200,7 @@ public class CommandLineMenu {
 	 * Checks if the user is certain about an action that makes an
 	 * important change (e.g. table deletion)
 	 * 
-	 * @return		Returns <code>true</code> if the user has typed
+	 * @return		Returns <code>true</code> if the user has typed 
 	 * 				"yes" or <code>false</code> if the input is "no"
 	 */
 	public static boolean areYouSure() {
@@ -257,18 +258,8 @@ public class CommandLineMenu {
 		if (flag.equals("yes")) {
 			addTable();
 		}
-		viewDatabase();
+		activeDatabase.view();
 		databaseMenu();
-	}
-
-	/**
-	 * View all the tables in the database
-	 */
-	public static void viewDatabase() {
-		for (int i = 0; i < activeDatabase.getTableNumber(); i++) {
-			activeDatabase.getTables(i).view();
-			System.out.println();
-		}
 	}
 
 	/**
@@ -315,7 +306,8 @@ public class CommandLineMenu {
 	/**
 	 * Check if the name the user inputs is already given to another table and if
 	 * not create the table.
-	 * @return
+	 * 
+	 * @return	Returns the Table object to be created
 	 */
 	public static Table tableCreation() {
 		String tableName = null;
@@ -337,7 +329,8 @@ public class CommandLineMenu {
 	/**
 	 * Check if the attribute name the user inputs is 
 	 * available and if yes create the attribute.
-	 * @return
+	 * 
+	 * @return	Returns the Attribute object's name
 	 */
 	public static String attributeCreation() {
 		Scanner input = new Scanner(System.in);
@@ -359,7 +352,7 @@ public class CommandLineMenu {
 	 * until user answers no.
 	 */
 	/**
-	 *  Ask the user if they want to create more attributes. Create attributes 
+	 * Ask the user if they want to create more attributes. Create attributes 
 	 * if they answer affirmatively.
 	 */
 	public static void attributeCreationMenu() {
@@ -379,7 +372,9 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Add new attribute.
+	 * Menu for attribute creation.
+	 * 
+	 * @param name	The name of the new attribute
 	 */
 	public static void addAttributeMenu(String name) 
 			throws InputMismatchException {
@@ -415,7 +410,7 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 *  Add new entry. Read entry line, split it and check it.
+	 * Add new entry. Read entry line, split it and check it.
 	 */
 	public static void addEntryMenu() {
 		boolean correctEntry;
@@ -442,6 +437,8 @@ public class CommandLineMenu {
 
 	/**
 	 * Fill attribute with "--"
+	 * 
+	 * @param attName	The attribute's name
 	 */
 	public static void addVoidEntry(String attName) {
 		int index = activeTable.attPositions
@@ -471,7 +468,10 @@ public class CommandLineMenu {
 
 	/**
 	 * Read a table name and check if it corresponds to a table.
-	 *  If not try again.
+	 * If not try again.
+	 * 
+	 * @return	Returns the name of the table or <code>null</code> if the
+	 * 			user chooses to cancel
 	 */
 	public static String readTable() {
 		Scanner input = new Scanner(System.in);
@@ -500,7 +500,9 @@ public class CommandLineMenu {
 	 * Read the name of a database the user types.
 	 * Check if the database exists and if yes ask for
 	 * another name. Return the name the user types.
-	 * @return
+	 * 
+	 * @return	Returns the name of the database or <code>null</code> if the
+	 * 			user chooses to cancel
 	 */
 	public static String readDatabase() {
 		Scanner input = new Scanner(System.in);
@@ -520,9 +522,10 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Return Table type by recognizing an existing table name.
-	 * @param tableName
-	 * @return
+	 * Return Table object by recognizing an existing table name.
+	 * 
+	 * @param tableName	The name of the table read
+	 * @return			Returns a Table object with that name
 	 */
 	public static Table readTable(String tableName) {
 		Table temp = activeDatabase.getTables(
@@ -533,8 +536,9 @@ public class CommandLineMenu {
 	
 	/**
 	 * Return the database that has the name of the parameter.
-	 * @param databaseName
-	 * @return
+	 * 
+	 * @param databaseName	The name of the database read
+	 * @return				Returns a Database object with that name
 	 */
 	public static Database readDatabase(String databaseName) {
 		Database temp = DatabaseUniverse.getDatabases(
@@ -544,8 +548,8 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Present options to edit database 
-	 * (add table, view table, delete table, select table).
+	 * Present options to edit database (add table, view table, 
+	 * delete table, select table, save table, list all tables).
 	 */
 	public static void databaseMenu() {
 		int choice = 0;
@@ -562,13 +566,13 @@ public class CommandLineMenu {
 			if (choice == 1) {
 				addTable();
 				activeDatabase.setSaved(false);
-				viewDatabase();
+				activeDatabase.view();
 			} else if (choice == 2) {
 				viewTableMenu();
 			} else if (choice == 3) {
 				deleteTableMenu();
 				activeDatabase.setSaved(false);
-				viewDatabase();
+				activeDatabase.view();
 			} else if (choice == 4) {
 				System.out.println(
 						"Type in the name of the table of your choice.");
@@ -578,7 +582,7 @@ public class CommandLineMenu {
 				}
 				setActiveTable(readTable(str));
 				tableMenu();
-				viewDatabase();
+				activeDatabase.view();
 			} else if (choice == 5) {
 				activeDatabase.saveDatabase();
 				activeDatabase.setSaved(true);
@@ -595,7 +599,7 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * View a specific table.
+	 * Menu for viewing a table
 	 */
 	public static void viewTableMenu() {
 		System.out.println(
@@ -605,14 +609,14 @@ public class CommandLineMenu {
 			return;
 		}
 		if (s.equals("all")) {
-			viewDatabase();
+			activeDatabase.view();
 		} else {
 			readTable(s).view();
 		}
 	}
 
 	/**
-	 * Delete a table.
+	 * Menu for deleting a table
 	 */
 	public static void deleteTableMenu() {
 		System.out.println("Please enter the name"
@@ -626,7 +630,7 @@ public class CommandLineMenu {
 
 	/**
 	 * Present options to edit a specific table (search,
-	 *  sort, view, add attribute and entry, change data, delete data).
+	 * sort, view, add attribute and entry, change data, delete data).
 	 */
 	public static void tableMenu() {
 		System.out.println("Choose one of the following:"
@@ -669,11 +673,10 @@ public class CommandLineMenu {
 	 * This method enables the user to make use of the search function.
 	 * The user can insert a set of attribute names(up to the attributes
 	 * existing in the table) and a value for each one of them.
-	 * Then the method {@link Table#search(ArrayList<String> attributeNames, 
-	 * ArrayList<String> elements)} is called, returning the positions of 
-	 * the matching lines, which will feed the 
-	 * {@link Table#viewLines(ArrayList<Integer> entryPositions)}
-	 * method, presenting the set of lines that match the search criteria.
+	 * Then the method {@link Table#search(ArrayList, ArrayList)} is called, 
+	 * returning the positions of the matching lines, which will feed the 
+	 * {@link Table#viewLines(ArrayList)} method, presenting the set of 
+	 * lines that match the search criteria.
 	 */
 	public static void searchMenu() {
 		Scanner input = new Scanner(System.in);
@@ -712,7 +715,9 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * View attributes.
+	 * Menu for viewing specific attributes of a table
+	 * 
+	 * @param tableName	The name of the table holding the attributes
 	 */
 	public static void menuViewAttribute(String tableName) {
 		ArrayList<String> atts = new ArrayList<String>();
@@ -739,7 +744,9 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * View lines.
+	 * Menu for vieweing specific lines of a table
+	 * 
+	 * @param tableName	The name of the table holding the lines to view
 	 */
 	public static void menuViewLines(String tableName) {
 		ArrayList<Integer> lines = new ArrayList<Integer>();
@@ -766,7 +773,7 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Present to the user options of what they can view, a column or a line.
+	 * Present the user with the options of viewing either a column or a line.
 	 */
 	public static void viewOptions() {
 		int choice = 0;
@@ -825,8 +832,10 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Menu needed in order to copy an attribute.
-	 * @param namePaste
+	 * Menu for copying an attribute.
+	 * 
+	 * @param namePaste	The target table
+	 * @param choice	Choice from the menu
 	 */
 	public static void copyAttributeMenu(String namePaste,int choice) {
 		Scanner input = new Scanner(System.in);
@@ -852,8 +861,14 @@ public class CommandLineMenu {
 			answer = checkAnswer();
 		} while (answer.equalsIgnoreCase("yes"));
 	}
-	
-	public static void cutAttributeMenu(String namePaste,int choice) {
+
+	/**
+	 * Menu for cutting/pasting an attribute.
+	 * 
+	 * @param namePaste	The target table
+	 * @param choice	Choice from the menu
+	 */
+	public static void cutAttributeMenu(String namePaste, int choice) {
 		Scanner input = new Scanner(System.in);
 		String answer = null;
 		do {
@@ -880,7 +895,7 @@ public class CommandLineMenu {
 	
 	/**
 	 * Offer the user the option to add an entry manually,
-	 * or by coping an existing one
+	 * or copy an existing one
 	 */
 	public static void addEntryOptions() {
 		int choice = 0;
@@ -914,7 +929,8 @@ public class CommandLineMenu {
 	/**
 	 * Offer options of adding the entry and of replacing
 	 * an existing one.
-	 * @param choice
+	 * 
+	 * @param choice	Choice frmo the menu
 	 */
 	public static void copyEntryMenu(int choice) {
 		String answer = null;
@@ -942,7 +958,12 @@ public class CommandLineMenu {
 			answer = checkAnswer();
 		} while (answer.toLowerCase().equals("yes"));
 	}
-	
+
+	/**
+	 * Menu for cutting/pasting an entry.
+	 * 
+	 * @param choice	Choice from the menu
+	 */
 	public static void cutEntryMenu(int choice) {
 		String answer = null;
 		do {
@@ -970,24 +991,32 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * opy and add an entry
-	 * @param nameCopy
-	 * @param entryNumCopy
+	 * Copy and add an entry
+	 * 
+	 * @param nameCopy		The name of the table that contains the entry 
+	 * @param entryNumCopy	Practically, the line number
 	 */
 	public static void copyAddEntry(String nameCopy, int entryNumCopy) {
 		activeDatabase.copyNewEntry(
 				nameCopy, entryNumCopy, activeTable.getName());
 	}
-	
+
+	/**
+	 * Cut and paste an entry
+	 * 
+	 * @param nameCopy		The name of the table that contains the entry 
+	 * @param entryNumCopy	Practically, the line number
+	 */
 	public static void cutAddEntry(String nameCopy, int entryNumCopy) {
 		activeDatabase.cutNewEntry(
 				nameCopy, entryNumCopy, activeTable.getName());
 	}
 
 	/**
-	 * Copy and replace a table.
-	 * @param nameCopy
-	 * @param entryNumCopy
+	 * Copy and replace an entry.
+	 * 
+	 * @param nameCopy		The name of the table that cointains the entry
+	 * @param entryNumCopy	Practically, the line number
 	 */
 	public static void copyReplaceEntry(String nameCopy, int entryNumCopy) {
 		activeTable.view();
@@ -999,9 +1028,14 @@ public class CommandLineMenu {
 		}
 		activeDatabase.copyExistingEntry(
 				nameCopy, entryNumCopy, activeTable.getName(), entryNumPaste);
-
 	}
-	
+
+	/**
+	 * Cut and replace an entry.
+	 * 
+	 * @param nameCopy		The name of the table that cointains the entry
+	 * @param entryNumCopy	Practically, the line number
+	 */
 	public static void cutReplaceEntry(String nameCopy, int entryNumCopy) {
 		activeTable.view();
 		System.out.println("Please enter the number of the entry that you want to replace");
@@ -1012,8 +1046,9 @@ public class CommandLineMenu {
 
 	/**
 	 * Read an existing line number. Check its existence and if it is a number.
-	 * @param tableName
-	 * @return
+	 * 
+	 * @param tableName	The name of the table under check
+	 * @return			The position of the line in an ArrayList (that's why it's -1)
 	 */
 	public static int readLines(String tableName) {
 		Scanner input = new Scanner(System.in);
@@ -1093,7 +1128,9 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * copy and replace an element.
+	 * Copy and replace an element.
+	 * 
+	 * @param tableName	The name of the target table
 	 */
 	public static void copyElementMenu(String tableName) {
 		String nameCopy;
@@ -1135,7 +1172,11 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Read an existing attribute and check its existence.
+	 * Read an attribute and check its existence.
+	 * 
+	 * @param tableName	The name of table that is checked for the attribute
+	 * @return			Returns the attribute name or <code>null</code> if the
+	 * 					user cancels
 	 */
 	public static String readAttributeRestrictedPermission(String tableName) {
 		Scanner input = new Scanner(System.in);
@@ -1162,10 +1203,11 @@ public class CommandLineMenu {
 	}
 	
 	/**
-	 * Check if the name the user types corresponds to an existing attribute.
-	 * If no ask again. Return the name of the attribute.
-	 * @param tableName
-	 * @return
+	 * Read an attribute and check its existence.
+	 * 
+	 * @param tableName	The name of table that is checked for the attribute
+	 * @return			Returns the attribute name or <code>null</code> if the
+	 * 					user cancels
 	 */
 	public static String readAttribute(String tableName) {
 		Scanner input = new Scanner(System.in);
@@ -1187,7 +1229,8 @@ public class CommandLineMenu {
 
 	/**
 	 * Menu for sort function. Read the attribute to act as key.
-	 * @param tableName
+	 * 
+	 * @param tableName	The name of the table to sort
 	 */
 	public static void sortMenu(String tableName) {
 		System.out.println("Please type in the name of the "
@@ -1211,6 +1254,8 @@ public class CommandLineMenu {
 
 	/**
 	 * Read the order for sort function (ascending or descending).
+	 * 
+	 * @return	Returns +1 for ascending or -1 for descending
 	 */
 	public static int readOrder() {
 		Scanner input = new Scanner(System.in);
@@ -1260,8 +1305,10 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 *  Read an array list of attributes that are used in change data function.
-	 * @return
+	 * Read an ArrayList of Attributes that are used in change data function.
+	 * 
+	 * @return	Returns an ArrayList of Attributes or an empty ArrayList if 
+	 * 			the user cancels 
 	 */
 	public static ArrayList<String> readAttributes() {
 		ArrayList<String> atts = new ArrayList<String>();
@@ -1288,9 +1335,11 @@ public class CommandLineMenu {
 
 	/**
 	 * Read all the values that will change in data change function.
-	 * @param num
-	 * @param atts
-	 * @return
+	 * 
+	 * @param num	The line affected by the data change
+	 * @param atts	The attributes affected by the data change
+	 * @return		Returns the values used to change the fields or an 
+	 * 				empty ArrayList if the user cancels
 	 */
 	public static ArrayList<String> readValues(
 			int num, ArrayList<String> atts) {
@@ -1318,7 +1367,7 @@ public class CommandLineMenu {
 
 	/**
 	 * Menu for delete function. Offer options to delete an entry (1),
-	 *  an attribute(2) or an element (3)
+	 * an attribute(2) or an element (3)
 	 */
 	public static void deleteMenu() {
 		printDeleteChoices();
@@ -1349,8 +1398,9 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Delete entry.
-	 * @param tableName
+	 * Menu for deleting an entry
+	 * @param tableName	The name of the table that contains the entry to be
+	 * 					deleted
 	 */
 	public static void deleteEntryMenu(String tableName) {
 		System.out.println("Please enter the number of the entry "
@@ -1366,8 +1416,9 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Delete attribute.
-	 * @param tableName
+	 * Menu for deleting an attribute
+	 * @param tableName	The name of the table that contains the attribute to be
+	 * 					deleted
 	 */
 	public static void deleteAttributeMenu(String tableName) {
 		System.out.println("Please enter the name of the attribute"
@@ -1382,8 +1433,9 @@ public class CommandLineMenu {
 	}
 
 	/**
-	 * Delete element.
-	 * @param tableName
+	 * Menu for deleting an element
+	 * @param tableName	The name of the table that contains the element to be
+	 * 					deleted
 	 */
 	public static void deleteElementMenu(String tableName) {
 		System.out.println(
@@ -1406,9 +1458,10 @@ public class CommandLineMenu {
 
 	/**
 	 * Check the correct input of an integer variable.
-	 * @param lowLimit
-	 * @param highLimit
-	 * @return
+	 * 
+	 * @param lowLimit	Lower limit of the check performed
+	 * @param highLimit	Upper limit of the check performed
+	 * @return			The int which is checked and valid
 	 */
 	public static int checkChoice(int lowLimit, int highLimit) {
 		Scanner input = new Scanner(System.in);
@@ -1457,9 +1510,11 @@ public class CommandLineMenu {
 	}
 	
 	/**
-	 * Check cvs format.
-	 * @param fileName
-	 * @return
+	 * Check csv format.
+	 * 
+	 * @param fileName	The name of the file
+	 * @return			Returns <code>true</code> if the file has the correct
+	 * 					format or <code>false</code> if it doesn't
 	 */
 	public static boolean checkCsvFormat(String fileName) {
 		if (fileName.endsWith(".csv")) {
