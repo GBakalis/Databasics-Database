@@ -24,32 +24,29 @@ import java.text.DateFormat;
  * it and other classes externally to execute the usual functions that a
  * database has, such as:
  * <ul>
- * <li>View Table's content
- * <li>View a column's content
- * <li>Input data into a table
+ * <li>Delete a database
+ * <li>Save a database
+ * <li>Import a table
  * <li>Copy an entry to another position of the same or another table
- * <li>Move an entry to another position of the same or another table
+ * <li>Cut an entry to another position of the same or another table
  * <li>Copy a single field to another position of the same or another table
- * <li>Move a single field to another position of the same or another table
- * <li>Delete an entry
- * <li>Delete a table
- * <li>Erase a field
- * <li>Substitute a field
- * <li>Substitute an entry
+ * <li>Cut a single field to another position of the same or another table
  * <li>More
  * </ul>
  * <p>
- * An important point to consider is that the methods inside the class are
- * written in such a manner that they require the data input given in a strict
- * way by the user.
- *
+ * 
+ * @author George Bakalis
+ * @author Andreas Vlachos
+ * @author Evi Vratsanou
+ * 
+ * @version 1.0
  */
 public class Database {
 
 	private String name;
 	private ArrayList<Table> tables = new ArrayList<Table>();
 	private int tableNumber;
-	private boolean isSaved;
+	private boolean saved;
 
 	public Database(String name) {
 		this.name = name;
@@ -57,13 +54,13 @@ public class Database {
 		DatabaseUniverse.setDatabaseNumber(1);
 		CommandLineMenu.setActiveDatabase(this);
 	}
-	
-	public boolean getIsSaved() {
-		return isSaved;
+
+	public boolean isSaved() {
+		return saved;
 	}
-	
-	public void setIsSaved(boolean isSaved) {
-		this.isSaved = isSaved;
+
+	public void setSaved(boolean saved) {
+		this.saved = saved;
 	}
 
 	public String getName() {
@@ -77,7 +74,7 @@ public class Database {
 	public int getTableNumber() {
 		return tableNumber;
 	}
-	
+
 	public void setTableNumber(int margin) {
 		tableNumber += margin;
 	}
@@ -98,7 +95,7 @@ public class Database {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This method copies a whole table to a new table that is created.
 	 * @param nameCopy
@@ -143,7 +140,7 @@ public class Database {
 			tempTab.newEntry(entries);
 		}
 	}
-	
+
 	/**
 	 * This method copies a table to an other, either this table exists or not,
 	 * using the method {@link tempTable} of class {@link Database} in order to the 
@@ -172,7 +169,14 @@ public class Database {
 			tempTable(nameCopy, copyK, namePaste);
 		}
 	}
-	
+
+	/**
+	 * Gives the position of a table
+	 * 
+	 * @param tableName	Contains the name of the table
+	 * @return			Returns the table's position in 
+	 * 					<code>ArrayList&lt;Table&gt; tables</code>
+	 */
 	public int position(String tableName) {
 		int position = 0;
 		for (int i = 0; i < this.getTableNumber(); i++) {
@@ -184,6 +188,13 @@ public class Database {
 		return position;
 	}
 
+	/**
+	 * Gives the positions of the specified tables inside a database
+	 * 
+	 * @param tableNames	Contains the names of the tables
+	 * @return				Returns an <code>ArrayList</code> of integers corresponding to the
+	 * 						tables' positions
+	 */
 	public ArrayList<Integer> position(ArrayList<String> tableNames) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
 		for (String table : tableNames) {
@@ -195,7 +206,7 @@ public class Database {
 		}
 		return positions;
 	}
-	
+
 	/**
 	 * This method copies a whole entry of a table, specified by the user, replacing another entry of a table,
 	 * specified by the user. 
@@ -212,9 +223,8 @@ public class Database {
 	 * 					An <code>int</code> element, containing the number that
 	 * 					indicates the position of the entry where the other entry
 	 * 					will be pasted. 
-	 * @throws IndexOutOfBoundsException
 	 */
-	public void copyExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) throws IndexOutOfBoundsException  {
+	public void copyExistingEntry(String nameCopy, int entryNumCopy, String namePaste, int entryNumPaste) {
 		int copyK = position(nameCopy);
 		int pasteK = position(namePaste);
 		boolean check = true;
@@ -244,7 +254,7 @@ public class Database {
 
 		}
 	}
-	
+
 	/**
 	 * This method creates a new entry of a table specified by the user by copying
 	 * another entry of a table.
@@ -286,7 +296,7 @@ public class Database {
 			System.out.println("Different number of attributes");
 		}
 	}
-	
+
 	/**
 	 * This method creates a new attribute in a table specified by the user, using the method {@link findChoice}
 	 * by copying an other attribute of a table.
@@ -321,7 +331,7 @@ public class Database {
 		tables.get(pasteK).getAttributes(tables.get(pasteK)
 				.getAttributeNumber() - 2).setArray(tempArray);
 	}
-	
+
 	/**
 	 * This method copies an attribute of a table specified by the user to
 	 * an other attribute of a table, only if they have the same type of elements. 
@@ -335,7 +345,7 @@ public class Database {
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table where the user wants to paste the attribute. 
 	 * @param attNameP
-	 * 					An <code>String></code> element, containing the name of the attribute
+	 * 					An <code>String</code> element, containing the name of the attribute
 	 * 					where the user wants to paste the original attribute.
 	 * 			
 	 */
@@ -359,7 +369,7 @@ public class Database {
 			System.out.println("Different type of attributes or different number of lines");
 		}
 	}
-	
+
 	/**
 	 * This method finds the number of the choice the user made when he
 	 * created an attribute based on which is the type of the elements of 
@@ -371,7 +381,7 @@ public class Database {
 	 * 				An <code>int</code> element, containing the position of the 
 	 * 				attribute in the table.
 	 * @return
-	 * 			An <code>int<code> element, containing the number of the choice
+	 * 			An <code>int</code> element, containing the number of the choice
 	 * 			the user made when he created this attribute.
 	 */
 	public int findChoice(int copyK,int attNumC) {
@@ -389,7 +399,7 @@ public class Database {
 		} 
 		return choice;
 	}
-	
+
 	/**
 	 * This method copies an element of a table specified by the user to 
 	 * another element of a table specified by the user, only if they 
@@ -412,9 +422,8 @@ public class Database {
 	 * @param lineP
 	 * 					An <code>int</code> element, containing the position of the
 	 * 					entry where the user wants to paste the element.
-	 * @throws IndexOutOfBoundsException
 	 */
-	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) throws IndexOutOfBoundsException {
+	public void copyElement(String nameCopy, String attNameC, int lineC, String namePaste, String attNameP, int lineP) {
 		int copyK = position(nameCopy);
 		int attNumC = tables.get(copyK).searchAttribute(attNameC);
 		int pasteK = position(namePaste);
@@ -438,11 +447,11 @@ public class Database {
 			System.out.println("Out of Bounds");
 		}
 	}
-	
+
 	/**
 	 * This method implements the function of cut - paste of an entry
-	 * using the methods {@link copyExistingEntry} of class {@link Database}
-	 * and {@link deleteEntry} of class {@link Table} 
+	 * using the methods {@link Database#copyExistingEntry(String, int, String, int)}
+	 * and {@link Table#deleteEntry(int)} 
 	 * @param nameCopy
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table the user wants to copy. 
@@ -462,11 +471,11 @@ public class Database {
 		int pos = position(nameCopy);
 		tables.get(pos).deleteEntry(entryNumCopy);
 	}
-	
+
 	/**
 	 * This method implements the function of cut an entry and creating
-	 * a new one based on the first using the methods {@link copyNewEntry} of class {@link Database}
-	 * and {@link deleteEntry} of class {@link Table} 
+	 * a new one based on the first using the methods {@link Database#copyNewEntry(String, int, String)}
+	 * and {@link Table#deleteEntry(int)} 
 	 * @param nameCopy
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table that contains the entry the user wants to cut. 
@@ -482,22 +491,22 @@ public class Database {
 		int pos = position(nameCopy);
 		tables.get(pos).deleteEntry(entryNumCopy);
 	}
-	
+
 	/**
 	 * This method implements the function cut-paste of an attribute
-	 * using the methods {@link copyExistingAttribute} of class {@link Database}
-	 * and {@link deleteAttribute} of class {@link Table} 
+	 * using the methods {@link Database#copyExistingAttribute(String, String, String, String)}
+	 * and {@link Table#deleteAttribute(String)} 
 	 * @param nameCopy
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table that contains the attribute the user wants to copy. 
 	 * @param attNameC
-	 * 					An <code>String</code>element, containing the name of the attribute
+	 * 					An <code>String</code> element, containing the name of the attribute
 	 * 					which will be copied.
 	 * @param namePaste
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table where the user wants to paste the attribute. 
 	 * @param attNameP
-	 * 					An <code>String></code> element, containing the name of the attribute
+	 * 					An <code>String</code> element, containing the name of the attribute
 	 * 					where the user wants to paste the original attribute.
 	 */
 	public void cutExistingAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
@@ -505,23 +514,23 @@ public class Database {
 		int pos = position(nameCopy);
 		tables.get(pos).deleteAttribute(attNameC);
 	}
-	
+
 	/**
 	 * This method implements the function cut of an attribute kaicreates
 	 * a new attribute based on the original attribute 
-	 * using the methods {@link copyNewAttribute} of class {@link Database}
-	 * and {@link deleteAttribute} of class {@link Table} 
+	 * using the methods {@link Database#copyNewAttribute(String, String, String, String)}
+	 * and {@link Table#deleteAttribute(String)} 
 	 * @param nameCopy
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table that contains the attribute the user wants to copy. 
 	 * @param attNameC
-	 * 					An <code>String</code>element, containing the name of the attribute
+	 * 					An <code>String</code> element, containing the name of the attribute
 	 * 					which will be copied.
 	 * @param namePaste
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table where the user wants to paste the attribute. 
 	 * @param attNameP
-	 * 					An <code>String></code> element, containing the name of the attribute
+	 * 					An <code>String</code> element, containing the name of the attribute
 	 * 					where the user wants to paste the original attribute.
 	 */
 	public void cutNewAttribute(String nameCopy, String attNameC, String namePaste, String attNameP) {
@@ -529,11 +538,11 @@ public class Database {
 		int pos = position(nameCopy);
 		tables.get(pos).deleteAttribute(attNameC);
 	}
-	
+
 	/**
 	 * This method implements the function cut-paste of an element 
-	 * using the methods {@link copyElement} of class {@link Database}
-	 * and {@link deleteElement} of class {@link Table} 
+	 * using the methods {@link Database#copyElement(String, String, int, String, String, int)}
+	 * and {@link Table#deleteElement(int, String)} 
 	 * @param nameCopy
 	 * 					An <code>String</code> element, containing the name of 
 	 * 					the table that contains the element the user wants to copy. 
@@ -558,7 +567,7 @@ public class Database {
 		int pos = position(nameCopy);
 		tables.get(pos).deleteElement(lineC, attNameC);
 	}
-	
+
 	/**
 	 * This methods is used to save a database in the DatabaseUniverse Directory.
 	 * Each database is saved as a directory with the name of the database, containing a 
@@ -590,7 +599,7 @@ public class Database {
 			System.err.println(e);
 		}
 	}
-	
+
 	/**
 	 * This method imports a table from a csv file, the location of which
 	 * is specified by the user. The format of the file must be as follows:
@@ -633,10 +642,10 @@ public class Database {
 			table.delete();
 		}
 	}
-	
+
 	/**
 	 * A method that matches the types of an attribute with a specific number
-	 * so that a method can make use of the {@link #newAttribute(String, int)}
+	 * so that a method can make use of the {@link Table#newAttribute(String, int)}
 	 * method.
 	 * @param types
 	 * 		An array of <code>String</code> elements among "string", "char",
@@ -644,7 +653,7 @@ public class Database {
 	 * 		case), representing a type in a String format
 	 * @return
 	 * 		An array of <code>int</code> elements, each one representing a choice
-	 * 		of type in compliance with the {@link #newAttribute(String, int)} method.
+	 * 		of type in compliance with the {@link Table#newAttribute(String, int)} method.
 	 */
 	public static int[] convertTypes(String[] types) {
 		int[] typeNums = new int[types.length];
@@ -663,22 +672,10 @@ public class Database {
 		}
 		return typeNums;
 	}
-	
-	/**
-	 * A method that matches the types of an attribute with a specific number
-	 * so that a method can make use of the {@link #jar.Table.newAttribute(String, int)}
-	 * method.
-	 * @param types
-	 * 		An array of <code>String</code> elements among "string", "char",
-	 * 		"int", "double", "date" and any other type (to be matched with the object
-	 * 		case), representing a type in a String format
-	 * @return
-	 * 		An array of <code>int</code> elements, each one representing a choice
-	 * 		of type in compliance with the <code>newAttribute</code> method of class
-	 * 		<code>Table</code>.
-	 */
-	
 
+	/**
+	 * Deletes the database object it's called onto.
+	 */
 	public void delete() {
 		for (int i = 0; i <= DatabaseUniverse.getDatabaseNumber(); i++) {
 			if (this.equals(DatabaseUniverse.getDatabases(i))) {
@@ -689,7 +686,7 @@ public class Database {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method lists the names of the existing tables 
 	 * in a database.

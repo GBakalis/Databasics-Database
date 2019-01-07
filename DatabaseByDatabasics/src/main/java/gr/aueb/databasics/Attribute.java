@@ -17,6 +17,12 @@ import java.util.ArrayList;
  * <li>"date"
  * </ul>
  * The elements are saved within an <code>ArrayList&lt;String&gt;</code>
+ * 
+ * @author George Bakalis
+ * @author Andreas Vlachos
+ * @author Kostas Kyriakidis
+ * 
+ * @version 1.0
  */
 
 public class Attribute {

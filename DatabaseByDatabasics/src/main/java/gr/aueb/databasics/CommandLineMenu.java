@@ -9,6 +9,31 @@ import java.util.Scanner;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 
+/**
+ * A class that has all the menus that show while the program is
+ * running. It holds an <code>activeTable</code> as well as an
+ * <code>activeDatabase</code> based on the user's choices, in
+ * order to perform the functions needed.
+ * <p>
+ * The menu has different levels, from the app startup, where the
+ * user has control over all the databases they hold in their system
+ * to a micro-level where they have control over the details of a
+ * single table.
+ * <p>
+ * This class has all menus covering each and every one functionality
+ * of the app. It performs all i/o transactions with the user. It
+ * checks for restricted access on specific attributes, where functions
+ * are disallowed to be performed manually by the user etc.
+ * 
+ * @author Artemis Doumeni
+ * @author Evi Vratsanou
+ * @author George Bakalis
+ * @author Andreas Vlachos
+ * @author Kostas Kyriakidis
+ * @author Martha Pontika
+ *
+ * @version 1.0
+ */
 public class CommandLineMenu {
 
 	private static Table activeTable;
@@ -108,7 +133,7 @@ public class CommandLineMenu {
 	public static boolean checkUnsaved() {
 		boolean unsavedData = false;
 		for (Database database : DatabaseUniverse.getAllDatabases()) {
-			if (!database.getIsSaved()) {
+			if (!database.isSaved()) {
 				System.out.println("Unsaved data in database "
 			+ database.getName() + "!");
 			unsavedData = true;
@@ -507,13 +532,13 @@ public class CommandLineMenu {
 			}
 			if (choice == 1) {
 				addTable();
-				activeDatabase.setIsSaved(false);
+				activeDatabase.setSaved(false);
 				viewDatabase();
 			} else if (choice == 2) {
 				viewTableMenu();
 			} else if (choice == 3) {
 				deleteTableMenu();
-				activeDatabase.setIsSaved(false);
+				activeDatabase.setSaved(false);
 				viewDatabase();
 			} else if (choice == 4) {
 				System.out.println(
@@ -527,7 +552,7 @@ public class CommandLineMenu {
 				viewDatabase();
 			} else if (choice == 5) {
 				activeDatabase.saveDatabase();
-				activeDatabase.setIsSaved(true);
+				activeDatabase.setSaved(true);
 			} else if (choice == 6) {
 				activeDatabase.listTables();
 			} else if (choice == 7) {
@@ -587,21 +612,21 @@ public class CommandLineMenu {
 			searchMenu();
 		} else if (choice == 2) {
 			sortMenu(activeTable.getName());
-			activeDatabase.setIsSaved(false);
+			activeDatabase.setSaved(false);
 		} else if (choice == 3) {
 			viewOptions();
 		} else if (choice == 4) {
 			addAttributeOptions();
-			activeDatabase.setIsSaved(false);
+			activeDatabase.setSaved(false);
 		} else if (choice == 5) {
 			addEntryOptions();
-			activeDatabase.setIsSaved(false);
+			activeDatabase.setSaved(false);
 		} else if (choice == 6) {
 			changeDataOptions();
-			activeDatabase.setIsSaved(false);
+			activeDatabase.setSaved(false);
 		} else if (choice == 7) {
 			deleteMenu();
-			activeDatabase.setIsSaved(false);
+			activeDatabase.setSaved(false);
 		} else if (choice == 8) {
 			setActiveTable(null);
 			return;

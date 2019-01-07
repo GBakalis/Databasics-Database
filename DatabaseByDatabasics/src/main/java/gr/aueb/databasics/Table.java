@@ -28,10 +28,6 @@ import java.text.ParseException;
  * <li>View Table's content
  * <li>View columns' content
  * <li>Input data into a table
- * <li>Copy an entry to another position of the same or another table
- * <li>Move an entry to another position of the same or another table
- * <li>Copy a single field to another position of the same or another table
- * <li>Move a single field to another position of the same or another table
  * <li>Delete a table
  * <li>Delete an entry
  * <li>Erase a field
@@ -51,7 +47,7 @@ import java.text.ParseException;
  * @author Kostas Kyriakidis
  * @author Martha Pontika
  * 
- * @version %I% %G%
+ * @version 1.0
  */
 
 public class Table {

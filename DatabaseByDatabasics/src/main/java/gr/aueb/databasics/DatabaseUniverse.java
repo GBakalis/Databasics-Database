@@ -12,6 +12,11 @@ import java.io.IOException;
  * This class represents the database tree. DatabaseUniverse contains
  * all databases loaded in the program. This class is not object-oriented;
  * all its methods and variables are static.
+ * 
+ * @author George Bakalis
+ * @author Andreas Vlachos
+ * 
+ * @version 1.0
  */
 public class DatabaseUniverse {
 
@@ -127,7 +132,7 @@ public class DatabaseUniverse {
 				fr.close();
 				br.close();
 			}
-			database.setIsSaved(true);
+			database.setSaved(true);
 			System.out.println("Database " + database.getName()
 			+ " imported succesfully!");
 		} catch (SecurityException e) {

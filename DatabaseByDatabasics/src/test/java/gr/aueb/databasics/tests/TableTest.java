@@ -67,9 +67,9 @@ public class TableTest {
 
 	@Test
 	public void testReturnFormatter() {
-		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormater(4),
+		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormatter(4),
 				new SimpleDateFormat("dd/MM/yyyy"));
-		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormater(5),
+		Assert.assertEquals("Failure: Wrong formatter String", table.returnFormatter(5),
 				new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy"));
 	}
 
