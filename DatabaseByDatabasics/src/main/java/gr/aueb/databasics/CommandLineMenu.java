@@ -87,6 +87,11 @@ public class CommandLineMenu {
 				if (s == null) {
 					continue;
 				}
+				System.out.println("Do you want to delete contents from disk?");
+				String answer = checkAnswer();
+				if (answer.equals("yes")) {
+					DatabaseUniverse.deleteDatabaseFromDisk(s);
+				}
 				readDatabase(s).delete();
 			}
 			if (choice == 4) {

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * This class represents the database tree. DatabaseUniverse contains
@@ -35,6 +36,21 @@ public class DatabaseUniverse {
 	public static void setDatabaseNumber(int margin) {
 		databaseNumber += margin;
 	}
+	
+	/**
+	 * A filter used to choose the files with csv format.
+	 */
+	public static FilenameFilter csvFilter = new FilenameFilter() {
+		public boolean accept(File dir, String name) {
+			String lowercaseName = name.toLowerCase();
+			if (lowercaseName.endsWith(".csv")) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
+
 
 	public static ArrayList<Database> getAllDatabases() {
 		return databases;
@@ -107,18 +123,7 @@ public class DatabaseUniverse {
 			System.err.print(e);
 		}
 	}
-
-	public static FilenameFilter csvFilter = new FilenameFilter() {
-		public boolean accept(File dir, String name) {
-			String lowercaseName = name.toLowerCase();
-			if (lowercaseName.endsWith(".csv")) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	};
-
+	
 	/**
 	 * This method is used to import a single database and is called by
 	 * <code>importDatabaseUniverseTree</code> method.
@@ -189,5 +194,40 @@ public class DatabaseUniverse {
 			}
 		}
 		return position;
+	}
+	
+	/**
+	 * This method is used in order to delete the directory of a
+	 * database from the user's DatabaseUniverse folder.
+	 * @param databaseName
+	 * 			A <code>String</code> representing the name of 
+	 * 			the database to be deleted and, thus, the name of the
+	 * 			folder to be deleted.
+	 */
+	public static void deleteDatabaseFromDisk(String databaseName) {
+		try {
+			File databaseDirectory = new File(System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator
+					+ "DatabaseUniverse" + File.separator + databaseName);
+			if (!databaseDirectory.exists()) {
+				throw new FileNotFoundException();
+			}
+			File[] tables = databaseDirectory.listFiles();
+			for (File table : tables) {
+				Files.delete(table.toPath());
+			}
+			Files.delete(databaseDirectory.toPath());
+		} catch (FileNotFoundException e) {
+			System.out.println("The database does not exist in disk");
+		} catch (SecurityException e) {
+			System.out.println("Access Denied in Documents folder. Please check your security settings"
+					+ "to enable file saving");
+		} catch (NullPointerException e) {
+			System.err.println(e);;
+		} catch (IllegalArgumentException e) {
+			System.err.println(e);
+		} catch (IOException e) {
+			System.err.println(e);
+		}
 	}
 }
