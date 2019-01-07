@@ -1539,7 +1539,7 @@ public class CommandLineMenu {
 				correctFile = false;
 			}
 		} while (!correctFile);
-		activeDatabase.importTable(br);
+		activeDatabase.importUserMadeTable(br);
 	}
 	
 	/**

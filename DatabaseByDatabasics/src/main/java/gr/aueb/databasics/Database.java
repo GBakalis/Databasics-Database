@@ -604,26 +604,24 @@ public class Database {
 			System.err.println(e);
 		}
 	}
-	
+
 	/**
 	 * This method imports a table from a csv file, the location of which
-	 * is specified in the <code>DatabaseUniverse</code> class. The table has been
-	 * created through the saving process of this application.
-	 * The format of the file is as follows:
+	 * is specified by the user. The format of the file must be as follows:
 	 * <ul>
 	 * <li>Line one: Name of the table</li>
 	 * <li>Line two: Types of the attributes separated by commas</li>
 	 * <li>Line three: Names of the attributes separated by commas</li>
 	 * <li>Each of the remaining lines: Values of each line, separated by commas</li>
 	 * </ul>
-	 * If type mismatches exist, the wrong elements are replaced with "--".
 	 * It is advised that the user has not placed the csv file within
 	 * the databaseUniverse tree, because the table will be imported during start-up
 	 * in a wrong manner.
+	 * If type mismatches exist, the wrong elements are replaced with "--".
 	 * @param br
 	 * 			A <code>BufferedReader</code> object used to read from the file.
 	 */
-	public void importTable(BufferedReader br) {
+	public void importUserMadeTable(BufferedReader br) {
 		String line;
 		Table table = null;
 		try {
@@ -649,21 +647,23 @@ public class Database {
 			table.delete();
 		}
 	}
+
 	/**
 	 * This method imports a table from a csv file, the location of which
-	 * is specified by the user. The format of the file must be as follows:
+	 * is specified in the <code>DatabaseUniverse</code> class. The table has been
+	 * created through the saving process of this application.
+	 * The format of the file is as follows:
 	 * <ul>
 	 * <li>Line one: Name of the table</li>
 	 * <li>Line two: Types of the attributes separated by commas</li>
 	 * <li>Line three: Names of the attributes separated by commas</li>
 	 * <li>Each of the remaining lines: Values of each line, separated by commas</li>
 	 * </ul>
-	 * The user is responsible for the contents of each line for no checks will be
-	 * conducted concerning the matching of the attribute types and the element values.
+	 * If type mismatches exist, the wrong elements are replaced with "--".
 	 * @param br
 	 * 			A <code>BufferedReader</code> object used to read from the file.
 	 */
-	public void importUserMadeTable(BufferedReader br) {
+	public void importTable(BufferedReader br) {
 		String line;
 		Table table = null;
 		try {
@@ -680,6 +680,10 @@ public class Database {
 				String[] entriesMinusLastModified = new String[entries.length - 1];
 				for (int i = 0; i < entriesMinusLastModified.length; i++) {
 					entriesMinusLastModified[i] = entries[i];
+					if (!table.getAttributes(i + 1).checkType(
+							entriesMinusLastModified[i])) {
+						entriesMinusLastModified[i] = "--";
+					}
 				}
 				table.newEntry(entriesMinusLastModified);
 				table.getAttributes(table.getAttributeNumber() - 1).
