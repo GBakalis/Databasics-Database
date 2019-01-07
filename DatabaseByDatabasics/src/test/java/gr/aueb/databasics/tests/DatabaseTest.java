@@ -174,15 +174,15 @@ public class DatabaseTest {
 		@Test
 		public void testConvertTypes() {
 			String [] types = new String[4];
-			for (int i = 0; i < table.getAttributeNumber() - 1; i++) {
-				types[0] = table.getAttributes(i+1).getType();
+			for (int i = 1; i < table.getAttributeNumber() - 1; i++) {
+				types[i - 1] = table.getAttributes(i).getType();
 			}
 			int [] typesNum = new int[4];
 			typesNum = activeDatabase.convertTypes(types);
-			Assert.assertEquals("Wrong converting results", types[0],1);
-			Assert.assertEquals("Wrong converting results", types[1],2);
-			Assert.assertEquals("Wrong converting results", types[2],3);
-			Assert.assertEquals("Wrong converting results", types[3],5);
+			Assert.assertEquals("Wrong converting results", 1, typesNum[0]);
+			Assert.assertEquals("Wrong converting results", 2, typesNum[1]);
+			Assert.assertEquals("Wrong converting results", 3, typesNum[2]);
+			Assert.assertEquals("Wrong converting results", 5, typesNum[3]);
 		}
 		
 		@Test
