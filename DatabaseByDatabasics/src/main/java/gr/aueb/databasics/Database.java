@@ -653,4 +653,14 @@ public class Database {
 			}
 		}
 	}
+	
+	/**
+	 * This method lists the names of the existing tables 
+	 * in a database.
+	 */
+	public void listTables() {
+		for (Table table : tables) {
+			System.out.println(table.getName());
+		}
+	}
 }

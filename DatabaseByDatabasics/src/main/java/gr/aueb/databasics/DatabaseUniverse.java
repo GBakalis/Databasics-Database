@@ -134,8 +134,17 @@ public class DatabaseUniverse {
 		}
 	}
 	
+	/**
+	 * This method lists the names of the existing databases.
+	 */
+	public static void listDatabases() {
+		for (Database database : databases) {
+			System.out.println(database.getName());
+		}
+	}
+	
 	public static int position(String databaseName) {
-		int position = -1;
+		int position = - 1;
 		for (int i = 0; i < databaseNumber; i++) {
 			if (databaseName.equals(databases.get(i).getName())) {
 				position = i;

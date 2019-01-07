@@ -40,8 +40,9 @@ public class CommandLineMenu {
 		for (;;) {
 			System.out.println("Choose one of the following:"
 					+ "\n1.Create new database.\n2.Select Database"
-					+ "\n3.Delete Database\n4.Exit");
-			choice = checkChoice(1, 4);
+					+ "\n3.Delete Database"
+					+ "\n4.List databases\n5.Exit");
+			choice = checkChoice(1, 5);
 			if (choice == 1) {
 				databaseCreationMenu();
 			}
@@ -64,7 +65,10 @@ public class CommandLineMenu {
 				}
 				readDatabase(s).delete();
 			}
-			if (choice == 4) {	
+			if (choice == 4) {
+				DatabaseUniverse.listDatabases();
+			}
+			if (choice == 5) {	
 					programTermination();
 			}
 		}
@@ -495,8 +499,9 @@ public class CommandLineMenu {
 			System.out.println("Choose one of the following:"
 					+ "\n1.Add a new table\n2.View a table\n3.Delete a table"
 					+ "\n4.Select a table to work on"
-					+ "\n5.Save database\n6.Exit");
-			choice = checkChoice(1, 6);
+					+ "\n5.Save database"
+					+ "\n6.List tables\n7.Exit");
+			choice = checkChoice(1, 7);
 			if (choice == -1) {
 				return;
 			}
@@ -524,13 +529,15 @@ public class CommandLineMenu {
 				activeDatabase.saveDatabase();
 				activeDatabase.setIsSaved(true);
 			} else if (choice == 6) {
+				activeDatabase.listTables();
+			} else if (choice == 7) {
 				setActiveDatabase(null);
 				return;
 			} else {
 				System.out.println("This is not a valid intput.");
 				databaseMenu();
 			}
-		} while (choice != 6);
+		} while (choice != 7);
 	}
 
 	/**
