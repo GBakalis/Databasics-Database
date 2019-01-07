@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * <li>"double"
  * <li>"date"
  * </ul>
- * The elements are saved within an <code>ArrayList<String></code>
+ * The elements are saved within an <code>ArrayList&lt;String&gt;</code>
  */
 
 public class Attribute {

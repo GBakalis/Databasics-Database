@@ -89,8 +89,7 @@ public class Table {
 
 	/**
 	 * This method implements a check on each element of an entry line
-	 * by utilizing method <code>checkType</code> of class <code>Attribute
-	 * </code>.
+	 * by utilizing method {@link Attribute#checkType(String)}
 	 * @param entries
 	 * 			An array of <code>String</code> elements that represents
 	 * 			an entry line,
@@ -115,7 +114,7 @@ public class Table {
 	/**
 	 * This method checks whether a set of values matches with the
 	 * length and the types of the table it is called upon. The types check is implemented
-	 * via the method <code>checkEntryType</code>
+	 * via the method {@link #checkEntryType(String[])}
 	 * @param entries
 	 * 		An array of <code>String</code> elements, each one of the
 	 * 		representing an element of the table's new line, excluding the
@@ -138,7 +137,7 @@ public class Table {
 	/**
 	 * This method creates an entry. It asks for the entry, splits it on commas and
 	 * holds it inside an array. Checks whether the input is valid using
-	 * checkEntry(String[]) and then proceeds to pass the correct input inside the
+	 * {@link #checkEntry(String[])} and then proceeds to pass the correct input inside the
 	 * table.
 	 * 
 	 * @param table
