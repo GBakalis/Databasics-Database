@@ -48,6 +48,11 @@ public class Database {
 	private int tableNumber;
 	private boolean saved;
 
+	/**
+	 * A simple constructor that only expects a name to initialize a database
+	 *
+	 * @param name	The name to be used as a title for the database
+	 */
 	public Database(String name) {
 		this.name = name;
 		DatabaseUniverse.getAllDatabases().add(this);

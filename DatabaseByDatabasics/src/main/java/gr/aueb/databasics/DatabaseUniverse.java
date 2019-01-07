@@ -27,6 +27,11 @@ public class DatabaseUniverse {
 		return databaseNumber;
 	}
 
+	/**
+	 * Changes the field databaseNumber by the value of parameter margin
+	 * 
+	 * @param margin	The value added to databaseNumber
+	 */
 	public static void setDatabaseNumber(int margin) {
 		databaseNumber += margin;
 	}
@@ -39,6 +44,13 @@ public class DatabaseUniverse {
 		return databases.get(i);
 	}
 
+	/**
+	 * Checks existence of a database
+	 * 
+	 * @param name	The name of the database under check
+	 * @return		Returns <code>true</code> if it exists or
+	 * 				<code>false</code> if it doesn't
+	 */
 	public static boolean exists(String name) {
 		for (Database db : getAllDatabases()) {
 			if (db.getName().equals(name)) {
@@ -161,6 +173,13 @@ public class DatabaseUniverse {
 		}
 	}
 
+	/**
+	 * Gives the position of a database
+	 * 
+	 * @param databaseName	Contains the name of the database
+	 * @return				Returns the database's position in 
+	 * 						<code>ArrayList&lt;Database&gt; databases</code>
+	 */
 	public static int position(String databaseName) {
 		int position = -1;
 		for (int i = 0; i < databaseNumber; i++) {

@@ -62,7 +62,6 @@ public class Table {
 	 *
 	 * @param name	The name to be used as a title for the table
 	 */
-
 	public Table(String name) {
 		this.name = name;
 		attributes.add(new Attribute("#", "int"));
@@ -94,7 +93,6 @@ public class Table {
 	 * 			corresponding types and <code>false</code> if at least 
 	 * 			one does not.
 	 */
-
 	public boolean checkEntryType(String[] entries) {
 		boolean correctEntryType = true;
 		for (int i = 1; i < attributeNumber - 1; i++) {
@@ -104,8 +102,6 @@ public class Table {
 		}
 		return correctEntryType;
 	}
-	
-	
 
 	/**
 	 * This method checks whether a set of values matches with the
@@ -141,7 +137,6 @@ public class Table {
 	 * @param entry
 	 * 		The String that contains the fields, separated by commas
 	 */
-
 	public static void newEntryMenu(Table table, String entry) {
 		boolean correctEntry;
 		String[] entries;

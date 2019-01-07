@@ -55,10 +55,9 @@ public class CommandLineMenu {
 		CommandLineMenu.activeDatabase = activeDatabase;
 	}
 
-	/*
-	 * Present the user with the options to 
-	 * either create or load a database. Check
-	 * if the choice input is valid.
+	/**
+	 * Present the user with the options to create, select, delete a
+	 * database or list all available databases
 	 */
 	public static void databaseChoiceMenu() {
 		int choice = 0;
@@ -144,7 +143,9 @@ public class CommandLineMenu {
 
 	/**
 	 * Check if an answer is acceptable
-	 * @return
+	 * 
+	 * @return 	Returns the accepted answer or recursively repeats until
+	 * 			an acceptable answer is given.
 	 */
 	public static String checkAnswer() {
 		Scanner input = new Scanner(System.in);
@@ -159,6 +160,15 @@ public class CommandLineMenu {
 		return answer;
 	}
 
+	/**
+	 * Cancels action and returns to the previous menu at any time
+	 * the word "cancel" is given as input by the user
+	 * 
+	 * @param str	The user's input
+	 * @return		Returns <code>true</code> if the user has typed
+	 * 				"cancel" or <code>false</code> if the input is
+	 * 				anything else
+	 */
 	public static boolean cancel(String str) {
 		if (str.equals("cancel")) {
 			return true;
@@ -167,6 +177,16 @@ public class CommandLineMenu {
 		}
 	}
 
+	/**
+	 * Cancels a whole procedure (e.g. Database creation) and returns
+	 * to the previous menu at any time the word "cancel" is given as 
+	 * input by the user
+	 * 
+	 * @param str	The user's input
+	 * @return		Returns <code>true</code> if the user has typed
+	 * 				"cancel" or <code>false</code> if the input is
+	 * 				anything else
+	 */
 	public static boolean cancelProcedure(String str) {
 		if (str.equals("cancel") || str.equals("yes")) {
 			return true;
@@ -175,14 +195,23 @@ public class CommandLineMenu {
 		}
 	}
 
+	/**
+	 * Checks if the user is certain about an action that makes an
+	 * important change (e.g. table deletion)
+	 * 
+	 * @return		Returns <code>true</code> if the user has typed
+	 * 				"yes" or <code>false</code> if the input is "no"
+	 */
 	public static boolean areYouSure() {
 		System.out.println("Are you sure?");
 		Scanner input = new Scanner(System.in);
 		String answer = checkAnswer();
-		if (answer.equals("yes"))
+		if (answer.equalsIgnoreCase("yes"))
 			return true;
-		else
+		else if (answer.equalsIgnoreCase("no"))
 			return false;
+		else
+			return areYouSure();
 	}
 	
 	/**
@@ -525,7 +554,7 @@ public class CommandLineMenu {
 					+ "\n1.Add a new table\n2.View a table\n3.Delete a table"
 					+ "\n4.Select a table to work on"
 					+ "\n5.Save database"
-					+ "\n6.List tables\n7.Exit");
+					+ "\n6.List tables\n7.Back");
 			choice = checkChoice(1, 7);
 			if (choice == -1) {
 				return;
@@ -603,7 +632,7 @@ public class CommandLineMenu {
 		System.out.println("Choose one of the following:"
 				+ "\n1.Search in this table\n2.Sort this table\n"
 				+ "3.Present data\n4.Add an attribute\n" 
-				+ "5.New entry\n6.Change data\n7.Delete data\n8.Exit" );
+				+ "5.New entry\n6.Change data\n7.Delete data\n8.Back" );
 		int choice = checkChoice(1, 8);
 		if (choice == -1) {
 			return;
@@ -744,7 +773,7 @@ public class CommandLineMenu {
 		System.out.println("Choose one of the following:" 
 				+ "\n1.View column"
 				+ "\n2.View lines"
-				+ "\n3.Exit");
+				+ "\n3.Back");
 		choice = checkChoice(1, 3);
 		if (choice == -1) {
 			return;
@@ -767,7 +796,7 @@ public class CommandLineMenu {
 		System.out.println("Choose one of the following:"
 				+ "\n1.Create a new attribute"
 				+ "\n2.Copy an existing attribute"
-				+ "\n3.Exit");
+				+ "\n3.Back");
 		choice = checkChoice(1, 3);
 		if (choice == -1) {
 			return;
@@ -858,7 +887,7 @@ public class CommandLineMenu {
 		System.out.println("Choose one of the following:"
 				+ "\n1.Create a new entry"
 				+ "\n2.Copy an existing entry"
-				+ "\n3.Exit");
+				+ "\n3.Back");
 		choice = checkChoice(1, 3);
 		if (choice == -1) {
 			return;
@@ -1016,7 +1045,7 @@ public class CommandLineMenu {
 				+ "\n2.Replace elements of a line "
 				+ "with elements from another line."
 				+ "\n3.Replace entry."
-				+ "\n4.Replace attribute.\n5.Exit");
+				+ "\n4.Replace attribute.\n5.Back");
 		choice = checkChoice(1, 5);
 		if (choice == -1) {
 			return;
