@@ -26,14 +26,14 @@ import java.text.ParseException;
  * database has, such as:
  * <ul>
  * <li>View Table's content
- * <li>View a column's content
+ * <li>View columns' content
  * <li>Input data into a table
  * <li>Copy an entry to another position of the same or another table
  * <li>Move an entry to another position of the same or another table
  * <li>Copy a single field to another position of the same or another table
  * <li>Move a single field to another position of the same or another table
- * <li>Delete an entry
  * <li>Delete a table
+ * <li>Delete an entry
  * <li>Erase a field
  * <li>Change a field
  * <li>Change an entry
@@ -64,8 +64,7 @@ public class Table {
 	/**
 	 * A simple constructor that only expects a name to initialize a table
 	 *
-	 * @param name
-	 *            the name to be used as a title for the table
+	 * @param name	The name to be used as a title for the table
 	 */
 
 	public Table(String name) {
@@ -304,9 +303,10 @@ public class Table {
 
 	/**
 	 * This method presents a set of given lines of the table upon which it is called.
+	 * 
 	 * @param entryPositions
-	 * 			An arraylist of <code>Integer</code> elements, each one representing the
-	 * 			position of a line in the attribute arraylists.
+	 * 			An <code>ArrayList</code> of <code>Integer</code> elements, each one
+	 * 			representing the	position of a line in the attribute arraylists.
 	 */
 	public void viewLines(ArrayList<Integer> entryPositions) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
@@ -324,6 +324,10 @@ public class Table {
 		System.out.println();
 	}
 
+	/**
+	 * When <code>view()</code> is called on a Table object, it views the table
+	 * in a structured manner
+	 */
 	public void view() {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		System.out.println(this.getName() + "\n");
@@ -342,6 +346,12 @@ public class Table {
 		System.out.println();
 	}
 
+	/**
+	 * When it is called on a Table object, it views the specified attributes of the table
+	 * in a structured manner
+	 * 
+	 * @param attributeNames	Contains the names of the attributes to be viewed
+	 */
 	public void viewAttribute(ArrayList<String> attributeNames) {
 		ArrayList<Integer> columnLength = new ArrayList<Integer>();
 		ArrayList<Integer> attPositions = this.attPositions(attributeNames);
@@ -362,6 +372,13 @@ public class Table {
 		}
 	}
 
+	/**
+	 * Gives the positions of the specified attributes inside a table
+	 * 
+	 * @param atts	Contains the names of the attributes
+	 * @return		Returns an <code>ArrayList</code> of integers corresponding to the
+	 * 				attributes' positions
+	 */
 	public ArrayList<Integer> attPositions(ArrayList<String> atts) {
 		ArrayList<Integer> positions = new ArrayList<Integer>();
 		for (String att : atts) {
@@ -420,6 +437,7 @@ public class Table {
 	 * 							order
 	 * @return					Returns an ArrayList of Attribute objects. It is the 
 	 * 							sorted table.
+	 * @throws ParseException	if parsing fails
 	 */
 	public ArrayList<Attribute> sortTable(String keyAttribute, int choice) throws ParseException {
 		int index = this.attPositions(new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
@@ -458,8 +476,8 @@ public class Table {
 	/**
 	 * Return the appropriate date format (simple date or time stamp).
 	 * 
-	 * @param index
-	 * @return
+	 * @param index	Checks if the attribute refers to the Last Modified column
+	 * @return		Returns the date format
 	 */
 	public SimpleDateFormat returnFormatter(int index) {
 		if (index == attributeNumber - 1)
@@ -470,11 +488,12 @@ public class Table {
 
 	/**
 	 * Sort table according to time stamp (last column) or date type attribute.
-	 * @param index
-	 * @param order
-	 * @param formatter
-	 * @return
-	 * @throws ParseException
+	 * 
+	 * @param index				Shows position of Attribute
+	 * @param order				+1 represents ascending, -1 represents descending order of sort
+	 * @param formatter			Carries the date format
+	 * @return					Returns the Attributes sorted
+	 * @throws ParseException 	if parsing fails
 	 */
 	protected ArrayList<Attribute> dateSort(int index, int order, SimpleDateFormat formatter) throws ParseException {
 		for (int i = 0; i < getAttributes(index).getArray().size(); i++) {
@@ -580,16 +599,16 @@ public class Table {
 	 * and it gives the opportunity of multiple elements change with one run.
 	 * @param num
 	 * 			An <code>int</code> which contains the line number of the data to be
-	 *      changed.
+	 *      	changed.
 	 * @param attNames
 	 * 			An arraylist of <code>String</code> elements, containing the names of
 	 * 			the attributes where the data to be changed belong to.
 	 * @param newValues
-	 *      An arraylist of <code>String</code> elements, containing the new values
-	 *      of the data to be changed.
+	 *      	An arraylist of <code>String</code> elements, containing the new values
+	 *      	of the data to be changed.
 	 * @return
 	 * 			An arrraylist of <code>String</code> elements, containing the changed
-	 *      values.
+	 *      	values.
 	 */
 	public ArrayList<String> dataChange(int num, ArrayList<String> attNames, ArrayList<String> newValues) {
 		ArrayList<String> changedValues = new ArrayList<String>();
@@ -651,4 +670,3 @@ public class Table {
 
 
 }
-

@@ -11,18 +11,16 @@ import java.util.ArrayList;
  * The type can be one of the following:
  * <ul>
  * <li>"string"
- * <char>"char"
+ * <li>"char"
  * <li>"int"
  * <li>"double"
  * <li>"date"
  * </ul>
- * The elements are saved within an <code>ArrayList/<String/></code>
+ * The elements are saved within an <code>ArrayList<String></code>
  */
 
 public class Attribute {
-	/**
-	 * Indicates the name of the table.
-	 */
+
 	private String name;
 	private String type;
 	private ArrayList<String> array = new ArrayList<String>();
