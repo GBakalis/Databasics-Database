@@ -129,17 +129,6 @@ public class TableTest {
 	}
 
 	@Test
-	public void testPositionArrayListOfString() {
-		ArrayList<String> tableNames = new ArrayList<String>();
-		tableNames.add(table2.getName());
-		tableNames.add(table.getName());
-		Assert.assertEquals("Failure : Wrong first table position.",
-				activeDatabase.position(tableNames.get(0)), 1);
-		Assert.assertEquals("Failure : Wrong second table position.",
-				activeDatabase.position(tableNames.get(1)), 0);
-	}
-
-	@Test
 	public void testCheckEntry() {
 		String[] entry1 = { "Andreas", "m", "19", "01/01/2019" };
 		Assert.assertTrue("Failure : Correct entry was not accepted.", table.checkEntry(entry1));
@@ -149,6 +138,38 @@ public class TableTest {
 		Assert.assertFalse("Failure : Accepted wrong type entry", table.checkEntry(entry1));
 		entry1[1] = "--";
 		Assert.assertTrue("Failure : Correct entry with empty field not accepted", table.checkEntry(entry1));
+	}
+	
+	@Test
+	public void testNewEntry() {
+		table2.newAttribute("Names", 1);
+		table2.newAttribute("Sex", 2);
+		table2.newAttribute("Age", 3);
+		table2.newAttribute("Date", 5);
+		String[] entries5 = {"Evi", "m", "19","01:01:2019"};
+		String[] entries6 = {"George", "m", "19","01:01:2019"};
+		table2.newEntry(entries5);
+		table2.newEntry(entries6);
+		for ( int i = 1; i < table.getAttributeNumber() -1; i ++) {
+			Assert.assertEquals("Wrong entry results",table2.getAttributes(i).getArray().get(0)
+					, entries5[i - 1]);
+			Assert.assertEquals("Wrong entry results",table2.getAttributes(i).getArray().get(1)
+					, entries6[i - 1]);
+		}
+	}
+	
+	@Test
+	public void testCheckInput() {
+		Assert.assertTrue("Failure : Correct entry was not accepted", table.checkInput(2,true));
+		Assert.assertFalse("Failure : Wrong entry was accepted", table.checkInput(6,true));
+		Assert.assertFalse("Failure : Wrong entry was accepted", table.checkInput(2,false));
+	}
+	
+	@Test
+	public void testNewAttribute() {
+		table.newAttribute("phone", 1);
+		Assert.assertEquals("Failure : Wrong name", table.getAttributes(5).getName(), "phone");
+		Assert.assertEquals("Failure : Wrong type", table.getAttributes(5).getType(), "string");
 	}
 
 	@Test
