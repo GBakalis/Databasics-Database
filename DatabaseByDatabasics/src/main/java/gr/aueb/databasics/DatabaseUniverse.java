@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+/**
+ * This class represents the database tree. DatabaseUniverse contains
+ * all databases loaded in the program. This class is not object-oriented;
+ * all its methods and variables are static.
+ */
 public class DatabaseUniverse {
 
 	private static ArrayList<Database> databases = new ArrayList<Database>();
@@ -16,7 +21,7 @@ public class DatabaseUniverse {
 	public static int getDatabaseNumber() {
 		return databaseNumber;
 	}
-	
+
 	public static void setDatabaseNumber(int margin) {
 		databaseNumber += margin;
 	}
@@ -24,7 +29,7 @@ public class DatabaseUniverse {
 	public static ArrayList<Database> getAllDatabases() {
 		return databases;
 	}
-	
+
 	public static Database getDatabases(int i) {
 		return databases.get(i);
 	}
@@ -37,20 +42,22 @@ public class DatabaseUniverse {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This methods creates a directory in the user's Documents folder
-	 * within which the databases will be saved
+	 * within which the databases will be saved.
 	 */
 	public static void createDatabaseUniverseDir() {
 		try {
-			File databasesFolder = new File (System.getProperty("user.home")
-					+ File.separator + "Documents" + File.separator + "DatabaseUniverse");
+			File databasesFolder = new File(System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator
+					+ "DatabaseUniverse");
 			if (!databasesFolder.exists()) {
 				databasesFolder.mkdirs();
 			}
 		} catch (SecurityException e) {
-			System.out.println("Access Denied in Documents folder. Please check your security settings"
+			System.out.println("Access Denied in Documents folder."
+					+ " Please check your security settings"
 					+ "to enable file saving");
 		} catch (NullPointerException e) {
 			System.err.println(e.getCause());
@@ -58,21 +65,24 @@ public class DatabaseUniverse {
 			System.err.print(e);
 		}
 	}
-	
+
 	/**
-	 * This method is used to import all the databases and their contents, that are saved
-	 * in the user's DatabaseUniverse directory within his Documents folder.
+	 * This method is used to import all the databases and their contents,
+	 * that are saved in the user's DatabaseUniverse directory within
+	 * his Documents folder.
 	 */
 	public static void importDatabaseUniverseTree() {
 		try {
-			File databasesFolder = new File (System.getProperty("user.home")
-					+ File.separator + "Documents" + File.separator + "DatabaseUniverse");
+			File databasesFolder = new File(System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator 
+					+ "DatabaseUniverse");
 			String[] databases = databasesFolder.list();
 			for (String databaseName : databases) {
 				importDatabase(databaseName);
 			}
 		} catch (SecurityException e) {
-			System.out.println("Access Denied in Documents folder. Please check your security settings"
+			System.out.println("Access Denied in Documents folder."
+					+ " Please check your security settings"
 					+ "to enable file saving");
 		} catch (NullPointerException e) {
 			System.err.println(e.getCause());
@@ -80,7 +90,7 @@ public class DatabaseUniverse {
 			System.err.print(e);
 		}
 	}
-	
+
 	public static FilenameFilter csvFilter = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			String lowercaseName = name.toLowerCase();
@@ -91,18 +101,18 @@ public class DatabaseUniverse {
 			}
 		}
 	};
-	
+
 	/**
 	 * This method is used to import a single database and is called by
-	 * {@link #importDatabaseUniverseTree()} 
+	 * {@link #importDatabaseUniverseTree()}
 	 * @param databaseName
 	 * 			The name of database directory to name the database itself.
 	 */
 	public static void importDatabase(String databaseName) {
 		try {
-			File databaseDirectory = new File (System.getProperty("user.home")
-					+ File.separator + "Documents" + File.separator + "DatabaseUniverse"
-					+ File.separator + databaseName);
+			File databaseDirectory = new File(System.getProperty("user.home")
+					+ File.separator + "Documents" + File.separator
+					+ "DatabaseUniverse" + File.separator + databaseName);
 			if (!databaseDirectory.exists()) {
 				throw new FileNotFoundException();
 			}
@@ -110,16 +120,19 @@ public class DatabaseUniverse {
 			CommandLineMenu.setActiveDatabase(database);
 			File[] tableFiles = databaseDirectory.listFiles(csvFilter);
 			for (File tableFile : tableFiles) {
-				FileReader fr =new FileReader(tableFile);
-				BufferedReader br = new BufferedReader(new FileReader(tableFile));
+				FileReader fr = new FileReader(tableFile);
+				BufferedReader br = new BufferedReader(
+						new FileReader(tableFile));
 				database.importTable(br);
 				fr.close();
 				br.close();
 			}
 			database.setIsSaved(true);
-			System.out.println("Database " + database.getName() + " imported succesfully!");
+			System.out.println("Database " + database.getName()
+			+ " imported succesfully!");
 		} catch (SecurityException e) {
-			System.out.println("Access Denied in Documents folder. Please check your security settings"
+			System.out.println("Access Denied in Documents folder."
+					+ " Please check your security settings"
 					+ "to enable file saving.");
 		} catch (FileNotFoundException e) {
 			System.out.println("Database " + databaseName + " does not exist");
@@ -133,7 +146,7 @@ public class DatabaseUniverse {
 			CommandLineMenu.setActiveDatabase(null);
 		}
 	}
-	
+
 	/**
 	 * This method lists the names of the existing databases.
 	 */
@@ -142,9 +155,9 @@ public class DatabaseUniverse {
 			System.out.println(database.getName());
 		}
 	}
-	
+
 	public static int position(String databaseName) {
-		int position = - 1;
+		int position = -1;
 		for (int i = 0; i < databaseNumber; i++) {
 			if (databaseName.equals(databases.get(i).getName())) {
 				position = i;
