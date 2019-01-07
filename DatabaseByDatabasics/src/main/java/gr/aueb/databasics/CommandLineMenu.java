@@ -81,6 +81,10 @@ public class CommandLineMenu {
 				databaseMenu();
 			}
 			if (choice == 3) {
+				boolean sure = areYouSure();
+				if (!sure) {
+					databaseChoiceMenu();
+				}
 				System.out.println("Type in the name of the "
 						+ "database you want to delete.");
 				String s = readDatabase();
@@ -97,8 +101,12 @@ public class CommandLineMenu {
 			if (choice == 4) {
 				DatabaseUniverse.listDatabases();
 			}
-			if (choice == 5) {	
-					programTermination();
+			if (choice == 5) {
+				boolean sure = areYouSure();
+				if (!sure) {
+					printDeleteChoices();
+				}
+				programTermination();
 			}
 		}
 	}
@@ -565,12 +573,20 @@ public class CommandLineMenu {
 				return;
 			}
 			if (choice == 1) {
+				boolean sure = areYouSure();
+				if (!sure) {
+					databaseMenu();
+				}
 				addTable();
 				activeDatabase.setSaved(false);
 				viewDatabase();
 			} else if (choice == 2) {
 				viewTableMenu();
 			} else if (choice == 3) {
+				boolean sure = areYouSure();
+				if (!sure) {
+					databaseMenu();
+				}
 				deleteTableMenu();
 				activeDatabase.setSaved(false);
 				viewDatabase();
@@ -650,6 +666,10 @@ public class CommandLineMenu {
 		} else if (choice == 3) {
 			viewOptions();
 		} else if (choice == 4) {
+			boolean sure = areYouSure();
+			if (!sure) {
+				tableMenu();
+			}
 			addAttributeOptions();
 			activeDatabase.setSaved(false);
 		} else if (choice == 5) {
@@ -659,6 +679,10 @@ public class CommandLineMenu {
 			changeDataOptions();
 			activeDatabase.setSaved(false);
 		} else if (choice == 7) {
+			boolean sure = areYouSure();
+			if (!sure) {
+				tableMenu();
+			}
 			deleteMenu();
 			activeDatabase.setSaved(false);
 		} else if (choice == 8) {
@@ -1328,6 +1352,10 @@ public class CommandLineMenu {
 	public static void deleteMenu() {
 		printDeleteChoices();
 		int choice = checkChoice(1, 3);
+		boolean sure = areYouSure();
+		if (!sure) {
+			deleteMenu();
+		}
 		if (choice == -1) {
 			return;
 		}
