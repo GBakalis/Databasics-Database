@@ -24,6 +24,11 @@ public class DatabaseUniverse {
 	private static ArrayList<Database> databases = new ArrayList<Database>();
 	private static int databaseNumber = databases.size();
 
+	/**
+	 * This method returns the value of the field databaseNumber.
+	 * @return
+	 *	The value of the field databaseNumber.
+	 */
 	public static int getDatabaseNumber() {
 		return databaseNumber;
 	}
@@ -51,11 +56,20 @@ public class DatabaseUniverse {
 		}
 	};
 
-
+	/**
+	 * This method returns the value of the field databases.
+	 * @return
+	 *	The value of the field databases.
+	 */
 	public static ArrayList<Database> getAllDatabases() {
 		return databases;
 	}
-
+	
+	/**
+	 * This method expects an input and returns the value of the field databases.
+	 * @return
+	 *	The value of the field databases.
+	 */
 	public static Database getDatabases(int i) {
 		return databases.get(i);
 	}
