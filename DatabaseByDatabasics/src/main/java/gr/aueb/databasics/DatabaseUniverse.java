@@ -104,7 +104,7 @@ public class DatabaseUniverse {
 
 	/**
 	 * This method is used to import a single database and is called by
-	 * {@link #importDatabaseUniverseTree()}
+	 * <code>importDatabaseUniverseTree</code> method.
 	 * @param databaseName
 	 * 			The name of database directory to name the database itself.
 	 */
