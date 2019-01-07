@@ -174,31 +174,68 @@ public class Table {
 			attributes.get(i).setEntryField(entries[i - 1]);
 		}
 	}
-
+	
+	/**
+	  * This method returns the value of the field attributes.
+	  * @return
+	  *	The value of the field attributes.
+	  */
 	public ArrayList<Attribute> getAllAttributes() {
 		return attributes;
 	}
-
+	
+	/**
+	 * This method expects an input and returns the value of the field attributes.
+         * @param i
+	 *	The value used to select an attribute's element.
+	 * @return
+	 *	The value of the field attributes.
+	 */
 	public Attribute getAttributes(int i) {
 		return attributes.get(i);
 	}
-
+	
+	/**
+	  * This method returns the value of the field attributeNumber.
+	  * @return
+	  *	The value of the field attributeNumber.
+	  */
 	public int getAttributeNumber() {
 		return attributeNumber;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field attributeNumber.
+	 * @param margin
+	 *  	The value used to set field attributeNumber.
+	 */
 	public void setAttributeNumber(int margin) {
 		attributeNumber += margin;
 	}
-
+	
+	/**
+	  * This method returns the value of the field name.
+	  * @return
+	  *	The value of the field name.
+	  */
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field name.
+	 * @param name
+	 *  	The value used to set field name.
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	/**
+	 * This method returns the value of the field lines.
+	 * @return
+	 * 	The value of the field lines.
+	 */
 	public int getLines() {
 		return lines;
 	}
