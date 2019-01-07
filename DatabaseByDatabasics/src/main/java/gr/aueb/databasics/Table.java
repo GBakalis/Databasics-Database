@@ -89,7 +89,8 @@ public class Table {
 
 	/**
 	 * This method implements a check on each element of an entry line
-	 * by utilizing method {@link gr.aueb.databasics.Attribute#checkType(String value)}
+	 * by utilizing method <code>checkType</code> of class <code>Attribute
+	 * </code>.
 	 * @param entries
 	 * 			An array of <code>String</code> elements that represents
 	 * 			an entry line,
@@ -114,7 +115,7 @@ public class Table {
 	/**
 	 * This method checks whether a set of values matches with the
 	 * length and the types of the table it is called upon. The types check is implemented
-	 * via the method {@link #checkEntryType(String[])}
+	 * via the method <code>checkEntryType</code>
 	 * @param entries
 	 * 		An array of <code>String</code> elements, each one of the
 	 * 		representing an element of the table's new line, excluding the

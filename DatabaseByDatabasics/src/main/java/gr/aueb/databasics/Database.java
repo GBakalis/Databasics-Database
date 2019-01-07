@@ -674,7 +674,8 @@ public class Database {
 	 * 		case), representing a type in a String format
 	 * @return
 	 * 		An array of <code>int</code> elements, each one representing a choice
-	 * 		of type in compliance with the {@link #jar.Table.newAttribute(String, int)} method.
+	 * 		of type in compliance with the <code>newAttribute</code> method of class
+	 * 		<code>Table</code>.
 	 */
 	
 

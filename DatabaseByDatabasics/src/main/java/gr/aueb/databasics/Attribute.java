@@ -60,8 +60,8 @@ public class Attribute {
 	}
 
 	/**
-	 * This method changes the value of the specified element using the
-	 * method {@link gr.aueb.databasics.Attribute#set}
+	 * This method changes the value of the specified element as long as
+	 * its type matches with the attribute type
 	 * 
 	 * @param linePos
 	 *      An <code>int</code> which contains the line
