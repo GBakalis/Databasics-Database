@@ -135,7 +135,7 @@ public class DatabaseUniverse {
 	}
 	
 	public static int position(String databaseName) {
-		int position = 0;
+		int position = -1;
 		for (int i = 0; i < databaseNumber; i++) {
 			if (databaseName.equals(databases.get(i).getName())) {
 				position = i;

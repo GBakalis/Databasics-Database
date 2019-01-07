@@ -17,14 +17,17 @@ import org.junit.Assert;
 
 public class TableTest {
 
-	private Database db = new Database("DB1");
-	private Table table = new Table("Student");
+	private Database db;
+	private Table table;
 	private String[] timeStamp = { null, null, null, null };
-	private Table table2 = new Table("Extra");
+	private Table table2;
 	private Database activeDatabase;
 
 	@Before
 	public void setUp() {
+		db = new Database("DB1");
+		table = new Table("Student");
+		table2 = new Table("Extra");
 		activeDatabase = db;
 		table.newAttribute("Name", 1);
 		table.newAttribute("Sex", 2);
@@ -237,7 +240,9 @@ public class TableTest {
 	@After
 	public void tearDown() {
 		db.getAllTables().clear();
+		db.setTableNumber(-2);
 		DatabaseUniverse.getAllDatabases().clear();
+		DatabaseUniverse.setDatabaseNumber(-1);
 		table = null;
 		table2 = null;
 		db = null;

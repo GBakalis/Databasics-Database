@@ -1,6 +1,7 @@
 package gr.aueb.databasics.tests;
 
 import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,9 @@ public class DatabaseUniverseTest {
 
 	@Before
 	public void setUp() {
+		Database db = new Database("DB1");
+		table = new Table("Student");
+		table2 = new Table("Extra");
 		activeDatabase = db;
 		table.newAttribute("Name", 1);
 		table.newAttribute("Sex", 2);
@@ -41,7 +45,18 @@ public class DatabaseUniverseTest {
 	
 	@Test
 	public void testPositionString() {
+		System.out.println("Existing databases " + du.getDatabaseNumber());
 		Assert.assertEquals("Failure : Wrong database position.", du.position("DB1"), 0);
 	}
 
+	@After
+	public void tearDown() {
+		du.getAllDatabases().clear();
+		du.setDatabaseNumber(-1);
+		db.getAllTables().clear();
+		db.setTableNumber(-2);
+		table = null;
+		db = null;
+		table2 = null;
+	}
 }
