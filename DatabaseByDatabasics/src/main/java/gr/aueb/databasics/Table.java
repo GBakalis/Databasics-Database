@@ -106,7 +106,7 @@ public class Table {
 	/**
 	 * This method checks whether a set of values matches with the
 	 * length and the types of the table it is called upon. The types check is implemented
-	 * via the method {@link #checkEntryType(String[])}
+	 * via the method <code>checkEntryType</code>
 	 * @param entries
 	 * 		An array of <code>String</code> elements, each one of the
 	 * 		representing an element of the table's new line, excluding the
