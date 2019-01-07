@@ -19,7 +19,6 @@ import java.text.ParseException;
  * <li>The table's name
  * <li>The number of attributes that the table holds
  * <li>The Attribute objects which contain the content the user inputs
- * <li>An ArrayList of the Tables constructed by the user.
  * </ul>
  * <p>
  * The class is designed in such manner that it will support methods inside of
@@ -36,8 +35,8 @@ import java.text.ParseException;
  * <li>Delete an entry
  * <li>Delete a table
  * <li>Erase a field
- * <li>Substitute a field
- * <li>Substitute an entry
+ * <li>Change a field
+ * <li>Change an entry
  * <li>More
  * </ul>
  * <p>
@@ -45,6 +44,14 @@ import java.text.ParseException;
  * written in such a manner that they require the data input given in a strict
  * way by the user.
  *
+ * @author George Bakalis
+ * @author Andreas Vlachos
+ * @author Artemis Doumeni
+ * @author Evi Vratsanou
+ * @author Kostas Kyriakidis
+ * @author Martha Pontika
+ * 
+ * @version %I% %G%
  */
 
 public class Table {
@@ -83,7 +90,7 @@ public class Table {
 
 	/**
 	 * This method implements a check on each element of an entry line
-	 * by utilizing method #{@link Attribute.checkType(String value)}
+	 * by utilizing method {@link gr.aueb.databasics.Attribute#checkType(String value)}
 	 * @param entries
 	 * 			An array of <code>String</code> elements that represents
 	 * 			an entry line,
@@ -133,6 +140,11 @@ public class Table {
 	 * holds it inside an array. Checks whether the input is valid using
 	 * checkEntry(String[]) and then proceeds to pass the correct input inside the
 	 * table.
+	 * 
+	 * @param table
+	 * 		The Table object in which the new entry will be created
+	 * @param entry
+	 * 		The String that contains the fields, separated by commas
 	 */
 
 	public static void newEntryMenu(Table table, String entry) {
@@ -231,6 +243,11 @@ public class Table {
 	/**
 	 * This method creates an attribute (column) using a name and an integer which
 	 * corresponds to the data type the attribute will hold
+	 * 
+	 * @param name
+	 * 		The name of the Attribute object to be created
+	 * @param choice
+	 * 		An int which represents the data type of the Attribute to be created
 	 */
 
 	public void newAttribute(String name, int choice) {
@@ -396,16 +413,19 @@ public class Table {
 
 	/**
 	 * Check if the column can be sorted and if yes call the appropriate method.
-	 * @param keyAttribute
-	 * @param choice
-	 * @return
-	 * @throws ParseException
+	 * 
+	 * @param keyAttribute		A String holding the name of the Attribute to be used 
+	 * 							to sort the table
+	 * @param choice			1 represents ascending order, -1 represents descending 
+	 * 							order
+	 * @return					Returns an ArrayList of Attribute objects. It is the 
+	 * 							sorted table.
 	 */
 	public ArrayList<Attribute> sortTable(String keyAttribute, int choice) throws ParseException {
 		int index = this.attPositions(new ArrayList<String>(Arrays.asList(keyAttribute))).get(0);
 		if ((getAttributes(index).getType().equals("date"))
 				|| (getAttributes(index).getType().equals("Time of last edit"))) {
-			return dateSort(index, choice, returnFormater(index));
+			return dateSort(index, choice, returnFormatter(index));
 		} else if ((index == 0)) {
 			System.out.println("This column contains elements that cannot be sorted");
 			return null;
@@ -416,9 +436,11 @@ public class Table {
 
 	/**
 	 * Sort table according to int, double, String or char type attribute.
-	 * @param index
-	 * @param order
-	 * @return
+	 * 
+	 * @param index	Shows position of Attribute
+	 * @param order	1 represents ascending and -1 descending order
+	 * @return		Returns an ArrayList of Attribute objects. It is the
+	 * 				sorted table
 	 */
 	protected ArrayList<Attribute> generalSort(int index, int order) {
 		for (int i = 0; i < getAttributes(index).getArray().size(); i++)
@@ -435,10 +457,11 @@ public class Table {
 
 	/**
 	 * Return the appropriate date format (simple date or time stamp).
+	 * 
 	 * @param index
 	 * @return
 	 */
-	public SimpleDateFormat returnFormater(int index) {
+	public SimpleDateFormat returnFormatter(int index) {
 		if (index == attributeNumber - 1)
 			return new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
 		else
@@ -512,20 +535,18 @@ public class Table {
 	}
  	
 	/**
-    	 * This method deletes a whole entry specified by the user and
+	 * This method deletes a whole entry specified by the user and
 	 * reduces the table's number of lines after deleting the specified entry.
 	 * The delete is parameterized by the number that indicates the position of 
 	 * the entry the user wants to delete.
-	 * @param linePosition
-	 * 		An <code>int</code> element, containing the number that
-	 * 		indicates the position of entry which will be deleted.
+	 * 
+	 * @param linePosition	Contains the number that indicates the position of 
+	 * 						entry which will be deleted.
 	 */
 	public void deleteEntry(int linePosition) {
 		for (int j = 0; j < attributes.size(); j++) {
 			this.getAttributes(j).getArray().remove(linePosition);
 		}
-		
-		
 		for (int i = linePosition; i < this.getLines() - 1 ; i++) {
 			String num = String.valueOf(i + 1);
 			this.getAttributes(0).changeField(i, num);
@@ -539,12 +560,11 @@ public class Table {
 	 * specified element.
 	 * The delete is parameterized by the number that indicates the elelement's  
 	 * line position and the the element's name of attribute the user wants to delete.
-	 * @param linePosition
-	 * 			An <code>int</code> element, containing the number that
-	 * 			indicates the line of the element which will be deleted.
-	 * @param attributeName
-	 * 			An <code>String</code> element, containing the name of
-	 * 			the element's attribute which will be deleted.
+	 * 
+	 * @param lineNumber	Contains the number that indicates the line of the element 
+	 * 						which will be deleted.
+	 * @param attributeName Contains the name of the element's attribute which will
+	 * 						be deleted.
 	 * 
 	 */
 	public void deleteElement(int lineNumber, String attributeName) {
@@ -556,7 +576,7 @@ public class Table {
 
 	/**
 	 * This method changes data which belong to one or more attributes and in one
-	 * specific line using the method {@link changeField} of class {@link Attribute}
+	 * specific line using the method {@link Attribute#changeField(int, String)}
 	 * and it gives the opportunity of multiple elements change with one run.
 	 * @param num
 	 * 			An <code>int</code> which contains the line number of the data to be

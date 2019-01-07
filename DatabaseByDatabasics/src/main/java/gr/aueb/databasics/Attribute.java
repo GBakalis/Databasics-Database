@@ -44,8 +44,6 @@ public class Attribute {
 		return type;
 	}
 
-	//The user shouldn't have the ability to change
-	//a column's type before deleting the data
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -63,9 +61,10 @@ public class Attribute {
 		array.add(entry);
 	}
 
-  /**
+	/**
 	 * This method changes the value of the specified element using the
-	 * method {@link set} of class {@link ArrayList}.
+	 * method {@link gr.aueb.databasics.Attribute#set}
+	 * 
 	 * @param linePos
 	 *      An <code>int</code> which contains the line
 	 *      number of the element whose value will be changed.

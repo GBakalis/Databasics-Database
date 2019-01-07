@@ -9,6 +9,41 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 
+/**
+ * Database is the class that allows the creation and editing of databases.
+ * A Database object is practically a series of Table objects held inside an 
+ * ArrayList of type Table and encapsulates the basic information needed for 
+ * this purpose:
+ * <ul>
+ * <li>The database's name
+ * <li>The number of tables that the database holds
+ * <li>The Table objects which contain the content the user inputs
+ * </ul>
+ * <p>
+ * The class is designed in such manner that it will support methods inside of
+ * it and other classes externally to execute the usual functions that a
+ * database has, such as:
+ * <ul>
+ * <li>View Table's content
+ * <li>View a column's content
+ * <li>Input data into a table
+ * <li>Copy an entry to another position of the same or another table
+ * <li>Move an entry to another position of the same or another table
+ * <li>Copy a single field to another position of the same or another table
+ * <li>Move a single field to another position of the same or another table
+ * <li>Delete an entry
+ * <li>Delete a table
+ * <li>Erase a field
+ * <li>Substitute a field
+ * <li>Substitute an entry
+ * <li>More
+ * </ul>
+ * <p>
+ * An important point to consider is that the methods inside the class are
+ * written in such a manner that they require the data input given in a strict
+ * way by the user.
+ *
+ */
 public class Database {
 
 	private String name;
