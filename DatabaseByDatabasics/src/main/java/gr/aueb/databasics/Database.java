@@ -143,7 +143,7 @@ public class Database {
 		for (int i = 0; i < this.getTableNumber(); i++) {
 			if (tableName.equals(this.getTables(i).getName())) {
 				position = i;
-				continue;
+				break;
 			}
 		}
 		return position;
