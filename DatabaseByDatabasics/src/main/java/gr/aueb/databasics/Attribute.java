@@ -35,32 +35,66 @@ public class Attribute {
 		this.name = name;
 		this.type = type;
 	}
-
+	
+	/**
+         * This method returns the value of the field name.
+         * @return
+         * 	The value of the field name.
+         */
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field name.
+	 * @param name
+	 *  	The value used to set field name.
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	/**
+	 * This method returns the value of the field type.
+	 * @return
+	 *	The value of the field type.
+	 */
 	public String getType() {
 		return type;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field type.
+	 * @param type
+	 *  	The value used to set field type.
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	
+	/**
+	 * This method returns the value of the field array.
+	 * @return
+	 *	The value of the field array.
+	 */
 	public ArrayList<String> getArray() {
 		return array;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field array.
+	 * @param array
+	 *  	The value used to set field array.
+	 */
 	public void setArray(ArrayList<String> array) {
 		this.array = array;
 	}
 
-
+	/**
+	 * This method expects an input and uses it to set field array.
+	 * @param type
+	 *  	The value used to set field array.
+	 */
 	public void setEntryField(String entry) {
 		array.add(entry);
 	}
