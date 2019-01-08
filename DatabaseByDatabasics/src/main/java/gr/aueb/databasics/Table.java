@@ -40,13 +40,6 @@ import java.text.ParseException;
  * written in such a manner that they require the data input given in a strict
  * way by the user.
  *
- * @author George Bakalis
- * @author Andreas Vlachos
- * @author Artemis Doumeni
- * @author Evi Vratsanou
- * @author Kostas Kyriakidis
- * @author Martha Pontika
- * 
  * @version 1.0
  */
 
@@ -295,15 +288,7 @@ public class Table {
 		case 5:
 			attributes.add(attributeNumber - 2, new Attribute(name, "date"));
 			break;
-		
 		}
-	/*	if (getLines()>0) {
-			Date date = new Date();
-			DateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
-			for (int i = 0 ; i < this.getLines();i++)
-				this.getAttributes(attributeNumber-1).changeField(i, format.format(date));  */
-		
-		
 	}
 	
 	/**

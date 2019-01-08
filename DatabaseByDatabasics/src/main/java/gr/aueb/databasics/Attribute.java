@@ -18,10 +18,6 @@ import java.util.ArrayList;
  * </ul>
  * The elements are saved within an <code>ArrayList&lt;String&gt;</code>
  * 
- * @author George Bakalis
- * @author Andreas Vlachos
- * @author Kostas Kyriakidis
- * 
  * @version 1.0
  */
 
@@ -92,7 +88,7 @@ public class Attribute {
 
 	/**
 	 * This method expects an input and uses it to set field array.
-	 * @param type
+	 * @param entry
 	 *  	The value used to set field array.
 	 */
 	public void setEntryField(String entry) {

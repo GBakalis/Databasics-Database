@@ -14,9 +14,6 @@ import java.nio.file.Files;
  * all databases loaded in the program. This class is not object-oriented;
  * all its methods and variables are static.
  * 
- * @author George Bakalis
- * @author Andreas Vlachos
- * 
  * @version 1.0
  */
 public class DatabaseUniverse {

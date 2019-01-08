@@ -35,10 +35,6 @@ import java.text.DateFormat;
  * </ul>
  * <p>
  * 
- * @author George Bakalis
- * @author Andreas Vlachos
- * @author Evi Vratsanou
- * 
  * @version 1.0
  */
 public class Database {

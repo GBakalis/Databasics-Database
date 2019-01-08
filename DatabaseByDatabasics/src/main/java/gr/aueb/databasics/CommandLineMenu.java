@@ -25,13 +25,6 @@ import java.util.InputMismatchException;
  * checks for restricted access on specific attributes, where functions
  * are disallowed to be performed manually by the user etc.
  * 
- * @author Artemis Doumeni
- * @author Evi Vratsanou
- * @author George Bakalis
- * @author Andreas Vlachos
- * @author Kostas Kyriakidis
- * @author Martha Pontika
- *
  * @version 1.0
  */
 public class CommandLineMenu {
@@ -614,7 +607,7 @@ public class CommandLineMenu {
 				System.out.println(
 						"Type in the name of the table of your choice.");
 				String str = readTable();
-				if (cancel(str)) {
+				if (str == null) {
 					return;
 				}
 				setActiveTable(readTable(str));
@@ -642,7 +635,7 @@ public class CommandLineMenu {
 		System.out.println(
 				"Please enter the name of the table that you want to view");
 		String s = readTable();
-		if (cancel(s)) {
+		if (s == null) {
 			return;
 		}
 		if (s.equals("all")) {
@@ -659,7 +652,7 @@ public class CommandLineMenu {
 		System.out.println("Please enter the name"
 				+ " of the table that you want to delete");
 		String s = readTable();
-		if (cancel(s)) {
+		if (s == null) {
 			return;
 		}
 		boolean sure = areYouSure();
@@ -888,10 +881,16 @@ public class CommandLineMenu {
 		do {
 			System.out.println("Please enter the name of the table that contains the attribute");
 			String nameCopy = readTable();
+			if (nameCopy == null) {
+				return;
+			}
 			int pos = activeDatabase.position(nameCopy);
 			activeDatabase.getTables(pos).view();
 			System.out.println("Please enter the name of the attribute that you want to copy");
 			String attNameC = readAttribute(nameCopy);
+			if (attNameC == null) {
+				return;
+			}
 			activeTable.view();
 			if (choice == 1) {
 				System.out.println("Please enter the name of the new attribute");
@@ -900,6 +899,9 @@ public class CommandLineMenu {
 			} else {
 				System.out.println("Please enter the name of the attribute where you want to paste");
 				String attNameP = readAttribute(namePaste);
+				if (attNameP == null) {
+					return;
+				}
 				activeDatabase.copyExistingAttribute(nameCopy, attNameC, namePaste, attNameP);
 			}	
 			System.out.println("Do you want to copy another attribute?");
@@ -919,6 +921,9 @@ public class CommandLineMenu {
 		do {
 			System.out.println("Please enter the name of the table that contains the attribute");
 			String nameCopy = readTable();
+			if (nameCopy == null) {
+				return;
+			}
 			int pos = activeDatabase.position(nameCopy);
 			activeDatabase.getTables(pos).view();
 			System.out.println("Please enter the name of the attribute that you want to cut");
@@ -1016,8 +1021,11 @@ public class CommandLineMenu {
 			Scanner input = new Scanner(System.in);
 			System.out.println("Please enter the name of the table that contains the entry");
 			nameCopy = readTable();
+			if (nameCopy == null) {
+				return;
+			}
 			if (activeTable.getName().equals(nameCopy)) {
-				System.out.println("It' s not possible to cut and"
+				System.out.println("It's not possible to cut and"
 						+" paste in the same table\n");
 				return;
 			} else {
@@ -1025,6 +1033,9 @@ public class CommandLineMenu {
 				activeDatabase.getTables(pos).view();
 				System.out.println("Please enter the number of the entry that you want to cut");
 				int entryNumCopy = readLines(nameCopy);
+				if (entryNumCopy == -1) {
+					return;
+				}
 				if (choice == 1)
 					cutAddEntry(nameCopy, entryNumCopy);
 				if (choice == 2)
@@ -1060,7 +1071,7 @@ public class CommandLineMenu {
 	/**
 	 * Copy and replace an entry.
 	 * 
-	 * @param nameCopy		The name of the table that cointains the entry
+	 * @param nameCopy		The name of the table that contains the entry
 	 * @param entryNumCopy	Practically, the line number
 	 */
 	public static void copyReplaceEntry(String nameCopy, int entryNumCopy) {
@@ -1078,15 +1089,17 @@ public class CommandLineMenu {
 	/**
 	 * Cut and replace an entry.
 	 * 
-	 * @param nameCopy		The name of the table that cointains the entry
+	 * @param nameCopy		The name of the table that contains the entry
 	 * @param entryNumCopy	Practically, the line number
 	 */
 	public static void cutReplaceEntry(String nameCopy, int entryNumCopy) {
 		activeTable.view();
 		System.out.println("Please enter the number of the entry that you want to replace");
 		int entryNumPaste = readLines(activeTable.getName());
+		if (entryNumPaste == -1) {
+			return;
+		}
 		activeDatabase.cutExistingEntry(nameCopy, entryNumCopy, activeTable.getName(), entryNumPaste);
-
 	}
 
 	/**
