@@ -436,7 +436,7 @@ public class CommandLineMenu {
 		String answer = null;
 		do {
 			addEntryMenu();
-			System.out.println("Do you want to add anoter entry?");
+			System.out.println("Do you want to add another entry?");
 			answer = checkAnswer();
 		} while ((answer.equalsIgnoreCase("yes")) 
 				|| (!answer.equalsIgnoreCase("no")));
