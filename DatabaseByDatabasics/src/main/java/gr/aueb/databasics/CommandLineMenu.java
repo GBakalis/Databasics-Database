@@ -38,19 +38,39 @@ public class CommandLineMenu {
 
 	private static Table activeTable;
 	private static Database activeDatabase;
-
+	
+	/**
+	 * This method returns the value of the field activeTable.
+	 * @return
+	 *	The value of the field activeTable.
+	 */
 	public static Table getActiveTable() {
 		return activeTable;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field activeTable.
+	 * @param activeTable
+	 *  	The value used to set field activeTable.
+	 */
 	public static void setActiveTable(Table activeTable) {
 		CommandLineMenu.activeTable = activeTable;
 	}
-
+	
+	/**
+	 * This method returns the value of the field activeDatabase.
+	 * @return
+	 *	The value of the field activeDatabase.
+	 */
 	public static Database getActiveDatabase() {
 		return activeDatabase;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field activeDatabase.
+	 * @param activeDatabase
+	 *  	The value used to set field activeDatabase.
+	 */
 	public static void setActiveDatabase(Database activeDatabase) {
 		CommandLineMenu.activeDatabase = activeDatabase;
 	}
