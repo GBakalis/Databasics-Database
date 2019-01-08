@@ -59,35 +59,78 @@ public class Database {
 		DatabaseUniverse.setDatabaseNumber(1);
 		CommandLineMenu.setActiveDatabase(this);
 	}
-
+	
+	/**
+	 * This method returns the value of the field isSaved.
+	 * @return
+	 *	The value of the field isSaved.
+	 */
 	public boolean isSaved() {
 		return saved;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field saved.
+	 * @param saved
+	 *  	The value used to set field saved.
+	 */
 	public void setSaved(boolean saved) {
 		this.saved = saved;
 	}
-
+	
+	/**
+	  * This method returns the value of the field name.
+	  * @return
+	  *	The value of the field name.
+	  */
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * This method expects an input and uses it to set field name.
+	 * @param name
+	 *  	The value used to set field name.
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	
+	/**
+         * This method expects an input and uses it to set field tableNumber.
+	 * @return
+	 *  	The value of the field tableNumber.
+	 */
 	public int getTableNumber() {
 		return tableNumber;
 	}
-
+	
+	/**
+         * This method expects an input and uses it to set field tableNumber.
+	 * @param margin
+	 *  	The value used to set field tableNumber.
+	 */
 	public void setTableNumber(int margin) {
 		tableNumber += margin;
 	}
-
+	
+	/**
+	 * This method expects an input and returns the value of the field tables.
+	 * @param i
+	 *	The value used to select a table's element.
+	 * @return
+	 *	The value of a table's element.
+	 */
 	public Table getTables(int i) {
 		return tables.get(i);
 	}
-
+	
+	/**
+	 * This method returns the value of the field tables.
+	 * @return
+	 *	The value of the field tables.
+	 */
 	public ArrayList<Table> getAllTables() {
 		return tables;
 	}
