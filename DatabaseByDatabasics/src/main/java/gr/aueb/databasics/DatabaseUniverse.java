@@ -66,9 +66,9 @@ public class DatabaseUniverse {
 	}
 	
 	/**
-	 * This method expects an input and returns the value of the field databases.
+	 * This method expects an input and returns the value of a specific database element.
 	 * @return
-	 *	The value of the field databases.
+	 *	The value of a specific database element.
 	 */
 	public static Database getDatabases(int i) {
 		return databases.get(i);
