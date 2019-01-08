@@ -187,9 +187,9 @@ public class Table {
 	/**
 	 * This method expects an input and returns the value of the field attributes.
          * @param i
-	 *	The value used to select an attribute's element.
+	 *	The value used to select an attribute.
 	 * @return
-	 *	The value of the field attributes.
+	 *	The value of a specific attribute.
 	 */
 	public Attribute getAttributes(int i) {
 		return attributes.get(i);
