@@ -299,7 +299,6 @@ public class Database {
 			} else {
 				System.out.println("Different number of attributes");
 			}
-
 		}
 	}
 
