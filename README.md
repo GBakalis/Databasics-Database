@@ -24,6 +24,6 @@ For more info on the source code and its functionality, please refer to the Docu
 
 ## Built with
 
-- [Maven] (https://maven.apache.org/) \- Dependency Management
-- [Eclipse] (https://www.eclipse.org/) \- IDE
+- [Maven](https://maven.apache.org/) \- Dependency Management
+- [Eclipse](https://www.eclipse.org/) \- IDE
 - Love
