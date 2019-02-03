@@ -38,7 +38,7 @@ Case #2: If the file has been created by the user, it should not be saved within
 First Line: Name of the table
 Second Line: Type of each column (string/char/int/double/date).
 Third Line: Name of each column. 
-Rest Lines: The elements of each column, including the timestamps. ATTENTION: A message will occur for each type mismatch, and the value will be replaced with '--' in the program.
+Rest Lines: The elements of each column. ATTENTION: A message will occur for each type mismatch, and the value will be replaced with '--' in the program.
 For more info on the source code and its functionality, please refer to the Documentation, included in the folder of the same name.
 Last Modified column will be created within the app and will produce new timestamps.
 
